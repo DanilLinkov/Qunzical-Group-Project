@@ -9,6 +9,7 @@ public class Main extends Application {
         launch(args);
     }
 
+    // Initial Program.
     @Override
     public void start(Stage stage) throws Exception {
         stage.show();
