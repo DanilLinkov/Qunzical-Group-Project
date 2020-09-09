@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.MenuController">
+   <children>
+      <GridPane alignment="TOP_CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="-Infinity" valignment="TOP" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Games Module" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER">
+               <children>
+                  <Label fx:id="UserScoreLabel" text="User Score: $300">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="BestScoreLabel" layoutX="93.0" layoutY="10.0" text="Best Score: $1400">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets right="10.0" top="3.0" />
+               </GridPane.margin>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </GridPane>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="PlayGameButton" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Play Game" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+               <effect>
+                  <DropShadow color="#00000041" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="ResetGameButton" contentDisplay="CENTER" layoutX="10.0" layoutY="95.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Reset Game" textAlignment="CENTER">
+               <effect>
+                  <DropShadow color="#00000041" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ReturnToMainMenuButton" contentDisplay="CENTER" layoutX="10.0" layoutY="120.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Return to Main Menu" textAlignment="CENTER">
+               <effect>
+                  <DropShadow color="#00000041" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
+               </effect>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </children>
+</VBox>
