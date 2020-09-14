@@ -26,3 +26,15 @@
   - Danil :
     - Saving, loading game
     - Question board random generation
+    
+## 15/09/2020 - Hyung & Danil
+
+- Explained our code and implementation for the previously set tasks
+- Realized a complication with category formatting that will need to be addressed at a later date
+- Discussed further work that needs to be done and came up with new work to split
+  - Hyung :
+    - Connect controllers
+    - Button handling
+  - Danil : 
+    - Design two fxml views for asking the question
+    - Merge previous work so that both our code fits together and works
