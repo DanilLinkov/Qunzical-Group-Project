@@ -12,11 +12,19 @@ import javafx.scene.layout.RowConstraints;
 import quinzical.Questions.Category;
 import quinzical.Questions.Question;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class QuestionBoard {
 
     private final int _numQuestions = 5;
     private final int _numCategories = 5;
-    private Category[] _categoriesList = new Category[_numCategories];
+    private ArrayList<Category> _categoriesList = new ArrayList<>();
 
     public QuestionBoard() {
         // Randomly select categories from possible set of categories.
@@ -48,6 +56,56 @@ public class QuestionBoard {
         return questionBoardComponent;
     }
 
+    public void createBoard() {
+        ArrayList<String> filePaths;
+
+        String categoriesPath = new File("").getAbsolutePath();
+        categoriesPath+="/categories";
+        File categoriesFolder = new File(categoriesPath);
+
+        filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
+
+        for (int i = 0; i<5;i++)
+        {
+            int randomCategoryIndex = (int)(Math.random() * (filePaths.size()-1));
+            Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt",""));
+            filePaths.remove(randomCategoryIndex);
+
+            try {
+                List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+filePaths.get(randomCategoryIndex)));
+
+                ArrayList<Integer> savedLines = new ArrayList<Integer>();
+                for (int j = 0; j<5;j++)
+                {
+                    int randomLineIndex = (int)(Math.random() * (allLines.size()-1));
+                    String line = allLines.get(randomLineIndex);
+
+                    String question;
+                    String answer;
+
+                    line.replaceAll("\\s+","");
+
+                    List<String> questionSplit = Arrays.asList(line.split("\\s*,\\s*"));
+
+                    question = questionSplit.get(0);
+                    answer = questionSplit.get(1);
+
+                    allLines.remove(randomLineIndex);
+                    Question newQuestion = new Question(question,answer);
+                    newQuestion.setLineNumber(randomLineIndex);
+
+                    newCategory.addQuestion(newQuestion);
+                    savedLines.add(randomLineIndex);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            _categoriesList.add(newCategory);
+        }
+    }
+
     public GridPane getQuestionBoard() {
         // generate Pressable Question board based on which questions need to be emptied out or pressable or disabled.
 
@@ -55,7 +113,7 @@ public class QuestionBoard {
 
         Button pointButton;
         for (int categoryIndex = 0; categoryIndex < _numCategories; categoryIndex++) {
-            int lowestValuedQuestionIndex = _categoriesList[categoryIndex].getLowestValuedQuestionIndex();
+            int lowestValuedQuestionIndex = _categoriesList.get(categoryIndex).getLowestValuedQuestionIndex();
             for (int questionIndex = 0; questionIndex < _numQuestions; questionIndex++) {
                 if (questionIndex < lowestValuedQuestionIndex) {
                     // Advance to the next question and make the cell empty.
@@ -86,7 +144,7 @@ public class QuestionBoard {
         Button button = new Button(Integer.toString((questionIndex+1)*100));
         button.setOnAction(e ->
                 // Link whatever action this button should do.
-                        System.out.println("YAY BUTTON PRESSED!");
+                        System.out.println("YAY BUTTON PRESSED!"));
 //                SelectQuestionController.getInstance().handlePointButtonAction(categoryIndex, questionIndex));
         return button;
     }
@@ -107,6 +165,30 @@ public class QuestionBoard {
         for (int i = 0; i < _numCategories; i++) {
             questionBoard.getColumnConstraints().add(columnConstraints);
         }
+    }
+
+    public int getSize()
+    {
+        return _categoriesList.size();
+    }
+
+    public void addCategory(Category category){
+        _categoriesList.add(category);
+    }
+
+    public Category getCategory(int index){
+        return _categoriesList.get(index);
+    }
+
+    public Category getCategory(String name){
+
+        for (Category c : _categoriesList){
+            if (c.toString().equals(name)){
+                return c;
+            }
+        }
+
+        return null;
     }
 
 }

@@ -3,6 +3,7 @@ package quinzical.MainMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.QuestionBoard;
 
 public class Main extends Application {
 
