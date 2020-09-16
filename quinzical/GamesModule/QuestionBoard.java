@@ -28,7 +28,7 @@ public class QuestionBoard {
 
     public QuestionBoard() {
         // Randomly select categories from possible set of categories.
-
+        createBoard();
     }
 
     public GridPane initializeBoard() {
@@ -55,6 +55,8 @@ public class QuestionBoard {
 
         return questionBoardComponent;
     }
+
+
 
     public void createBoard() {
         ArrayList<String> filePaths;
@@ -100,7 +102,6 @@ public class QuestionBoard {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
             _categoriesList.add(newCategory);
         }
@@ -182,8 +183,8 @@ public class QuestionBoard {
 
     public Category getCategory(String name){
 
-        for (Category c : _categoriesList){
-            if (c.toString().equals(name)){
+        for (Category c : _categoriesList) {
+            if (c.toString().equals(name)) {
                 return c;
             }
         }

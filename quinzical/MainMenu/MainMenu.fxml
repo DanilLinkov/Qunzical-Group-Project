@@ -21,7 +21,7 @@
       </Label>
       <VBox alignment="CENTER" prefHeight="264.0" prefWidth="528.0" spacing="20.0">
          <children>
-            <Button alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Games Module" textAlignment="CENTER">
+            <Button fx:id="gamesModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleGamesModuleButtonClick" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Games Module" textAlignment="CENTER">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>
@@ -35,7 +35,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Practice Module" textAlignment="CENTER">
+            <Button fx:id="practiceModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePracticeModuleButtonClick" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Practice Module" textAlignment="CENTER">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>

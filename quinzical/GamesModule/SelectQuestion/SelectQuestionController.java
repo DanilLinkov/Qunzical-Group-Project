@@ -12,15 +12,19 @@ import java.util.ResourceBundle;
 
 public class SelectQuestionController implements Initializable {
 
-    public Button BackToGameMenuButton;
-    public VBox QuestionBoardArea;
-    public Label UserScoreLabel;
-    public Label BestScoreLabel;
+    public Button backToGameMenuButton;
+    public VBox questionBoardArea;
+    public Label userScoreLabel;
+    public Label bestScoreLabel;
+
+    private GameManager _gameManager = GameManager.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        GameManager jsdlfd = new GameManager();
-        QuestionBoardArea.getChildren().add(GameManager.getInstance().getQuestionBoard());
+        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+        bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
+
+        questionBoardArea.getChildren().add(GameManager.getInstance().getQuestionBoard());
 //        GameModelClass.saveGame();
     }
 

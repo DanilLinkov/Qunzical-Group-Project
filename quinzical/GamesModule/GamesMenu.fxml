@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.MenuController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenuController">
    <children>
       <GridPane alignment="TOP_CENTER">
         <columnConstraints>
@@ -32,12 +32,12 @@
             </Label>
             <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER">
                <children>
-                  <Label fx:id="UserScoreLabel" text="User Score: $300">
+                  <Label fx:id="userScoreLabel" text="User Score: $">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="BestScoreLabel" layoutX="93.0" layoutY="10.0" text="Best Score: $1400">
+                  <Label fx:id="bestScoreLabel" layoutX="93.0" layoutY="10.0" text="Best Score: $">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -54,7 +54,7 @@
       </GridPane>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button fx:id="PlayGameButton" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Play Game" textAlignment="CENTER">
+            <Button fx:id="playGameButton" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handlePlayGameButtonAction" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Play Game" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
@@ -65,7 +65,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="ResetGameButton" contentDisplay="CENTER" layoutX="10.0" layoutY="95.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Reset Game" textAlignment="CENTER">
+            <Button fx:id="resetGameButton" contentDisplay="CENTER" layoutX="10.0" layoutY="95.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResetGameButtonAction" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Reset Game" textAlignment="CENTER">
                <effect>
                   <DropShadow color="#00000041" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
                </effect>
@@ -76,7 +76,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="ReturnToMainMenuButton" contentDisplay="CENTER" layoutX="10.0" layoutY="120.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Return to Main Menu" textAlignment="CENTER">
+            <Button fx:id="returnToMainMenuButton" contentDisplay="CENTER" layoutX="10.0" layoutY="120.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReturnToMainMenuButtonAction" style="-fx-border-color: transparent; -fx-background-color: whitesmoke;" text="Return to Main Menu" textAlignment="CENTER">
                <effect>
                   <DropShadow color="#00000041" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
                </effect>

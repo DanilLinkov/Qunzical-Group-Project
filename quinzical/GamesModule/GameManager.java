@@ -22,18 +22,7 @@ public class GameManager {
 
     public GameManager() {
         _instance = this;
-
-        /*
-        if (settings_file_exists) {
-            // Load previous game from the file
-            loadGame();
-        } else {
-            // Create a new game
-            newGame();
-            saveGame();
-        }
-
-         */
+        _questionBoard = new QuestionBoard();
     }
 
     public static GameManager getInstance() {
@@ -42,6 +31,28 @@ public class GameManager {
 
     public GridPane getQuestionBoard() {
         return _questionBoard.getQuestionBoard();
+    }
+
+    public int getCurrentScore() {
+        return _currentScore;
+    }
+
+    public void incrementCurrentScore(int value) {
+        _currentScore += value;
+    }
+
+    public void decrementCurrentScore(int value) {
+        _currentScore -= value;
+    }
+
+    public void updateBestScore() {
+        if (_currentScore > _bestScore) {
+            _bestScore = _currentScore;
+        }
+    }
+
+    public int getBestScore() {
+        return _bestScore;
     }
 
     public void newGame() {
