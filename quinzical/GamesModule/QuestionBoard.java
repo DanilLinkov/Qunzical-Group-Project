@@ -35,12 +35,13 @@ public class QuestionBoard {
         GridPane questionBoardComponent = new GridPane();
         questionBoardComponent.setGridLinesVisible(true);
         // Possibly add this if any more padding is needed.
-//        questionBoard.setPadding(new Insets(5, 5, 5, 5));
+        questionBoardComponent.setPadding(new Insets(5, 5, 5, 5));
 
         // Pre-initializes variables to be frequently re-defined.
         Label categoryLabel;
         int categoryIndex = 0;
         // Add categories to the top bar of question board
+        System.out.println(_categoriesList);
         for (Category category : _categoriesList) {
             // Extract category name, make it into upper case, and store it in the list of labels of categories.
             categoryLabel = new Label(category.toString().toUpperCase());

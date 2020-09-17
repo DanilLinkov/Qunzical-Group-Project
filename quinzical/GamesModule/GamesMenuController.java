@@ -23,11 +23,20 @@ public class GamesMenuController implements Initializable {
     private MainMenu _mainMenuModel = MainMenu.getInstance();
     private GameManager _gameManager = GameManager.getInstance();
 
+//    private Scene _gamesMenuScene;
+    private static GamesMenuController _instance;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+//        _gamesMenuScene = playGameButton.getScene();
+        _instance = this;
+
+        // For testing purposes...
         _gameManager.incrementCurrentScore(120);
         _gameManager.updateBestScore();
         _gameManager.decrementCurrentScore(95);
+
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
@@ -51,6 +60,14 @@ public class GamesMenuController implements Initializable {
 
     public void handleReturnToMainMenuButtonAction() {
         _mainMenuModel.returnToMainMenuScene();
+    }
+
+    public static GamesMenuController getInstance() {
+        return _instance;
+    }
+
+    public void setMainStageToGamesMenuScene() {
+        _mainMenuModel.setMainStageScene(playGameButton.getScene());
     }
 
 }

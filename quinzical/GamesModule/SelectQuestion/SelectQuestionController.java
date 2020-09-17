@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.GamesMenuController;
 import quinzical.GamesModule.QuestionBoard;
 
 import java.net.URL;
@@ -29,7 +30,7 @@ public class SelectQuestionController implements Initializable {
     }
 
     public void handleReturnToGameMenuButtonAction() {
-        // Implementation
+        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
     }
 
 }

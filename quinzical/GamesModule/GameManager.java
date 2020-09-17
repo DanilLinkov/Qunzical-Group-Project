@@ -23,6 +23,7 @@ public class GameManager {
     public GameManager() {
         _instance = this;
         _questionBoard = new QuestionBoard();
+        loadGame();
     }
 
     public static GameManager getInstance() {
