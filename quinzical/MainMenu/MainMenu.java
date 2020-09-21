@@ -81,7 +81,7 @@ public class MainMenu extends Application {
 
         Optional<ButtonType> result = confirmClose.showAndWait();
         if (result.get() == ButtonType.OK) {
-//            saveGame();
+            _gameManager.saveGame();
             System.out.println("Game saved (saving process unimplemented due to messed up question board.)");
             _mainStage.close();
         }

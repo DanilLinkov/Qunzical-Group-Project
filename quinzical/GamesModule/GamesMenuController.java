@@ -29,13 +29,12 @@ public class GamesMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-//        _gamesMenuScene = playGameButton.getScene();
         _instance = this;
 
         // For testing purposes...
-        _gameManager.incrementCurrentScore(120);
-        _gameManager.updateBestScore();
-        _gameManager.decrementCurrentScore(95);
+//        _gameManager.incrementCurrentScore(120);
+//        _gameManager.updateBestScore();
+//        _gameManager.decrementCurrentScore(95);
 
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());

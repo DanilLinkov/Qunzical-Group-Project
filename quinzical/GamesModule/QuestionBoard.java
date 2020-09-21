@@ -57,8 +57,6 @@ public class QuestionBoard {
         return questionBoardComponent;
     }
 
-
-
     public void createBoard() {
         ArrayList<String> filePaths;
 
@@ -68,8 +66,7 @@ public class QuestionBoard {
 
         filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
 
-        for (int i = 0; i<5;i++)
-        {
+        for (int i = 0; i < 5; i++) {
             int randomCategoryIndex = (int)(Math.random() * (filePaths.size()-1));
             Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt",""));
             filePaths.remove(randomCategoryIndex);
@@ -78,8 +75,7 @@ public class QuestionBoard {
                 List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+filePaths.get(randomCategoryIndex)));
 
                 ArrayList<Integer> savedLines = new ArrayList<Integer>();
-                for (int j = 0; j<5;j++)
-                {
+                for (int j = 0; j < 5; j++) {
                     int randomLineIndex = (int)(Math.random() * (allLines.size()-1));
                     String line = allLines.get(randomLineIndex);
 

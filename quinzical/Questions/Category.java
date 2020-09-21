@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Category {
 
     private ArrayList<Question> _questions = new ArrayList<>();
-    private String name;
     private int lowestValuedQuestionIndex = 0;
 
     private String _categoryName;

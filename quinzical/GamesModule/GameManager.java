@@ -86,20 +86,17 @@ public class GameManager {
             FileWriter saveWriter = new FileWriter(savePath);
             saveWriter.write(_currentScore + "," + _bestScore + "\n");
 
-            for(int i=0;i<_questionBoard.getSize();i++)
-            {
+            for(int i = 0; i < _questionBoard.getSize(); i++) {
                 Category currentCategory = _questionBoard.getCategory(i);
                 String saveLine = currentCategory.toString();
                 Question lastUnanswered = currentCategory.getQuestion(currentCategory.getLowestValuedQuestionIndex());
-                for (int j=0;j<currentCategory.getSize();j++)
-                {
-                    Question currentQuestion = currentCategory.getQuestion(j);
 
-                    saveLine+=","+currentQuestion.getLineNumber();
+                for (int j=0;j<currentCategory.getSize();j++) {
+                    Question currentQuestion = currentCategory.getQuestion(j);
+                    saveLine += ","+currentQuestion.getLineNumber();
                 }
 
-                saveWriter.write(saveLine +","+lastUnanswered.getLineNumber() + "\n");
-
+                saveWriter.write(saveLine + "," + lastUnanswered.getLineNumber() + "\n");
             }
 
             saveWriter.close();
@@ -114,47 +111,42 @@ public class GameManager {
         savePath+="/save.txt";
 
         if (Files.exists(Paths.get(savePath))) {
-
             try {
                 List<String> allLines = Files.readAllLines(Paths.get(savePath));
+                System.out.println(allLines);
+                System.out.println(allLines.size());
                 List<String> lineSplit = Arrays.asList(allLines.get(0).split("\\s*,\\s*"));
                 _currentScore = Integer.parseInt(lineSplit.get(0));
                 _bestScore = Integer.parseInt(lineSplit.get(1));
 
                 _questionBoard = new QuestionBoard();
 
-                for (int i=1;i<allLines.size();i++) {
+                for (int i = 1; i < allLines.size(); i++) {
                     lineSplit = Arrays.asList(allLines.get(i).split("\\s*,\\s*"));
                     Category newCategory = new Category(lineSplit.get(0));
                     _questionBoard.addCategory(newCategory);
 
-                    savePath=new File("").getAbsolutePath()+"/categories/"+lineSplit.get(0)+".txt";
-                    List<String>  questionLines = Files.readAllLines(Paths.get(savePath));
+                    savePath = new File("").getAbsolutePath()+"/categories/"+lineSplit.get(0)+".txt";
+                    List<String> questionLines = Files.readAllLines(Paths.get(savePath));
 
-                    for(int j=1;j<6;j++)
-                    {
+                    for(int j = 1; j < 6; j++) {
                         String selectedQuestionLine = questionLines.get(Integer.parseInt(lineSplit.get(j)));
                         List<String> selectedQSplit = Arrays.asList(selectedQuestionLine.split("\\s*,\\s*"));
                         Question newQuestionToAdd = new Question(selectedQSplit.get(0),selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
 
-                        if (lineSplit.get(j).equals(lineSplit.get(6)))
-                        {
+                        if (lineSplit.get(j).equals(lineSplit.get(6))) {
                             newCategory.setLowestValuedQuestionIndex(j-1);
                         }
                     }
-
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        else
-        {
+        else {
             newGame();
         }
     }
-
 }
