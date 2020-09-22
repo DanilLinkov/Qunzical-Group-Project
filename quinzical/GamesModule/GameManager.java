@@ -23,6 +23,7 @@ public class GameManager {
     public GameManager() {
         _instance = this;
         _questionBoard = new QuestionBoard();
+        _questionBoard.createBoard();
         loadGame();
     }
 
@@ -58,6 +59,7 @@ public class GameManager {
 
     public void newGame() {
         _questionBoard = new QuestionBoard();
+        _questionBoard.createBoard();
         _currentScore = 0;
         saveGame();
     }
@@ -89,14 +91,15 @@ public class GameManager {
             for(int i = 0; i < _questionBoard.getSize(); i++) {
                 Category currentCategory = _questionBoard.getCategory(i);
                 String saveLine = currentCategory.toString();
-                Question lastUnanswered = currentCategory.getQuestion(currentCategory.getLowestValuedQuestionIndex());
+                //Question lastUnanswered = currentCategory.getQuestion(currentCategory.getLowestValuedQuestionIndex());
 
                 for (int j=0;j<currentCategory.getSize();j++) {
                     Question currentQuestion = currentCategory.getQuestion(j);
                     saveLine += ","+currentQuestion.getLineNumber();
                 }
 
-                saveWriter.write(saveLine + "," + lastUnanswered.getLineNumber() + "\n");
+                //saveWriter.write(saveLine + "," + lastUnanswered.getLineNumber() + "\n");
+                saveWriter.write(saveLine + "," + currentCategory.getLowestValuedQuestionIndex() + "\n");
             }
 
             saveWriter.close();
@@ -128,6 +131,7 @@ public class GameManager {
 
                     savePath = new File("").getAbsolutePath()+"/categories/"+lineSplit.get(0)+".txt";
                     List<String> questionLines = Files.readAllLines(Paths.get(savePath));
+                    newCategory.setLowestValuedQuestionIndex(Integer.parseInt(lineSplit.get(6)));
 
                     for(int j = 1; j < 6; j++) {
                         String selectedQuestionLine = questionLines.get(Integer.parseInt(lineSplit.get(j)));
@@ -136,9 +140,9 @@ public class GameManager {
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
 
-                        if (lineSplit.get(j).equals(lineSplit.get(6))) {
-                            newCategory.setLowestValuedQuestionIndex(j-1);
-                        }
+//                        if (lineSplit.get(j).equals(lineSplit.get(6))) {
+//                            newCategory.setLowestValuedQuestionIndex(j-1);
+//                        }
                     }
                 }
             } catch (IOException e) {

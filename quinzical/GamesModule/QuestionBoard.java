@@ -28,7 +28,7 @@ public class QuestionBoard {
 
     public QuestionBoard() {
         // Randomly select categories from possible set of categories.
-        createBoard();
+        //createBoard();
     }
 
     public GridPane initializeBoard() {
