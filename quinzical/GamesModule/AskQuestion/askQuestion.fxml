@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.AskQuestion.askQuestionController">
+   <children>
+      <Label fx:id="questionInfoLabel" text="Category: $300">
+         <font>
+            <Font size="25.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" top="30.0" />
+         </VBox.margin>
+      </Label>
+      <Button fx:id="playClueButton" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="130.0" prefWidth="130.0" style="-fx-background-radius: 130;" text="▶">
+         <font>
+            <Font size="55.0" />
+         </font>
+      </Button>
+      <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" min="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+         <VBox.margin>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+         </VBox.margin>
+      </Slider>
+      <HBox alignment="CENTER">
+         <children>
+            <TextField fx:id="answerField" promptText="Enter here..." />
+            <Button fx:id="submitAnswerButton" mnemonicParsing="false" onAction="#handleSubmitAnswerButtonAction" text="Submit">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -1,14 +1,19 @@
 package quinzical.GamesModule;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.RowConstraints;
+import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
+import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Category;
 import quinzical.Questions.Question;
 
@@ -141,9 +146,8 @@ public class QuestionBoard {
     private Button createPointButton(int categoryIndex, int questionIndex) {
         Button button = new Button(Integer.toString((questionIndex+1)*100));
         button.setOnAction(e ->
-                // Link whatever action this button should do.
-                        System.out.println("YAY BUTTON PRESSED!"));
-//                SelectQuestionController.getInstance().handlePointButtonAction(categoryIndex, questionIndex));
+                SelectQuestionController.getInstance().handlePointButtonAction(categoryIndex, questionIndex)
+        );
         return button;
     }
 

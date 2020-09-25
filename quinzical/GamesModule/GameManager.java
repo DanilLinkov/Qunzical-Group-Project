@@ -35,6 +35,10 @@ public class GameManager {
         return _questionBoard.getQuestionBoard();
     }
 
+    public Question getQuestionInCategory(int categoryIndex, int questionIndex) {
+        return _questionBoard.getCategory(categoryIndex).getQuestion(questionIndex);
+    }
+
     public int getCurrentScore() {
         return _currentScore;
     }

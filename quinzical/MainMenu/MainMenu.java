@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import quinzical.GamesModule.GameManager;
-import quinzical.GamesModule.QuestionBoard;
 
 import java.util.Optional;
 
@@ -82,7 +81,6 @@ public class MainMenu extends Application {
         Optional<ButtonType> result = confirmClose.showAndWait();
         if (result.get() == ButtonType.OK) {
             _gameManager.saveGame();
-            System.out.println("Game saved (saving process unimplemented due to messed up question board.)");
             _mainStage.close();
         }
     }
