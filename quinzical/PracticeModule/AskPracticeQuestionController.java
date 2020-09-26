@@ -56,7 +56,7 @@ public class AskPracticeQuestionController implements Initializable {
             String randomQuestion = allLines.get(randomLineIndex);
             randomQuestion.replaceAll("\\s+","");
 
-            List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*,\\s*"));
+            List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
             question = randomQuestionSplit.get(0);
             answer = randomQuestionSplit.get(1);

@@ -97,8 +97,10 @@ public class QuestionBoard {
                     // change into answer array
                     answer = questionSplit.get(2);
 
+                    String[] answerSplit = answer.split("/");
+
                     allLines.remove(randomLineIndex);
-                    Question newQuestion = new Question(question,answer,newCategory);
+                    Question newQuestion = new Question(question,answerSplit,newCategory);
                     newQuestion.setLineNumber(randomLineIndex);
                     newQuestion.set_whatIsThis(whatIs);
                     // set parent or constructor for category
