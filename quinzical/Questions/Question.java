@@ -10,9 +10,10 @@ public class Question {
     // category parent
 
     // String[] pass into || _parent = parent; Category parent
-    public Question(String clue, String answer) {
+    public Question(String clue, String answer,Category parent) {
         _clue = clue;
         _answer = answer;
+        _parent = parent;
     }
 
     public int getLineNumber() {
@@ -42,6 +43,14 @@ public class Question {
 
     public Category getParent() {
         return _parent;
+    }
+
+    public void set_whatIsThis(String _whatIsThis) {
+        this._whatIsThis = _whatIsThis;
+    }
+
+    public String get_whatIsThis() {
+        return _whatIsThis;
     }
 
 }

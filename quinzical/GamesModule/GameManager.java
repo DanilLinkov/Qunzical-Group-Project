@@ -35,6 +35,10 @@ public class GameManager {
         return _questionBoard.getQuestionBoard();
     }
 
+    public Question getQuestionInCategory(int categoryIndex, int questionIndex) {
+        return _questionBoard.getCategory(categoryIndex).getQuestion(questionIndex);
+    }
+
     public int getCurrentScore() {
         return _currentScore;
     }
@@ -91,14 +95,12 @@ public class GameManager {
             for(int i = 0; i < _questionBoard.getSize(); i++) {
                 Category currentCategory = _questionBoard.getCategory(i);
                 String saveLine = currentCategory.toString();
-                //Question lastUnanswered = currentCategory.getQuestion(currentCategory.getLowestValuedQuestionIndex());
 
                 for (int j=0;j<currentCategory.getSize();j++) {
                     Question currentQuestion = currentCategory.getQuestion(j);
                     saveLine += ","+currentQuestion.getLineNumber();
                 }
 
-                //saveWriter.write(saveLine + "," + lastUnanswered.getLineNumber() + "\n");
                 saveWriter.write(saveLine + "," + currentCategory.getLowestValuedQuestionIndex() + "\n");
             }
 
@@ -135,8 +137,10 @@ public class GameManager {
 
                     for(int j = 1; j < 6; j++) {
                         String selectedQuestionLine = questionLines.get(Integer.parseInt(lineSplit.get(j)));
-                        List<String> selectedQSplit = Arrays.asList(selectedQuestionLine.split("\\s*,\\s*"));
-                        Question newQuestionToAdd = new Question(selectedQSplit.get(0),selectedQSplit.get(1));
+                        List<String> selectedQSplit = Arrays.asList(selectedQuestionLine.split("\\s*\\|\\s*"));
+                        // change answer to answer array
+                        Question newQuestionToAdd = new Question(selectedQSplit.get(0),selectedQSplit.get(2),newCategory);
+                        newQuestionToAdd.set_whatIsThis(selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
                         // set parent
