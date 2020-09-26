@@ -49,3 +49,17 @@
   - Danil : 
     - Implement practice module categories selection and question randomization after selection
 
+## 25/09/2020 - Hyung & Danil
+
+- Showed and explained what we worked on and what we implemented
+- Discussed on a new implementation for question bank storage
+- Discussed how we want to approach macrons in tts
+- Realized we need to add support for multiple answers
+- Changed small details in question class such as changing the answer string to string array
+- Discussed further work to be done and split it up
+  - Hyung : 
+    - Implement answer checking process for games module
+    - Figure out the best way of approaching macrons
+  - Danil : 
+    - Merge code and change the small implementation details
+    - Implement answer checking for practice module
