@@ -38,3 +38,14 @@
   - Danil : 
     - Design two fxml views for asking the question
     - Merge previous work so that both our code fits together and works
+
+## 22/09/2020 - Hyung & Danil
+
+- Fixed saving and loading bugs
+- Discussed how to implement the asking question part and decided to have separate fxml files one for games module and one for practice module
+- Discussed further work to be done and split it up
+  - Hyung : 
+    - Implement games module question board to redirect to the question
+  - Danil : 
+    - Implement practice module categories selection and question randomization after selection
+

@@ -68,7 +68,7 @@ public class QuestionBoard {
 
         for (int i = 0; i < 5; i++) {
             int randomCategoryIndex = (int)(Math.random() * (filePaths.size()-1));
-            Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt",""));
+            Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt","")); // parent
             filePaths.remove(randomCategoryIndex);
 
             try {
@@ -92,6 +92,7 @@ public class QuestionBoard {
                     allLines.remove(randomLineIndex);
                     Question newQuestion = new Question(question,answer);
                     newQuestion.setLineNumber(randomLineIndex);
+                    // set parent or constructor for category
 
                     newCategory.addQuestion(newQuestion);
                     savedLines.add(randomLineIndex);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.PracticeModule.AskPracticeQuestionController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="72.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="categoryLabel" prefHeight="41.0" prefWidth="103.0" text="Category:">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="101.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="101.0" prefWidth="295.0">
+               <children>
+                  <Label fx:id="questionLabel" prefHeight="61.0" prefWidth="308.0" text="Q:">
+                     <font>
+                        <Font name="SansSerif" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="hintLabel" prefHeight="17.0" prefWidth="183.0" text="Hint: The word starts with ">
+                     <font>
+                        <Font name="SansSerif" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Label text="PlayButton" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="119.0" prefWidth="600.0">
+         <children>
+            <Slider fx:id="speedSlider" prefHeight="27.0" prefWidth="340.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0" style="-fx-spacing: 20;">
+         <children>
+            <TextField fx:id="answerInput" prefHeight="25.0" prefWidth="181.0" />
+            <Button fx:id="submit" mnemonicParsing="false" text="Submit">
+               <font>
+                  <Font name="SansSerif" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

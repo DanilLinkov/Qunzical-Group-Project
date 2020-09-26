@@ -3,9 +3,13 @@ package quinzical.Questions;
 public class Question {
 
     private String _clue;
-    private String _answer;
+    private String _answer; // string array of answers String[]
     private int _lineNumber;
+    private Category _parent;
+    private String _whatIsThis;
+    // category parent
 
+    // String[] pass into || _parent = parent; Category parent
     public Question(String clue, String answer) {
         _clue = clue;
         _answer = answer;
@@ -31,8 +35,13 @@ public class Question {
         return _answer;
     }
 
+    // String[] set
     public void set_answer(String _answer) {
         this._answer = _answer;
+    }
+
+    public Category getParent() {
+        return _parent;
     }
 
 }

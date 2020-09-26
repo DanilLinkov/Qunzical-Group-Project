@@ -126,7 +126,7 @@ public class GameManager {
 
                 for (int i = 1; i < allLines.size(); i++) {
                     lineSplit = Arrays.asList(allLines.get(i).split("\\s*,\\s*"));
-                    Category newCategory = new Category(lineSplit.get(0));
+                    Category newCategory = new Category(lineSplit.get(0)); // parent
                     _questionBoard.addCategory(newCategory);
 
                     savePath = new File("").getAbsolutePath()+"/categories/"+lineSplit.get(0)+".txt";
@@ -139,10 +139,7 @@ public class GameManager {
                         Question newQuestionToAdd = new Question(selectedQSplit.get(0),selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
-
-//                        if (lineSplit.get(j).equals(lineSplit.get(6))) {
-//                            newCategory.setLowestValuedQuestionIndex(j-1);
-//                        }
+                        // set parent
                     }
                 }
             } catch (IOException e) {
