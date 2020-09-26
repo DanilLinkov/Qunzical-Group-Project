@@ -141,7 +141,7 @@ public class GameManager {
                         // change answer to answer array
                         String[] answerSplit = selectedQSplit.get(2).split("/");
                         Question newQuestionToAdd = new Question(selectedQSplit.get(0),answerSplit,newCategory);
-                        
+
                         newQuestionToAdd.set_whatIsThis(selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
