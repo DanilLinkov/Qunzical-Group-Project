@@ -29,7 +29,7 @@ public class MainMenu extends Application {
     public void start(Stage stage) throws Exception {
 
         _instance = this;
-        _gameManager = new GameManager();
+        _gameManager = GameManager.getInstance();
 
         _mainStage = stage;
         _mainStage.setOnCloseRequest(e -> {

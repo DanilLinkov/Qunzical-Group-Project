@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GamesMenuController;
-import quinzical.GamesModule.QuestionBoard;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Question;
 
@@ -81,10 +80,6 @@ public class SelectQuestionController implements Initializable {
     public Question getSelectedQuestion() {
         return _selectedQuestion;
     }
-
-//    public Category getSelectedQuestionCategory() {
-//        return
-//    }
 
     public void handleReturnToGameMenuButtonAction() {
         GamesMenuController.getInstance().setMainStageToGamesMenuScene();

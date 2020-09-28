@@ -7,13 +7,15 @@ public class Question {
     private int _lineNumber;
     private Category _parent;
     private String _whatIsThis;
+    private int _value;
     // category parent
 
     // String[] pass into || _parent = parent; Category parent
-    public Question(String clue, String[] answer,Category parent) {
+    public Question(String clue, String[] answer, Category parent, int value) {
         _clue = clue;
         _answer = answer;
         _parent = parent;
+        _value = value;
     }
 
     public int getLineNumber() {
@@ -48,4 +50,7 @@ public class Question {
         return _whatIsThis;
     }
 
+    public int getValue() {
+        return _value;
+    }
 }

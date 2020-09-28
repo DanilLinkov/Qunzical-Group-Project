@@ -66,6 +66,11 @@ public class GamesMenuController implements Initializable {
     }
 
     public void setMainStageToGamesMenuScene() {
+
+        // Refresh score labels for possible change.
+        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+        bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
+
         _mainMenuModel.setMainStageScene(playGameButton.getScene());
     }
 

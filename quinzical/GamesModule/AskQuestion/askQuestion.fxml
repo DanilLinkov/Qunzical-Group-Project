@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.AskQuestion.askQuestionController">
    <children>
       <Label fx:id="questionInfoLabel" text="Category: $300">
@@ -32,8 +31,24 @@
       </Slider>
       <HBox alignment="CENTER">
          <children>
-            <TextField fx:id="answerField" promptText="Enter here..." />
+            <TextField fx:id="answerField" promptText="Enter here...">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></TextField>
             <Button fx:id="submitAnswerButton" mnemonicParsing="false" onAction="#handleSubmitAnswerButtonAction" text="Submit">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Label text="or...">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="dontKnowButton" mnemonicParsing="false" onAction="#handleDontKnowButtonAction" text="Don't Know">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

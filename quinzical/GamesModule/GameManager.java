@@ -20,7 +20,7 @@ public class GameManager {
 
     private static GameManager _instance;
 
-    public GameManager() {
+    private GameManager() {
         _instance = this;
         _questionBoard = new QuestionBoard();
         _questionBoard.createBoard();
@@ -28,7 +28,7 @@ public class GameManager {
     }
 
     public static GameManager getInstance() {
-        return _instance;
+        return _instance == null ? new GameManager() : _instance;
     }
 
     public GridPane getQuestionBoard() {
@@ -118,8 +118,6 @@ public class GameManager {
         if (Files.exists(Paths.get(savePath))) {
             try {
                 List<String> allLines = Files.readAllLines(Paths.get(savePath));
-                System.out.println(allLines);
-                System.out.println(allLines.size());
                 List<String> lineSplit = Arrays.asList(allLines.get(0).split("\\s*,\\s*"));
                 _currentScore = Integer.parseInt(lineSplit.get(0));
                 _bestScore = Integer.parseInt(lineSplit.get(1));
@@ -140,7 +138,7 @@ public class GameManager {
                         List<String> selectedQSplit = Arrays.asList(selectedQuestionLine.split("\\s*\\|\\s*"));
                         // change answer to answer array
                         String[] answerSplit = selectedQSplit.get(2).split("/");
-                        Question newQuestionToAdd = new Question(selectedQSplit.get(0),answerSplit,newCategory);
+                        Question newQuestionToAdd = new Question(selectedQSplit.get(0),answerSplit,newCategory,j*100);
 
                         newQuestionToAdd.set_whatIsThis(selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));

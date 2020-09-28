@@ -1,11 +1,8 @@
 package quinzical.GamesModule;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -13,7 +10,6 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.RowConstraints;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
-import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Category;
 import quinzical.Questions.Question;
 
@@ -31,11 +27,6 @@ public class QuestionBoard {
     private final int _numCategories = 5;
     private ArrayList<Category> _categoriesList = new ArrayList<>();
 
-    public QuestionBoard() {
-        // Randomly select categories from possible set of categories.
-        //createBoard();
-    }
-
     public GridPane initializeBoard() {
         GridPane questionBoardComponent = new GridPane();
         questionBoardComponent.setGridLinesVisible(true);
@@ -46,7 +37,6 @@ public class QuestionBoard {
         Label categoryLabel;
         int categoryIndex = 0;
         // Add categories to the top bar of question board
-        System.out.println(_categoriesList);
         for (Category category : _categoriesList) {
             // Extract category name, make it into upper case, and store it in the list of labels of categories.
             categoryLabel = new Label(category.toString().toUpperCase());
@@ -100,7 +90,7 @@ public class QuestionBoard {
                     String[] answerSplit = answer.split("/");
 
                     allLines.remove(randomLineIndex);
-                    Question newQuestion = new Question(question,answerSplit,newCategory);
+                    Question newQuestion = new Question(question,answerSplit,newCategory,(j+1)*100);
                     newQuestion.setLineNumber(randomLineIndex);
                     newQuestion.set_whatIsThis(whatIs);
                     // set parent or constructor for category
@@ -114,7 +104,6 @@ public class QuestionBoard {
 
             _categoriesList.add(newCategory);
         }
-        System.out.println("test");
     }
 
     public GridPane getQuestionBoard() {
