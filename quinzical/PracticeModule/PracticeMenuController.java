@@ -49,14 +49,15 @@ public class PracticeMenuController implements Initializable {
 
     public void handleSelectCategoryButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../PracticeModule/AskPracticeQuestion.fxml"));
-            Parent root = loader.load();
+            if(selectedCategory!=null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../PracticeModule/AskPracticeQuestion.fxml"));
+                Parent root = loader.load();
 
-            AskPracticeQuestionController askPracticeQuestionController = loader.getController();
-            askPracticeQuestionController.setCategoryName(selectedCategory);
+                AskPracticeQuestionController askPracticeQuestionController = loader.getController();
+                askPracticeQuestionController.setCategoryName(selectedCategory);
 
-            _mainMenuModel.setMainStageScene(new Scene(root));
-
+                _mainMenuModel.setMainStageScene(new Scene(root));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,6 +65,10 @@ public class PracticeMenuController implements Initializable {
 
     public void handleDropDownClick() {
         selectedCategory = dropDownMenu.getValue();
+    }
+
+    public void setMainStageToPracticeMenuScene() {
+        _mainMenuModel.setMainStageScene(selectCategoryButton.getScene());
     }
 
 }
