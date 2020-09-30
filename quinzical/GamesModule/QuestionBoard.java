@@ -15,10 +15,12 @@ import quinzical.Questions.Question;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class QuestionBoard {
@@ -61,17 +63,20 @@ public class QuestionBoard {
 
         filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
 
+        ArrayList<Integer> randomCategoryIndexList = randomIndexArray(filePaths.size());
+
         for (int i = 0; i < 5; i++) {
-            int randomCategoryIndex = (int)(Math.random() * (filePaths.size()-1));
+            int randomCategoryIndex = randomCategoryIndexList.get(i);
             Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt","")); // parent
-            filePaths.remove(randomCategoryIndex);
 
             try {
                 List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+filePaths.get(randomCategoryIndex)));
 
                 ArrayList<Integer> savedLines = new ArrayList<Integer>();
+                ArrayList<Integer> randomQuestionIndexList = randomIndexArray(allLines.size());
+
                 for (int j = 0; j < 5; j++) {
-                    int randomLineIndex = (int)(Math.random() * (allLines.size()-1));
+                    int randomLineIndex = randomQuestionIndexList.get(j);
                     String line = allLines.get(randomLineIndex);
 
                     String question;
@@ -89,7 +94,6 @@ public class QuestionBoard {
 
                     String[] answerSplit = answer.split("/");
 
-                    allLines.remove(randomLineIndex);
                     Question newQuestion = new Question(question,answerSplit,newCategory,(j+1)*100);
                     newQuestion.setLineNumber(randomLineIndex);
                     newQuestion.set_whatIsThis(whatIs);
@@ -104,6 +108,19 @@ public class QuestionBoard {
 
             _categoriesList.add(newCategory);
         }
+        System.out.println("test");
+    }
+
+    private ArrayList<Integer> randomIndexArray (int length) {
+        ArrayList<Integer> shuffledArray = new ArrayList<>();
+
+        for(int i = 0; i< length;i++) {
+            shuffledArray.add(i);
+        }
+
+        Collections.shuffle(shuffledArray);
+
+        return shuffledArray;
     }
 
     public GridPane getQuestionBoard() {
