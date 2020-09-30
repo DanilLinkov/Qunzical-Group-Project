@@ -3,12 +3,11 @@ package quinzical.Questions;
 public class Question {
 
     private String _clue;
-    private String[] _answer; // string array of answers String[]
+    private String[] _answer;
     private int _lineNumber;
     private Category _parent;
-    private String _whatIsThis;
+    private String _whatIs;
     private int _value;
-    // category parent
 
     // String[] pass into || _parent = parent; Category parent
     public Question(String clue, String[] answer, Category parent, int value) {
@@ -42,12 +41,12 @@ public class Question {
         return _parent;
     }
 
-    public void set_whatIsThis(String _whatIsThis) {
-        this._whatIsThis = _whatIsThis;
+    public void set_whatIs(String _whatIs) {
+        this._whatIs = _whatIs;
     }
 
-    public String get_whatIsThis() {
-        return _whatIsThis;
+    public String get_whatIs() {
+        return _whatIs;
     }
 
     public int getValue() {

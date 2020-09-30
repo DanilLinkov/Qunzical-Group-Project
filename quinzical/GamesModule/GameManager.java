@@ -39,6 +39,15 @@ public class GameManager {
         return _questionBoard.getCategory(categoryIndex).getQuestion(questionIndex);
     }
 
+    public boolean isEveryQuestionAnswered() {
+        for (int i = 0; i < 5; i++) {
+            if (_questionBoard.getCategory(i).getLowestValuedQuestionIndex() != 5) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public int getCurrentScore() {
         return _currentScore;
     }
@@ -140,7 +149,7 @@ public class GameManager {
                         String[] answerSplit = selectedQSplit.get(2).split("/");
                         Question newQuestionToAdd = new Question(selectedQSplit.get(0),answerSplit,newCategory,j*100);
 
-                        newQuestionToAdd.set_whatIsThis(selectedQSplit.get(1));
+                        newQuestionToAdd.set_whatIs(selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
                         // set parent

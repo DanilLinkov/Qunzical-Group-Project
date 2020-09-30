@@ -4,12 +4,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import quinzical.MainMenu.MainMenu;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GamesMenuController implements Initializable {
@@ -28,18 +31,10 @@ public class GamesMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         _instance = this;
-
-        // For testing purposes...
-//        _gameManager.incrementCurrentScore(120);
-//        _gameManager.updateBestScore();
-//        _gameManager.decrementCurrentScore(95);
 
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
-
-        // Update UserScoreLabel and BestScoreLabel with corresponding values.
     }
 
     public void handlePlayGameButtonAction() {
@@ -52,9 +47,24 @@ public class GamesMenuController implements Initializable {
     }
 
     public void handleResetGameButtonAction() {
-        GameManager.getInstance().newGame();
-        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
-        bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
+        Alert confirmReset = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmReset.setTitle("Reset Game");
+        confirmReset.setHeaderText("Do you really want to reset game?");
+        confirmReset.getDialogPane().setContent(
+                new Label("This will clear current winning and question board status."));
+
+        Optional<ButtonType> result = confirmReset.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            GameManager.getInstance().newGame();
+            userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+            bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Reset Game");
+            alert.setHeaderText("Your game has been reset!");
+            alert.setContentText("Press OK to continue.");
+            alert.showAndWait();
+        }
     }
 
     public void handleReturnToMainMenuButtonAction() {

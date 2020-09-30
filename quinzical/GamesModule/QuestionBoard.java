@@ -96,7 +96,7 @@ public class QuestionBoard {
 
                     Question newQuestion = new Question(question,answerSplit,newCategory,(j+1)*100);
                     newQuestion.setLineNumber(randomLineIndex);
-                    newQuestion.set_whatIsThis(whatIs);
+                    newQuestion.set_whatIs(whatIs);
                     // set parent or constructor for category
 
                     newCategory.addQuestion(newQuestion);
