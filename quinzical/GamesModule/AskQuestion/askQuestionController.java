@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GamesMenuController;
-import quinzical.GamesModule.QuestionBoard;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
 import quinzical.Questions.Question;
 
@@ -25,6 +24,7 @@ public class askQuestionController implements Initializable {
 
     private int _questionReadingSpeed = 160;
     private Question _question;
+    private Process _espeakProcess;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -147,12 +147,17 @@ public class askQuestionController implements Initializable {
      * @param text A string for espeak to read.
      */
     private void speak(String text) {
+
+        if (_espeakProcess != null && _espeakProcess.isAlive()) {
+            _espeakProcess.destroy();
+        }
+
         text.replaceAll("\"", "\\\"");
 
         String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
         try {
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-            pb.start();
+            _espeakProcess = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
