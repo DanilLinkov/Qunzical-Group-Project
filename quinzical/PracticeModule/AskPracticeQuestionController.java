@@ -3,6 +3,8 @@ package quinzical.PracticeModule;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
+import quinzical.GamesModule.GameManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,14 +21,16 @@ public class AskPracticeQuestionController implements Initializable {
     public Label categoryLabel;
     public Label questionLabel;
     public Label hintLabel;
-    public Slider speedSlider;
+    public Slider speedAdjustSlider;
     public TextField answerInput;
     public Button submit;
+    public Button playClueButton;
 
     private String question;
-    private String answer;
+    private String[] answer;
     private String qType;
-    private int lineNumber;
+    private int _questionReadingSpeed = 160;
+    private int attempts;
 
     private PracticeGameManager _practiceGameManager;
 
@@ -37,7 +41,13 @@ public class AskPracticeQuestionController implements Initializable {
 
         _instance = this;
         _practiceGameManager = new PracticeGameManager();
+        attempts = 3;
 
+        speedAdjustSlider.setValue(_questionReadingSpeed);
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
+            _questionReadingSpeed = newSpeed.intValue();
+            System.out.println(_questionReadingSpeed);
+        });
     }
 
     public static AskPracticeQuestionController getInstance() {
@@ -59,8 +69,7 @@ public class AskPracticeQuestionController implements Initializable {
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
             question = randomQuestionSplit.get(0);
-            answer = randomQuestionSplit.get(1);
-            lineNumber = randomLineIndex;
+            answer = randomQuestionSplit.get(2).trim().split("/");
 
             questionLabel.setText("Question: " + question);
 
@@ -71,8 +80,102 @@ public class AskPracticeQuestionController implements Initializable {
 
     }
 
-    public AskPracticeQuestionController() {
+    public void handlePlayClueButton() {
+        speak(question);
+    }
 
+    public void onAnswerSubmit() {
+        String playerAnswerInput = answerInput.getText().toLowerCase().trim();
+
+        boolean eventFinished = false;
+        for (String correctAnswer : answer) {
+            if (playerAnswerInput.equals(correctAnswer.toLowerCase().trim())) {
+                eventFinished = true;
+                correctAnswerGiven();
+                PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;
+            }
+        }
+
+        if (!eventFinished) {
+            incorrectAnswerGiven();
+            if (attempts==0) {
+                PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
+            }
+        }
+
+    }
+
+    public void correctAnswerGiven() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("Correct");
+        alert.setHeaderText("Correct!");
+        String contentText = "You are correct!";
+
+        revertReadingSpeedToDefault();
+        speak("Correct");
+
+        alert.getDialogPane().setContent(new Label(contentText));
+        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
+
+    public void incorrectAnswerGiven() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        attempts--;
+
+        alert.setTitle("Incorrect");
+        alert.setHeaderText("Incorrect!");
+        revertReadingSpeedToDefault();
+        String contentText = "";
+
+        if (attempts>0) {
+            contentText = "You have " + attempts + " attempt(s) left!";
+            speak(contentText);
+        }
+
+        if (attempts==1) {
+            hintLabel.setText("Hint: the first letter of the answer is " + answer[0].charAt(0));
+        }
+
+        if (attempts==0) {
+            String answers = "";
+
+            if (answer.length>1) {
+                for(int i=0;i<answer.length;i++) {
+                    answers+=answer[i];
+                    if(i!=answer.length-1){
+                        answers+=" or ";
+                    }
+                }
+            }
+            else {
+                answers+=answer[0];
+            }
+
+            contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers;
+            speak(contentText);
+        }
+
+        alert.getDialogPane().setContent(new Label(contentText));
+        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
+
+    private void speak(String text) {
+        String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
+        try {
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void revertReadingSpeedToDefault() {
+        _questionReadingSpeed = 175;
     }
 
 }

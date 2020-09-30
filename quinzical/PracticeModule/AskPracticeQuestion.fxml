@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -20,32 +21,36 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="101.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="101.0" prefWidth="295.0">
+            <VBox prefHeight="101.0" prefWidth="469.0">
                <children>
-                  <Label fx:id="questionLabel" prefHeight="61.0" prefWidth="308.0" text="Q:">
+                  <Label fx:id="questionLabel" prefHeight="61.0" prefWidth="470.0" text="Q:">
                      <font>
                         <Font name="SansSerif" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="hintLabel" prefHeight="17.0" prefWidth="183.0" text="Hint: The word starts with ">
+                  <Label fx:id="hintLabel" prefHeight="17.0" prefWidth="518.0">
                      <font>
                         <Font name="SansSerif" size="12.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
-            <Label text="PlayButton" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="119.0" prefWidth="600.0">
+      <VBox alignment="CENTER">
          <children>
-            <Slider fx:id="speedSlider" prefHeight="27.0" prefWidth="340.0" />
+            <Button id="playClueButton" fx:id="playClueButton" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="130.0" prefWidth="130.0" style="-fx-background-radius: 130;" text="▶">
+               <font>
+                  <Font size="55.0" />
+               </font>
+            </Button>
+            <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" min="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
          </children>
-      </HBox>
+      </VBox>
       <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0" style="-fx-spacing: 20;">
          <children>
             <TextField fx:id="answerInput" prefHeight="25.0" prefWidth="181.0" />
-            <Button fx:id="submit" mnemonicParsing="false" text="Submit">
+            <Button fx:id="submit" mnemonicParsing="false" onAction="#onAnswerSubmit" text="Submit">
                <font>
                   <Font name="SansSerif" size="12.0" />
                </font>
