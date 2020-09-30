@@ -152,7 +152,7 @@ public class askQuestionController implements Initializable {
             _espeakProcess.destroy();
         }
 
-        text.replaceAll("\"", "\\\"");
+        text = text.replaceAll("\"", "\\\\\"");
 
         String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
         try {
