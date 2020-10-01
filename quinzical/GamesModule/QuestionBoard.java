@@ -108,7 +108,6 @@ public class QuestionBoard {
 
             _categoriesList.add(newCategory);
         }
-        System.out.println("test");
     }
 
     private ArrayList<Integer> randomIndexArray (int length) {

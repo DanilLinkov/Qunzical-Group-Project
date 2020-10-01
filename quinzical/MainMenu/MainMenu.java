@@ -15,6 +15,9 @@ public class MainMenu extends Application {
 
     private static MainMenu _instance;
 
+    private final static int _appWidth = 800;
+    private final static int _appHeight = 600;
+
     private Stage _mainStage;
     private Scene _mainMenuScene;
 
@@ -39,7 +42,7 @@ public class MainMenu extends Application {
 
         Parent mainMenu = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         stage.setTitle("Quinzical");
-        stage.setScene((_mainMenuScene = new Scene(mainMenu)));
+        stage.setScene((_mainMenuScene = new Scene(mainMenu, _appWidth, _appHeight)));
         stage.show();
     }
 
@@ -49,6 +52,14 @@ public class MainMenu extends Application {
      */
     public static MainMenu getInstance() {
         return _instance;
+    }
+
+    public static int getAppWidth() {
+        return _appWidth;
+    }
+
+    public static int getAppHeight() {
+        return _appHeight;
     }
 
     /**

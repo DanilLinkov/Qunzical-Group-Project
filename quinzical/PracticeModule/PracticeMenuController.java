@@ -56,7 +56,7 @@ public class PracticeMenuController implements Initializable {
                 AskPracticeQuestionController askPracticeQuestionController = loader.getController();
                 askPracticeQuestionController.setCategoryName(selectedCategory);
 
-                _mainMenuModel.setMainStageScene(new Scene(root));
+                _mainMenuModel.setMainStageScene(new Scene(root, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             }
         } catch (IOException e) {
             e.printStackTrace();

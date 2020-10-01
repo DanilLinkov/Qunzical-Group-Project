@@ -26,7 +26,6 @@ public class GamesMenuController implements Initializable {
     private MainMenu _mainMenuModel = MainMenu.getInstance();
     private GameManager _gameManager = GameManager.getInstance();
 
-//    private Scene _gamesMenuScene;
     private static GamesMenuController _instance;
 
     @Override
@@ -40,7 +39,7 @@ public class GamesMenuController implements Initializable {
     public void handlePlayGameButtonAction() {
         try {
             Parent selectQuestion = FXMLLoader.load(getClass().getResource("SelectQuestion/SelectQuestion.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(selectQuestion));
+            _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
