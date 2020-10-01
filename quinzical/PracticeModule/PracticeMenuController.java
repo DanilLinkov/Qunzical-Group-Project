@@ -50,7 +50,7 @@ public class PracticeMenuController implements Initializable {
     public void handleSelectCategoryButton() {
         try {
             if(selectedCategory!=null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../PracticeModule/AskPracticeQuestion.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quinzical/PracticeModule/AskPracticeQuestion.fxml"));
                 Parent root = loader.load();
 
                 AskPracticeQuestionController askPracticeQuestionController = loader.getController();

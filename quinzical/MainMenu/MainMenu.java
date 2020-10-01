@@ -40,9 +40,9 @@ public class MainMenu extends Application {
             closeMainStage();
         });
 
-        Parent mainMenu = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        Parent mainMenu = FXMLLoader.load(getClass().getResource("/quinzical/MainMenu/MainMenu.fxml"));
         stage.setTitle("Quinzical");
-        stage.setScene((_mainMenuScene = new Scene(mainMenu, _appWidth, _appHeight)));
+stage.setScene((_mainMenuScene = new Scene(mainMenu, _appWidth, _appHeight)));
         stage.show();
     }
 

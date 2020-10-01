@@ -65,7 +65,7 @@ public class SelectQuestionController implements Initializable {
         _selectedQuestion = _gameManager.getQuestionInCategory(categoryIndex, questionIndex);
 
         try {
-            Parent askQuestionWindow = FXMLLoader.load(getClass().getResource("../AskQuestion/askQuestion.fxml"));
+            Parent askQuestionWindow = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/AskQuestion/askQuestion.fxml"));
             MainMenu.getInstance().setMainStageScene(new Scene(askQuestionWindow, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();

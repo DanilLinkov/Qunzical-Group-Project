@@ -38,7 +38,7 @@ public class GamesMenuController implements Initializable {
 
     public void handlePlayGameButtonAction() {
         try {
-            Parent selectQuestion = FXMLLoader.load(getClass().getResource("SelectQuestion/SelectQuestion.fxml"));
+            Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
             _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();

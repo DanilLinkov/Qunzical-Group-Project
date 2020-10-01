@@ -19,7 +19,7 @@ public class MainMenuController {
 
     public void handleGamesModuleButtonClick() {
         try {
-            Parent gamesMenu = FXMLLoader.load(getClass().getResource("../GamesModule/GamesMenu.fxml"));
+            Parent gamesMenu = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/GamesMenu.fxml"));
             _mainMenuModel.setMainStageScene(new Scene(gamesMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,7 +28,7 @@ public class MainMenuController {
 
     public void handlePracticeModuleButtonClick() {
         try {
-            Parent practiceMenu = FXMLLoader.load(getClass().getResource("../PracticeModule/PracticeMenu.fxml"));
+            Parent practiceMenu = FXMLLoader.load(getClass().getResource("/quinzical/PracticeModule/PracticeMenu.fxml"));
             _mainMenuModel.setMainStageScene(new Scene(practiceMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
