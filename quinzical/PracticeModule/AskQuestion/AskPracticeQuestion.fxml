@@ -53,9 +53,9 @@
       <HBox alignment="CENTER" prefHeight="93.0" prefWidth="600.0" style="-fx-spacing: 20;">
          <children>
             <TextField fx:id="answerInput" alignment="CENTER" prefHeight="41.0" prefWidth="279.0" />
-            <Button fx:id="submit" alignment="CENTER" mnemonicParsing="false" onAction="#onAnswerSubmit" prefHeight="40.0" prefWidth="116.0" style="-fx-background-color: #b82b35;" text="Submit" textFill="WHITE">
+            <Button fx:id="submit" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAnswerSubmit" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #b82b35;" text="Submit" textFill="WHITE">
                <font>
-                  <Font name="SansSerif Bold" size="20.0" />
+                  <Font name="SansSerif Bold" size="15.0" />
                </font>
             </Button>
          </children>
