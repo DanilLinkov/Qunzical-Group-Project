@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import quinzical.PracticeModule.PracticeGameManager;
 import quinzical.PracticeModule.PracticeMenuController;
+import quinzical.Utilities.AskQuestionUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +21,11 @@ public class AskPracticeQuestionController implements Initializable {
     public Label categoryLabel;
     public Label questionLabel;
     public Label hintLabel;
+    public Label questionTypeLabel;
     public Slider speedAdjustSlider;
     public TextField answerInput;
-    public Button submit;
+    public Button submitButton;
+    public Button dontKnowButton;
     public Button playClueButton;
 
     private String question;
@@ -43,10 +46,14 @@ public class AskPracticeQuestionController implements Initializable {
         _practiceGameManager = new PracticeGameManager();
         attempts = 3;
 
+        // ============ READ THIS LINE ==============
+        // Please uncomment the code below to make sure qType text is displayed.
+        // Currently, qType gives null pointer exception with it being nothing.
+//        questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
+
         speedAdjustSlider.setValue(_questionReadingSpeed);
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             _questionReadingSpeed = newSpeed.intValue();
-            System.out.println(_questionReadingSpeed);
         });
     }
 
@@ -69,6 +76,12 @@ public class AskPracticeQuestionController implements Initializable {
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
             question = randomQuestionSplit.get(0);
+            // ========== READ ME ============
+            // Don't quite know how this works, but apparently the line below
+            // always returns null and does not contain the actual question type.
+            // Please fix this and once this is finished you can enable the code above
+            // in initialize() to show a corresponding qType text.
+            qType = randomQuestionSplit.get(1);
             answer = randomQuestionSplit.get(2).trim().split("/");
 
             questionLabel.setText("Question: " + question);
@@ -103,6 +116,11 @@ public class AskPracticeQuestionController implements Initializable {
             }
         }
 
+    }
+
+    public void handleDontKnowButtonAction() {
+        AskQuestionUtilities.answerUnknown(answer[0]);
+        PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
     public void correctAnswerGiven() {
