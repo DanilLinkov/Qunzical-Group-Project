@@ -31,6 +31,7 @@ public class AskPracticeQuestionController implements Initializable {
     private String qType;
     private int _questionReadingSpeed = 160;
     private int attempts;
+    private Process _espeakProcess;
 
     private PracticeGameManager _practiceGameManager;
 
@@ -165,10 +166,16 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     private void speak(String text) {
+        if (_espeakProcess != null && _espeakProcess.isAlive()) {
+            _espeakProcess.destroy();
+        }
+
+        text = text.replaceAll("\"", "\\\\\"");
+
         String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
         try {
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-            pb.start();
+            _espeakProcess = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
         }

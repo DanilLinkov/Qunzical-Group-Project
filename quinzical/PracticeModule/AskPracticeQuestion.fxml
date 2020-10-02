@@ -8,51 +8,54 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.PracticeModule.AskPracticeQuestionController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.PracticeModule.AskPracticeQuestionController">
    <children>
-      <HBox alignment="CENTER" prefHeight="72.0" prefWidth="600.0">
+      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
          <children>
-            <Label fx:id="categoryLabel" prefHeight="41.0" prefWidth="103.0" text="Category:">
+            <Label fx:id="categoryLabel" alignment="CENTER" prefHeight="30.0" prefWidth="517.0" text="Category:" textFill="WHITE">
                <font>
-                  <Font name="SansSerif Bold" size="12.0" />
+                  <Font name="SansSerif Bold" size="25.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="101.0" prefWidth="600.0">
+      <HBox alignment="CENTER" prefHeight="124.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="101.0" prefWidth="469.0">
+            <VBox prefHeight="76.0" prefWidth="562.0">
                <children>
-                  <Label fx:id="questionLabel" prefHeight="61.0" prefWidth="470.0" text="Q:">
+                  <Label fx:id="questionLabel" alignment="CENTER" prefHeight="70.0" prefWidth="562.0" text="Q:" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font name="SansSerif" size="12.0" />
+                        <Font name="SansSerif Bold Italic" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="hintLabel" prefHeight="17.0" prefWidth="518.0">
+                  <Label fx:id="hintLabel" alignment="CENTER" prefHeight="41.0" prefWidth="562.0" textFill="WHITE">
                      <font>
-                        <Font name="SansSerif" size="12.0" />
+                        <Font name="SansSerif Italic" size="16.0" />
                      </font>
                   </Label>
                </children>
             </VBox>
          </children>
       </HBox>
-      <VBox alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="195.0" prefWidth="600.0">
          <children>
-            <Button id="playClueButton" fx:id="playClueButton" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="130.0" prefWidth="130.0" style="-fx-background-radius: 130;" text="▶">
+            <Button id="playClueButton" fx:id="playClueButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="119.0" prefWidth="119.0" style="-fx-background-radius: 130; -fx-background-color: #b82b35;" text="▶" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="55.0" />
                </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </Button>
-            <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" min="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+            <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" maxWidth="-Infinity" min="100.0" minWidth="-Infinity" prefHeight="33.0" prefWidth="417.0" showTickMarks="true" snapToTicks="true" />
          </children>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0" style="-fx-spacing: 20;">
+      <HBox alignment="CENTER" prefHeight="93.0" prefWidth="600.0" style="-fx-spacing: 20;">
          <children>
-            <TextField fx:id="answerInput" prefHeight="25.0" prefWidth="181.0" />
-            <Button fx:id="submit" mnemonicParsing="false" onAction="#onAnswerSubmit" text="Submit">
+            <TextField fx:id="answerInput" alignment="CENTER" prefHeight="41.0" prefWidth="279.0" />
+            <Button fx:id="submit" alignment="CENTER" mnemonicParsing="false" onAction="#onAnswerSubmit" prefHeight="40.0" prefWidth="116.0" style="-fx-background-color: #b82b35;" text="Submit" textFill="WHITE">
                <font>
-                  <Font name="SansSerif" size="12.0" />
+                  <Font name="SansSerif Bold" size="20.0" />
                </font>
             </Button>
          </children>

@@ -1,6 +1,6 @@
-600,1800
-Geography,2,8,6,4,0,0
-NZ Life,4,3,1,0,5,0
-History,0,1,7,3,4,2
-Fauna,16,13,14,7,0,0
-Famous People,3,4,7,2,1,4
+0,0
+Famous People,1,4,6,2,3,0
+History,5,2,1,4,3,0
+Fauna,3,2,5,12,8,0
+Oddities,0,5,2,3,6,0
+Geography,4,6,0,7,5,0

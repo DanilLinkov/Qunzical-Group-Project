@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #264653;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.MainMenu.MainMenuController">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.MainMenu.MainMenuController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="326.0" style="-fx-text-fill: #E9C46A;" text="Welcome to Quinzical!">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="529.0" text="Welcome to Quinzical!" textFill="WHITE">
          <font>
             <Font name="SansSerif Bold" size="30.0" />
          </font>
@@ -31,7 +31,7 @@
       </Label>
       <VBox alignment="CENTER" prefHeight="264.0" prefWidth="528.0" spacing="20.0">
          <children>
-            <Button fx:id="gamesModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleGamesModuleButtonClick" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Games Module" textAlignment="CENTER">
+            <Button fx:id="gamesModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleGamesModuleButtonClick" prefHeight="62.0" prefWidth="215.0" style="-fx-background-color: #b82b35;" text="Games Module" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>
@@ -45,7 +45,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="practiceModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePracticeModuleButtonClick" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Practice Module" textAlignment="CENTER">
+            <Button fx:id="practiceModuleButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePracticeModuleButtonClick" prefHeight="62.0" prefWidth="215.0" style="-fx-background-color: #b82b35;" text="Practice Module" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>
@@ -59,7 +59,7 @@
                   <Glow />
                </effect>
             </Button>
-            <Button fx:id="exitButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleExitButton" prefHeight="62.0" prefWidth="185.0" style="-fx-background-color: #2A9D8F; -fx-text-fill: #E9C46A;" text="Exit" textAlignment="CENTER">
+            <Button fx:id="exitButton" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleExitButton" prefHeight="62.0" prefWidth="215.0" style="-fx-background-color: #b82b35;" text="Exit" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>
