@@ -1,6 +1,6 @@
 -100,0
 Famous People,1,4,6,2,3,0
 History,5,2,1,4,3,0
-Fauna,3,2,5,12,8,2
+Fauna,3,2,5,12,8,3
 Oddities,0,5,2,3,6,0
 Geography,4,6,0,7,5,0

@@ -46,11 +46,6 @@ public class AskPracticeQuestionController implements Initializable {
         _practiceGameManager = new PracticeGameManager();
         attempts = 3;
 
-        // ============ READ THIS LINE ==============
-        // Please uncomment the code below to make sure qType text is displayed.
-        // Currently, qType gives null pointer exception with it being nothing.
-//        questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
-
         speedAdjustSlider.setValue(_questionReadingSpeed);
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             _questionReadingSpeed = newSpeed.intValue();
@@ -76,15 +71,11 @@ public class AskPracticeQuestionController implements Initializable {
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
             question = randomQuestionSplit.get(0);
-            // ========== READ ME ============
-            // Don't quite know how this works, but apparently the line below
-            // always returns null and does not contain the actual question type.
-            // Please fix this and once this is finished you can enable the code above
-            // in initialize() to show a corresponding qType text.
             qType = randomQuestionSplit.get(1);
             answer = randomQuestionSplit.get(2).trim().split("/");
 
             questionLabel.setText("Question: " + question);
+            questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
 
         } catch (IOException e) {
             e.printStackTrace();
