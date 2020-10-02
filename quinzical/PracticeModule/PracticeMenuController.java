@@ -1,19 +1,17 @@
 package quinzical.PracticeModule;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.stage.Stage;
 import quinzical.MainMenu.MainMenu;
+import quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class PracticeMenuController implements Initializable {
@@ -50,7 +48,7 @@ public class PracticeMenuController implements Initializable {
     public void handleSelectCategoryButton() {
         try {
             if(selectedCategory!=null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quinzical/PracticeModule/AskPracticeQuestion.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quinzical/PracticeModule/AskQuestion/AskPracticeQuestion.fxml"));
                 Parent root = loader.load();
 
                 AskPracticeQuestionController askPracticeQuestionController = loader.getController();

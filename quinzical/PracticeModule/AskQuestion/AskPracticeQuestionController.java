@@ -1,17 +1,16 @@
-package quinzical.PracticeModule;
+package quinzical.PracticeModule.AskQuestion;
 
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import quinzical.GamesModule.GameManager;
+import quinzical.PracticeModule.PracticeGameManager;
+import quinzical.PracticeModule.PracticeMenuController;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
