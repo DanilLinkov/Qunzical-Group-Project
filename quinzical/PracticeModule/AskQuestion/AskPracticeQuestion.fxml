@@ -1,64 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController">
    <children>
-      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
+      <Label fx:id="categoryLabel" alignment="CENTER" text="Category:" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Bold" size="25.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" top="30.0" />
+         </VBox.margin>
+      </Label>
+      <Label fx:id="questionLabel" alignment="CENTER" text="Q:" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="SansSerif Bold Italic" size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Label>
+      <Label fx:id="hintLabel" alignment="CENTER" text="Hint: the first letter of the answer is k" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Italic" size="16.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Label>
+      <VBox alignment="CENTER">
          <children>
-            <Label fx:id="categoryLabel" alignment="CENTER" prefHeight="30.0" prefWidth="517.0" text="Category:" textFill="WHITE">
-               <font>
-                  <Font name="SansSerif Bold" size="25.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="124.0" prefWidth="600.0">
-         <children>
-            <VBox prefHeight="76.0" prefWidth="562.0">
-               <children>
-                  <Label fx:id="questionLabel" alignment="CENTER" prefHeight="70.0" prefWidth="562.0" text="Q:" textFill="WHITE" wrapText="true">
-                     <font>
-                        <Font name="SansSerif Bold Italic" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="hintLabel" alignment="CENTER" prefHeight="41.0" prefWidth="562.0" textFill="WHITE">
-                     <font>
-                        <Font name="SansSerif Italic" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-      <VBox alignment="CENTER" prefHeight="195.0" prefWidth="600.0">
-         <children>
-            <Button id="playClueButton" fx:id="playClueButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="119.0" prefWidth="119.0" style="-fx-background-radius: 130; -fx-background-color: #b82b35;" text="▶" textAlignment="CENTER" textFill="WHITE">
+            <Button id="playClueButton" fx:id="playClueButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handlePlayClueButton" prefHeight="130.0" prefWidth="130.0" style="-fx-background-radius: 130; -fx-background-color: #b82b35;" text="▶" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="55.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" maxWidth="-Infinity" min="100.0" minWidth="-Infinity" prefHeight="33.0" prefWidth="417.0" showTickMarks="true" snapToTicks="true" />
-         </children>
-      </VBox>
-      <HBox alignment="CENTER" prefHeight="93.0" prefWidth="600.0" style="-fx-spacing: 20;">
-         <children>
-            <TextField fx:id="answerInput" alignment="CENTER" prefHeight="41.0" prefWidth="279.0" />
-            <Button fx:id="submit" alignment="CENTER" mnemonicParsing="false" onAction="#onAnswerSubmit" prefHeight="40.0" prefWidth="116.0" style="-fx-background-color: #b82b35;" text="Submit" textFill="WHITE">
+            <Slider fx:id="speedAdjustSlider" majorTickUnit="20.0" max="220.0" min="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="30.0" />
+               </VBox.margin>
+            </Slider>
+            <Label text="Reading Speed (Words per Minute)" textFill="WHITE">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
                <font>
-                  <Font name="SansSerif Bold" size="20.0" />
+                  <Font name="SansSerif Regular" size="16.0" />
                </font>
-            </Button>
+            </Label>
          </children>
-      </HBox>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </VBox>
+      <VBox alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="questionTypeLabel" text="What is" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="answerInput" promptText="Enter here...">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="submitButton" alignment="CENTER" mnemonicParsing="false" onAction="#onAnswerSubmit" style="-fx-background-color: #b82b35;" text="Submit" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="dontKnowButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleDontKnowButtonAction" style="-fx-background-color: #b82b35;" text="Don't Know" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </VBox>
    </children>
 </VBox>
