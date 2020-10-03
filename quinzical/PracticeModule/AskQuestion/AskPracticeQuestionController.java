@@ -65,7 +65,7 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     /**
-     * This method is called in the practice menu to pass down the category name which the user
+     * This method is called in the practice menu to pass down the category name which the player
      * selected and then to load the questions in that category and select a random question
      * @param name
      */
@@ -111,7 +111,7 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     /**
-     * This method handles the event when the user submits their answer and checks whether its correct
+     * This method handles the event when the player submits their answer and checks whether its correct
      * or not and acts accordingly
      */
     public void onAnswerSubmit() {
@@ -122,7 +122,7 @@ public class AskPracticeQuestionController implements Initializable {
         boolean eventFinished = false;
         // Going over every potential answer for that question
         for (String correctAnswer : answer) {
-            // Formatting both the user and the correct answer
+            // Formatting both the player and the correct answer
             String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(playerAnswerInput);
             String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
 
@@ -141,7 +141,7 @@ public class AskPracticeQuestionController implements Initializable {
         if (!eventFinished) {
             // Call the incorrect answer given method
             incorrectAnswerGiven();
-            // If all the attempts have been used up then transition the user to the practice menu scene
+            // If all the attempts have been used up then transition the player to the practice menu scene
             if (attempts==0) {
                 PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
             }
@@ -159,7 +159,7 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     /**
-     * This method is used when the user enters the correct answer and gives
+     * This method is used when the player enters the correct answer and gives
      * them an alert box saying they are right
      */
     private void correctAnswerGiven() {
@@ -176,7 +176,7 @@ public class AskPracticeQuestionController implements Initializable {
         // Speaking Correct
         speak("Correct");
 
-        // Setting the alert box, showing it and waiting for the user to click ok
+        // Setting the alert box, showing it and waiting for the player to click ok
         alert.getDialogPane().setContent(new Label(contentText));
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -184,7 +184,7 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     /**
-     * This method is used for when the user provides the incorrect answer and gives
+     * This method is used for when the player provides the incorrect answer and gives
      * them an alert box depending on the number of attempts they have left
      */
     private void incorrectAnswerGiven() {
@@ -201,14 +201,14 @@ public class AskPracticeQuestionController implements Initializable {
         // Context string which is set depending on the number of attempts
         String contentText = "";
 
-        // If the user has more than 0 attempts left
+        // If the player has more than 0 attempts left
         if (attempts>0) {
             // Set the context to this and speak it
             contentText = "You have " + attempts + " attempt(s) left!";
             speak(contentText);
         }
 
-        // If the user is on their last attempt
+        // If the player is on their last attempt
         if (attempts==1) {
             // Get all the answers for this question and show their first letter as a hint
             String answers = "";
@@ -235,7 +235,7 @@ public class AskPracticeQuestionController implements Initializable {
             hintLabel.setText("Hint: the first letter of the answer is " + answers);
         }
 
-        // If the user has used up all their attempts
+        // If the player has used up all their attempts
         if (attempts==0) {
             // Get all the answers
             String answers = "";
@@ -260,7 +260,7 @@ public class AskPracticeQuestionController implements Initializable {
         alert.getDialogPane().setContent(new Label(contentText));
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        // Wait for the user to close it to continue with the main application
+        // Wait for the player to close it to continue with the main application
         alert.showAndWait();
     }
 

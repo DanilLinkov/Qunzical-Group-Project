@@ -6,7 +6,7 @@ public class Question {
     private String[] _answer;
     private int _lineNumber;
     private Category _parent;
-    private String _whatIs;
+    private String _questionType;
     private int _value;
 
     // String[] pass into || _parent = parent; Category parent
@@ -22,31 +22,31 @@ public class Question {
     }
 
     public void setLineNumber(int lineNumber) {
-        this._lineNumber = lineNumber;
+        _lineNumber = lineNumber;
     }
 
-    public String get_clue() {
+    public String getClue() {
         return _clue;
     }
 
-    public void set_clue(String _clue) {
-        this._clue = _clue;
+    public void setClue(String clue) {
+        _clue = clue;
     }
 
-    public String[] get_answer() {
+    public void setQuestionType(String questionType) {
+        _questionType = questionType;
+    }
+
+    public String getQuestionType() {
+        return _questionType;
+    }
+
+    public String[] getAnswer() {
         return _answer;
     }
 
     public Category getParent() {
         return _parent;
-    }
-
-    public void set_whatIs(String _whatIs) {
-        this._whatIs = _whatIs;
-    }
-
-    public String get_whatIs() {
-        return _whatIs;
     }
 
     public int getValue() {

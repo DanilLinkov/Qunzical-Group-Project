@@ -21,34 +21,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A question board used in games module.
+ * <p></p>
+ * A class which stores question board information and
+ * returns a component with the information in it.
+ *
+ * @author Danil Linkov, Hyung Park
+ */
 public class QuestionBoard {
 
+    // Constants in question board.
     private final int _numQuestions = 5;
     private final int _numCategories = 5;
-    private ArrayList<Category> _categoriesList = new ArrayList<>();
 
-    public GridPane initializeBoard() {
-        GridPane questionBoardComponent = new GridPane();
-        questionBoardComponent.setGridLinesVisible(true);
-        questionBoardComponent.setStyle("-fx-background-color:#FFFFFF");
-
-        // Pre-initializes variables to be frequently re-defined.
-        Label categoryLabel;
-        int categoryIndex = 0;
-        // Add categories to the top bar of question board
-        for (Category category : _categoriesList) {
-            // Extract category name, make it into upper case, and store it in the list of labels of categories.
-            categoryLabel = new Label(category.toString().toUpperCase());
-            // Format each cell of category
-            categoryLabel.setPadding(new Insets(10, 5, 10, 5));
-            // Allocate a category to the corresponding cell.
-            GridPane.setConstraints(categoryLabel, categoryIndex++, 0);
-            // Adds the category label in the question board.
-            questionBoardComponent.getChildren().add(categoryLabel);
-        }
-
-        return questionBoardComponent;
-    }
+    // List of categories in the question board.
+    private final ArrayList<Category> _categoriesList = new ArrayList<>();
 
     /**
      * This method is used to generate a brand new question board with 5 random categories
@@ -63,7 +51,7 @@ public class QuestionBoard {
         File categoriesFolder = new File(categoriesPath);
 
         // Getting all the categories (txt files) from that folder into an array list of paths
-        ArrayList<String> filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
+        ArrayList<String> filePaths = new ArrayList<>(Arrays.asList(categoriesFolder.list()));
 
         // Generating a random index list of size 5 where the range is based on the number of categories
         ArrayList<Integer> randomCategoryIndexList = randomIndexArray(filePaths.size());
@@ -110,7 +98,7 @@ public class QuestionBoard {
                     // Creating the new question object
                     Question newQuestion = new Question(question,answerSplit,newCategory,(j+1)*100);
                     newQuestion.setLineNumber(randomLineIndex);
-                    newQuestion.set_whatIs(whatIs);
+                    newQuestion.setQuestionType(whatIs);
 
                     // Adding it to the new category
                     newCategory.addQuestion(newQuestion);
@@ -143,19 +131,37 @@ public class QuestionBoard {
         return shuffledArray;
     }
 
+    /**
+     * Creates a GridPane that contains the question board with buttons in it.
+     * @return A GridPane component of the question board.
+     */
     public GridPane getQuestionBoard() {
-        // generate Pressable Question board based on which questions need to be emptied out or pressable or disabled.
+        // Generates and formats overall question board.
+        GridPane questionBoardComponent = new GridPane();
+        questionBoardComponent.setGridLinesVisible(true);
+        questionBoardComponent.setStyle("-fx-background-color:#FFFFFF");
 
-        GridPane questionBoardComponent = initializeBoard();
+        // Pre-initializes variables to be frequently re-defined.
+        Label categoryLabel;
+        int categoryIndex = 0;
+        // Add categories to the top bar of question board
+        for (Category category : _categoriesList) {
+            // Extract category name, make it into upper case, and store it in the list of labels of categories.
+            categoryLabel = new Label(category.toString().toUpperCase());
+            // Format each cell of category
+            categoryLabel.setPadding(new Insets(10, 5, 10, 5));
+            // Allocate a category to the corresponding cell.
+            GridPane.setConstraints(categoryLabel, categoryIndex++, 0);
+            // Adds the category label in the question board.
+            questionBoardComponent.getChildren().add(categoryLabel);
+        }
 
         Button pointButton;
-        for (int categoryIndex = 0; categoryIndex < _numCategories; categoryIndex++) {
+        for (categoryIndex = 0; categoryIndex < _numCategories; categoryIndex++) {
             int lowestValuedQuestionIndex = _categoriesList.get(categoryIndex).getLowestValuedQuestionIndex();
             for (int questionIndex = 0; questionIndex < _numQuestions; questionIndex++) {
-                if (questionIndex < lowestValuedQuestionIndex) {
-                    // Advance to the next question and make the cell empty.
-                    continue;
-                } else {
+                // Only create buttons for questions that are not yet answered.
+                if (questionIndex >= lowestValuedQuestionIndex) {
                     pointButton = createPointButton(categoryIndex, questionIndex);
                     // Make the button fill in each cell.
                     pointButton.setMaxWidth(Integer.MAX_VALUE);
@@ -163,7 +169,8 @@ public class QuestionBoard {
                     // Allocate a button to the corresponding cell.
                     GridPane.setConstraints(pointButton, categoryIndex, questionIndex+1);
 
-                    if (questionIndex > lowestValuedQuestionIndex) {  // Create unclickable buttons
+                    // If a question is not the lowest valued question,
+                    if (questionIndex > lowestValuedQuestionIndex) {
                         pointButton.setDisable(true);
                     }
 
@@ -177,6 +184,15 @@ public class QuestionBoard {
         return questionBoardComponent;
     }
 
+    /**
+     * Creates a button that has the point of a given question as a text.
+     * <p></p>
+     * When the button is pressed, it handles the event by invoking a method in
+     * SelectQuestionController: handlePointButtonAction().
+     * @param categoryIndex The index of the category of the question in the list of categories.
+     * @param questionIndex The index of the question in its categories.
+     * @return A button that has a value of the given question as its text.
+     */
     private Button createPointButton(int categoryIndex, int questionIndex) {
         Button button = new Button(Integer.toString((questionIndex+1)*100));
         button.setStyle("-fx-font-size:18px;");
@@ -187,6 +203,11 @@ public class QuestionBoard {
         return button;
     }
 
+    /**
+     * Formats the overall GridPane in order to evenly spread out each cells both horizontally and vertically.
+     * It also formats every cell to be center aligned vertically and horizontally.
+     * @param questionBoard The question board to evenly spread out every cell.
+     */
     private void evenlySpreadOut(GridPane questionBoard) {
         // Format each rows to be center aligned and have identical height.
         RowConstraints rowConstraints = new RowConstraints();
@@ -205,16 +226,36 @@ public class QuestionBoard {
         }
     }
 
-    public int getSize()
-    {
-        return _categoriesList.size();
+    /**
+     * Returns the number of categories in a question board, which is 5.
+     * @return the number of categories in a question board; 5.
+     */
+    public int getNumCategories() {
+        return _numCategories;
     }
 
-    public void addCategory(Category category){
+    /**
+     * Returns the number of questions in each category in a question board, which is 5.
+     * @return the number of questions in each category in a question board.
+     */
+    public int getNumQuestions() {
+        return _numQuestions;
+    }
+
+    /**
+     * Adds a given category to the list of categories in the question board.
+     * @param category A category to add to the list of categories of this question board.
+     */
+    public void addCategory(Category category) {
         _categoriesList.add(category);
     }
 
-    public Category getCategory(int index){
+    /**
+     * Returns a category at given index in the list of categories of this question board.
+     * @param index The index of the category in the list of categories of this question board.
+     * @return The category at the given index.
+     */
+    public Category getCategory(int index) {
         return _categoriesList.get(index);
     }
 

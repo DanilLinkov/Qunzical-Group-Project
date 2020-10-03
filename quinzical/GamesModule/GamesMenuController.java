@@ -15,19 +15,38 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for "GamesMenu" view.
+ * <p></p>
+ * It takes care of how events caused by button presses in the "GamesMenu" view are handled.
+ *
+ * @author Hyung Park
+ */
 public class GamesMenuController implements Initializable {
 
+    // Components in the view.
     public Button playGameButton;
     public Button resetGameButton;
     public Button returnToMainMenuButton;
     public Label userScoreLabel;
     public Label bestScoreLabel;
 
-    private MainMenu _mainMenuModel = MainMenu.getInstance();
-    private GameManager _gameManager = GameManager.getInstance();
-
+    // Frequently used instances of classes, including current class.
+    private final MainMenu _mainMenuModel = MainMenu.getInstance();
+    private final GameManager _gameManager = GameManager.getInstance();
     private static GamesMenuController _instance;
 
+    /**
+     * Returns the instance of this class.
+     * @return The instance of this class.
+     */
+    public static GamesMenuController getInstance() {
+        return _instance;
+    }
+
+    /**
+     * The initial method that fxml view calls from this controller as it loads.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         _instance = this;
@@ -39,6 +58,11 @@ public class GamesMenuController implements Initializable {
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
     }
 
+    /**
+     * Handles the event of "Play Game" button being pressed.
+     * <p></p>
+     * It changes the scene of the main stage to the select question scene.
+     */
     public void handlePlayGameButtonAction() {
         try {
             Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
@@ -48,19 +72,28 @@ public class GamesMenuController implements Initializable {
         }
     }
 
+    /**
+     * Handles the event of "Reset Game" button being pressed.
+     * <p></p>
+     * It confirms whether the player really wants to reset the game,
+     * and if the answer is yes, it resets the game. Then, it updates
+     * score labels in GamesMenu to the newly reset scores.
+     */
     public void handleResetGameButtonAction() {
         Alert confirmReset = new Alert(Alert.AlertType.CONFIRMATION);
+
+        // Formats texts inside the pop up.
         confirmReset.setTitle("Reset Game");
         confirmReset.setHeaderText("Do you really want to reset game?");
-        confirmReset.getDialogPane().setContent(
-                new Label("This will clear current winning and question board status."));
+        confirmReset.getDialogPane().setContent(new Label("This will clear current winning and question board status."));
 
         Optional<ButtonType> result = confirmReset.showAndWait();
         if (result.get() == ButtonType.OK) {
+            // Reset game and update score labels
             GameManager.getInstance().newGame();
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
-            bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
+            // Another alert pop up notifying the player that the game has successfully reset.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Reset Game");
             alert.setHeaderText("Your game has been reset!");
@@ -69,21 +102,23 @@ public class GamesMenuController implements Initializable {
         }
     }
 
+    /**
+     * Handles the event of "Return to Main Menu" button being pressed.
+     * <p></p>
+     * It changes the scene of the main stage to the main menu scene.
+     */
     public void handleReturnToMainMenuButtonAction() {
         _mainMenuModel.returnToMainMenuScene();
     }
 
-    public static GamesMenuController getInstance() {
-        return _instance;
-    }
-
+    /**
+     * Changes the scene of the main stage to the main menu.
+     */
     public void setMainStageToGamesMenuScene() {
-
         // Refresh score labels for possible change.
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
         _mainMenuModel.setMainStageScene(playGameButton.getScene());
     }
-
 }

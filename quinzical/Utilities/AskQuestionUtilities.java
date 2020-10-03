@@ -6,20 +6,34 @@ import javafx.scene.layout.Region;
 
 import java.io.IOException;
 
+/**
+ * A utility class that contains methods that are used in AskQuestion views across different modules.
+ * <p></p>
+ * It provides three major functionalities; unknownAnswer pop up, cleaning up answers,
+ * and speak methods.
+ *
+ * @author Danil Linkov, Hyung Park
+ */
 public class AskQuestionUtilities {
 
     private static final int _defaultReadingSpeed = 160;
     private static int _readingSpeed = _defaultReadingSpeed;
     private static Process _espeakProcess;
 
+    /**
+     * Displays a pop up notifying the player what the answer to the unknown question was.
+     * @param questionAnswer The answer to the question.
+     */
     public static void answerUnknown(String questionAnswer) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+        // Formats texts inside the pop up.
         alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
         String contentText = "That's alright, we all learn new things everyday.\n\n" +
                 "The correct answer was: " + questionAnswer;
 
+        // Revert currently reading speed to default, then say "Correct".
         revertReadingSpeedToDefault();
         speak("The correct answer was " + questionAnswer);
 
@@ -32,8 +46,8 @@ public class AskQuestionUtilities {
 
     /**
      * User or actual answer input clean up method so that
-     * the user's answer and the actual answer are comparable
-     * even if the user used a different way of expressing the answer
+     * the player's answer and the actual answer are comparable
+     * even if the player used a different way of expressing the answer
      * @param answer
      * @return
      */
@@ -57,10 +71,10 @@ public class AskQuestionUtilities {
      */
     public static void speak(String text) {
 
-        if (_espeakProcess != null && _espeakProcess.isAlive()) {
-            endSpeakingProcess();
-        }
+        // End any previously running speak processes.
+        endSpeakingProcess();
 
+        // Add "\" in front of quotation marks to make bash read this as normal character.
         text = text.replaceAll("\"", "\\\\\"");
 
         String command = "espeak \"" + text + "\"" + " -s " + _readingSpeed;
@@ -72,27 +86,35 @@ public class AskQuestionUtilities {
         }
     }
 
+    /**
+     * Ends any previously running speak processes.
+     */
     public static void endSpeakingProcess() {
-        _espeakProcess.destroy();
+        if (_espeakProcess != null && _espeakProcess.isAlive()) {
+            _espeakProcess.destroy();
+        }
     }
 
     /**
-     *
-     * @return
+     * Returns the default reading speed; 160 WPM (words per minute)
+     * @return The default reading speed; 160 WPM.
      */
     public static int getDefaultReadingSpeed() {
         return _defaultReadingSpeed;
     }
 
     /**
-     *
+     * Reverts the reading speed of the reading process to default; 160 WPM (words per minute)
      */
     public static void revertReadingSpeedToDefault() {
         _readingSpeed = _defaultReadingSpeed;
     }
 
+    /**
+     * Sets the reading speed of the reading process to the given speed.
+     * @param newSpeed A new reading speed to set, in WPM (words per minute)
+     */
     public static void setReadingSpeed(int newSpeed) {
         _readingSpeed = newSpeed;
     }
-
 }

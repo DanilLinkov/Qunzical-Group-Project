@@ -10,28 +10,52 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Manager of the game module.
+ * <p></p>
+ * It manages the overall game module of Quinzical such as
+ * saving or loading the game.
+ * <p></p>
+ * This is a singleton class, meaning only one instance of
+ * this class is expected to be generated. (Only one manager
+ * should manage one session of game.)
+ *
+ * @author Danil Linkov, Hyung Park
+ */
 public class GameManager {
 
+    // Question board used in this game.
     private QuestionBoard _questionBoard;
+
+    // Score status.
     private int _currentScore;
     private int _bestScore;
 
+    // Singleton instance of this class.
     private static GameManager _instance;
 
+    /**
+     * Singleton constructor of this class.
+     * It loads {@link GameManager#loadGame()}.
+     */
     private GameManager() {
         _instance = this;
-        _questionBoard = new QuestionBoard();
-        _questionBoard.createBoard();
         loadGame();
     }
 
+    /**
+     * Checks whether there is any previously generated instance of this class,
+     * if it has, it returns that instance, if not, it generates a new instance
+     * and returns it.
+     * @return An instance of this class.
+     */
     public static GameManager getInstance() {
         return _instance == null ? new GameManager() : _instance;
     }
 
     /**
-     * Return the question board for the current games module game
-     * @return
+     * Returns the question board for the current game.
+     * @return GridPane component which contains the question board.
      */
     public GridPane getQuestionBoard() {
         return _questionBoard.getQuestionBoard();
@@ -65,7 +89,7 @@ public class GameManager {
     }
 
     /**
-     * Return the user's current score
+     * Return the player's current score
      * @return
      */
     public int getCurrentScore() {
@@ -73,7 +97,7 @@ public class GameManager {
     }
 
     /**
-     * Increments the user's current score
+     * Increments the player's current score
      * @param value
      */
     public void incrementCurrentScore(int value) {
@@ -81,7 +105,7 @@ public class GameManager {
     }
 
     /**
-     * Decrements the user's current score
+     * Decrements the player's current score
      * @param value
      */
     public void decrementCurrentScore(int value) {
@@ -98,7 +122,7 @@ public class GameManager {
     }
 
     /**
-     * Return the user's best score
+     * Return the player's best score
      * @return
      */
     public int getBestScore() {
@@ -106,7 +130,7 @@ public class GameManager {
     }
 
     /**
-     * Creates a new question board and resets the user's current score to 0 and saves the game
+     * Creates a new question board and resets the player's current score to 0 and saves the game
      */
     public void newGame() {
         _questionBoard = new QuestionBoard();
@@ -153,14 +177,14 @@ public class GameManager {
             saveWriter.write(_currentScore + "," + _bestScore + "\n");
 
             // Go over the question board categories
-            for(int i = 0; i < _questionBoard.getSize(); i++) {
+            for(int i = 0; i < _questionBoard.getNumCategories(); i++) {
                 // Get the current category
                 Category currentCategory = _questionBoard.getCategory(i);
                 // This string saveLine is used as the line that will be saved to the txt
                 String saveLine = currentCategory.toString();
 
                 // Go over the questions in the categories
-                for (int j=0;j<currentCategory.getSize();j++) {
+                for (int j = 0; j < _questionBoard.getNumQuestions(); j++) {
                     // Get the current question
                     Question currentQuestion = currentCategory.getQuestion(j);
                     // Append this question's line number to the saveLine
@@ -226,7 +250,7 @@ public class GameManager {
                         Question newQuestionToAdd = new Question(selectedQSplit.get(0),answerSplit,newCategory,j*100);
 
                         // Add all the properties to it
-                        newQuestionToAdd.set_whatIs(selectedQSplit.get(1));
+                        newQuestionToAdd.setQuestionType(selectedQSplit.get(1));
                         newQuestionToAdd.setLineNumber(Integer.parseInt(lineSplit.get(j)));
                         newCategory.addQuestion(newQuestionToAdd);
                     }

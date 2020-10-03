@@ -55,7 +55,7 @@ public class PracticeMenuController implements Initializable {
     }
 
     /**
-     * When the user selects a category and clicks submit
+     * When the player selects a category and clicks submit
      */
     public void handleSelectCategoryButton() {
         try {
@@ -77,7 +77,7 @@ public class PracticeMenuController implements Initializable {
     }
 
     /**
-     * Save the selected category when the user selects something from the drop down list
+     * Save the selected category when the player selects something from the drop down list
      */
     public void handleDropDownClick() {
         selectedCategory = dropDownMenu.getValue();

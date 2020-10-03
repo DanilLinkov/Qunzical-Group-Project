@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Category {
 
     private ArrayList<Question> _questions = new ArrayList<>();
-    private int lowestValuedQuestionIndex = 0;
+    private int _lowestValuedQuestionIndex = 0;
 
     private String _categoryName;
 
@@ -18,11 +18,11 @@ public class Category {
     }
 
     public void advanceLowestValuedQuestionIndex() {
-        lowestValuedQuestionIndex++;
+        _lowestValuedQuestionIndex++;
     }
 
     public int getLowestValuedQuestionIndex() {
-        return lowestValuedQuestionIndex;
+        return _lowestValuedQuestionIndex;
     }
 
     public void addQuestion(Question question){
@@ -33,24 +33,8 @@ public class Category {
         return _questions.get(index);
     }
 
-    public Question getQuestion(String clue){
-
-        for (Question q : _questions){
-            if (q.get_clue().equals(clue)){
-                return q;
-            }
-        }
-
-        return null;
-    }
-
-    public int getSize()
-    {
-        return _questions.size();
-    }
-
     public void setLowestValuedQuestionIndex(int lowestValuedQuestionIndex) {
-        this.lowestValuedQuestionIndex = lowestValuedQuestionIndex;
+        _lowestValuedQuestionIndex = lowestValuedQuestionIndex;
     }
 
 }
