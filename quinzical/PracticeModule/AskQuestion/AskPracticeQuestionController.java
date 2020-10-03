@@ -149,9 +149,13 @@ public class AskPracticeQuestionController implements Initializable {
             String answers = "";
             if (answer.length>1) {
                 for(int i=0;i<answer.length;i++) {
-                    answers+=answer[i].charAt(0);
-                    if(i!=answer.length-1){
-                        answers+=" or ";
+
+                    if(!isNumeric(answer[i])){
+                        answers+=answer[i].charAt(0);
+
+                        if(i!=answer.length-1){
+                            answers+=" or ";
+                        }
                     }
                 }
             }
@@ -185,6 +189,18 @@ public class AskPracticeQuestionController implements Initializable {
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
+    }
+
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int d = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     private void speak(String text) {

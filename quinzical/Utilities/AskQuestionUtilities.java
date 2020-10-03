@@ -31,6 +31,17 @@ public class AskQuestionUtilities {
         alert.showAndWait();
     }
 
+    public static String answerCleanUp(String answer) {
+        String cleanAnswer = answer.toLowerCase()
+                .replace("a ","")
+                .replace("the ","")
+                .trim()
+                .replace("mt","mount")
+                .replace("nz","new zealand");
+
+        return cleanAnswer;
+    }
+
     /**
      * Using a bash function "espeak", a string inside the argument is read by "espeak".
      * @param text A string for espeak to read.
