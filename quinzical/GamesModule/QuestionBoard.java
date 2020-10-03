@@ -30,8 +30,7 @@ public class QuestionBoard {
     public GridPane initializeBoard() {
         GridPane questionBoardComponent = new GridPane();
         questionBoardComponent.setGridLinesVisible(true);
-        // Possibly add this if any more padding is needed.
-        questionBoardComponent.setPadding(new Insets(5, 5, 5, 5));
+        questionBoardComponent.setStyle("-fx-background-color:#FFFFFF");
 
         // Pre-initializes variables to be frequently re-defined.
         Label categoryLabel;
@@ -41,7 +40,6 @@ public class QuestionBoard {
             // Extract category name, make it into upper case, and store it in the list of labels of categories.
             categoryLabel = new Label(category.toString().toUpperCase());
             // Format each cell of category
-//            categoryLabel.setFont(categoryTextFont);
             categoryLabel.setPadding(new Insets(10, 5, 10, 5));
             // Allocate a category to the corresponding cell.
             GridPane.setConstraints(categoryLabel, categoryIndex++, 0);
@@ -181,6 +179,8 @@ public class QuestionBoard {
 
     private Button createPointButton(int categoryIndex, int questionIndex) {
         Button button = new Button(Integer.toString((questionIndex+1)*100));
+        button.setStyle("-fx-font-size:18px;");
+        button.setPadding(new Insets(15, 0, 15, 0));
         button.setOnAction(e ->
                 SelectQuestionController.getInstance().handlePointButtonAction(categoryIndex, questionIndex)
         );
@@ -216,17 +216,6 @@ public class QuestionBoard {
 
     public Category getCategory(int index){
         return _categoriesList.get(index);
-    }
-
-    public Category getCategory(String name){
-
-        for (Category c : _categoriesList) {
-            if (c.toString().equals(name)) {
-                return c;
-            }
-        }
-
-        return null;
     }
 
 }

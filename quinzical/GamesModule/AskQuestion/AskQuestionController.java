@@ -46,11 +46,11 @@ public class AskQuestionController implements Initializable {
     }
 
     public void handleSubmitAnswerButtonAction() {
-        String playerAnswer = answerField.getText().toLowerCase().trim();
+        String cleanedPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerField.getText());
 
         boolean eventFinished = false;
         for (String correctAnswer : _question.get_answer()) {
-            if (playerAnswer.equals(correctAnswer.toLowerCase().trim())) {
+            if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))) {
                 eventFinished = true;
                 GameManager.getInstance().incrementCurrentScore(_question.getValue());
                 correctAnswerGiven();
