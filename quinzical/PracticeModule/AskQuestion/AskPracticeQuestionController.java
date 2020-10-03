@@ -93,7 +93,10 @@ public class AskPracticeQuestionController implements Initializable {
 
         boolean eventFinished = false;
         for (String correctAnswer : answer) {
-            if (playerAnswerInput.equals(correctAnswer.toLowerCase().trim())) {
+            String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(playerAnswerInput);
+            String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
+
+            if (clearPlayerAnswer.equals(clearCorrectAnswer)) {
                 eventFinished = true;
                 correctAnswerGiven();
                 PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;

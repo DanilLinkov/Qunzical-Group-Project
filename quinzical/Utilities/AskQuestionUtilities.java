@@ -35,6 +35,7 @@ public class AskQuestionUtilities {
         String cleanAnswer = answer.toLowerCase()
                 .replace("a ","")
                 .replace("the ","")
+                .replace("an ","")
                 .trim()
                 .replace("mt","mount")
                 .replace("nz","new zealand");
