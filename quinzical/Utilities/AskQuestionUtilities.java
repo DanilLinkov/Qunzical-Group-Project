@@ -13,43 +13,6 @@ public class AskQuestionUtilities {
     private static int _readingSpeed = _defaultReadingSpeed;
     private static Process _espeakProcess;
 
-    public static void correctAnswerGiven(int questionValue) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-//        alert.setTitle("Correct");
-        alert.setHeaderText("Correct!");
-        String contentText = "Added $" + questionValue + " to the current score.\n\n"
-                + "Your current score is now $" + GameManager.getInstance().getCurrentScore();
-        GameManager.getInstance().updateBestScore();
-        revertReadingSpeedToDefault();
-        speak("Correct");
-
-        // Formats the pop-up.
-        alert.getDialogPane().setContent(new Label(contentText));
-        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
-
-    public static void incorrectAnswerGiven(String questionAnswer, int questionValue) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-//        alert.setTitle("Incorrect");
-        alert.setHeaderText("Incorrect!");
-        String contentText = "The correct answer was: " + questionAnswer + "\n"
-                    + "$" + questionValue + " has been deducted from your current winning.\n\n"
-                    + "Your current winning is now $" + GameManager.getInstance().getCurrentScore();
-
-        revertReadingSpeedToDefault();
-        speak("The correct answer was " + questionAnswer);
-
-        // Formats the pop-up.
-        alert.getDialogPane().setContent(new Label(contentText));
-        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
-
     public static void answerUnknown(String questionAnswer) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 

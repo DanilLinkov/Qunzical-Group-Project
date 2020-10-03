@@ -34,6 +34,9 @@ public class GamesMenuController implements Initializable {
 
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
+
+        playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
+        resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
     }
 
     public void handlePlayGameButtonAction() {
