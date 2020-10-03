@@ -145,7 +145,21 @@ public class AskPracticeQuestionController implements Initializable {
         }
 
         if (attempts==1) {
-            hintLabel.setText("Hint: the first letter of the answer is " + answer[0].charAt(0));
+
+            String answers = "";
+            if (answer.length>1) {
+                for(int i=0;i<answer.length;i++) {
+                    answers+=answer[i].charAt(0);
+                    if(i!=answer.length-1){
+                        answers+=" or ";
+                    }
+                }
+            }
+            else {
+                answers += answer[0].charAt(0);
+            }
+
+            hintLabel.setText("Hint: the first letter of the answer is " + answers);
         }
 
         if (attempts==0) {
