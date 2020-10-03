@@ -3,7 +3,6 @@ package quinzical.Utilities;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
-import quinzical.GamesModule.GameManager;
 
 import java.io.IOException;
 
@@ -31,7 +30,16 @@ public class AskQuestionUtilities {
         alert.showAndWait();
     }
 
+    /**
+     * User or actual answer input clean up method so that
+     * the user's answer and the actual answer are comparable
+     * even if the user used a different way of expressing the answer
+     * @param answer
+     * @return
+     */
     public static String answerCleanUp(String answer) {
+        // Removing a, the, an and changing mt to mount, nz to new zealand
+        // Also trimming and lower casing the answer
         String cleanAnswer = answer.toLowerCase()
                 .replace("a ","")
                 .replace("the ","")

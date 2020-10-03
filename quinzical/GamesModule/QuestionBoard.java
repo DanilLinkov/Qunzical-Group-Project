@@ -52,62 +52,86 @@ public class QuestionBoard {
         return questionBoardComponent;
     }
 
+    /**
+     * This method is used to generate a brand new question board with 5 random categories
+     * each having 5 random questions
+     */
     public void createBoard() {
-        ArrayList<String> filePaths;
-
+        // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
         categoriesPath+="/categories";
+
+        // Creating a folder file given that path
         File categoriesFolder = new File(categoriesPath);
 
-        filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
+        // Getting all the categories (txt files) from that folder into an array list of paths
+        ArrayList<String> filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
 
+        // Generating a random index list of size 5 where the range is based on the number of categories
         ArrayList<Integer> randomCategoryIndexList = randomIndexArray(filePaths.size());
 
+        // Outer loop supposed to represent the 5 random categories selected
         for (int i = 0; i < 5; i++) {
+            // Getting the random category index from the index list
             int randomCategoryIndex = randomCategoryIndexList.get(i);
+            // Creating the new category with the file name minus the .txt at the end
             Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt","")); // parent
 
             try {
+                // Getting all the lines in that category as a list of strings
                 List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+filePaths.get(randomCategoryIndex)));
 
-                ArrayList<Integer> savedLines = new ArrayList<Integer>();
+                // Generating a random index list of size 5 where the range is based on the number of questions/lines in that categories file
                 ArrayList<Integer> randomQuestionIndexList = randomIndexArray(allLines.size());
 
+                // Inner loop supposed to represent the 5 random questions selected
                 for (int j = 0; j < 5; j++) {
+                    // Getting the random question index from the index list
                     int randomLineIndex = randomQuestionIndexList.get(j);
+                    // Getting the question line based on that index
                     String line = allLines.get(randomLineIndex);
 
                     String question;
                     String answer;
                     String whatIs;
 
+                    // Pre-processing the string
                     line.replaceAll("\\s+","");
 
+                    // Splitting it based on | character
                     List<String> questionSplit = Arrays.asList(line.split("\\s*\\|\\s*"));
 
+                    // Setting the question answer and question type
                     question = questionSplit.get(0);
                     whatIs = questionSplit.get(1);
-                    // change into answer array
                     answer = questionSplit.get(2);
 
+                    // Splitting the answer into an answer[] since there could be multiple answers
                     String[] answerSplit = answer.split("/");
 
+                    // Creating the new question object
                     Question newQuestion = new Question(question,answerSplit,newCategory,(j+1)*100);
                     newQuestion.setLineNumber(randomLineIndex);
                     newQuestion.set_whatIs(whatIs);
-                    // set parent or constructor for category
 
+                    // Adding it to the new category
                     newCategory.addQuestion(newQuestion);
-                    savedLines.add(randomLineIndex);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            // Adding the category to the question board
             _categoriesList.add(newCategory);
         }
     }
 
+    /**
+     * This is a private utility method for this class which returns an array of size 5
+     * containing random index values from 0 to the length-1 specific
+     * @param length of the range of the index values
+     * @return
+     */
     private ArrayList<Integer> randomIndexArray (int length) {
         ArrayList<Integer> shuffledArray = new ArrayList<>();
 
@@ -115,6 +139,7 @@ public class QuestionBoard {
             shuffledArray.add(i);
         }
 
+        // Shuffling the array list and returning it
         Collections.shuffle(shuffledArray);
 
         return shuffledArray;

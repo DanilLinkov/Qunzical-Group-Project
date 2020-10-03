@@ -3,7 +3,6 @@ package quinzical.PracticeModule.AskQuestion;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import quinzical.PracticeModule.PracticeGameManager;
 import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
 
@@ -18,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class AskPracticeQuestionController implements Initializable {
 
+    // Fxml objects used in the scene
     public Label categoryLabel;
     public Label questionLabel;
     public Label hintLabel;
@@ -28,52 +28,71 @@ public class AskPracticeQuestionController implements Initializable {
     public Button dontKnowButton;
     public Button playClueButton;
 
+    // Storing the question, answers and question type
     private String question;
     private String[] answer;
     private String qType;
+
+    // Speed of espeak
     private int _questionReadingSpeed = 160;
+    // Number of attempts they have left
     private int attempts;
+    // Espeak process which can be killed to cancel it
     private Process _espeakProcess;
 
-    private PracticeGameManager _practiceGameManager;
-
+    // Used for scene transitioning
     private static AskPracticeQuestionController _instance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         _instance = this;
-        _practiceGameManager = new PracticeGameManager();
+        // Setting the number of attempts to 3
         attempts = 3;
 
+        // Adding an event handler to the speed slider to save the speed to the question reading speed variable
         speedAdjustSlider.setValue(_questionReadingSpeed);
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             _questionReadingSpeed = newSpeed.intValue();
         });
     }
 
+    /**
+     * This method is used to return this instance for scene transitioning
+     * @return
+     */
     public static AskPracticeQuestionController getInstance() {
         return _instance;
     }
 
+    /**
+     * This method is called in the practice menu to pass down the category name which the user
+     * selected and then to load the questions in that category and select a random question
+     * @param name
+     */
     public void setCategoryName(String name) {
+        // Setting the label to be category + its name
         categoryLabel.setText("Category: " + name);
 
+        // Getting the specific categories file path
         String categoriesPath = new File("").getAbsolutePath() + "/categories/" + name + ".txt";
 
         try {
+            // Getting all the lines in that category
             List<String> allLines = Files.readAllLines(Paths.get(categoriesPath));
+            // Selecting a random line from that category for the question
             int randomLineIndex = (int)(Math.random() * (allLines.size()-1));
 
             String randomQuestion = allLines.get(randomLineIndex);
             randomQuestion.replaceAll("\\s+","");
 
+            // Splitting it to get the information about it
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
             question = randomQuestionSplit.get(0);
             qType = randomQuestionSplit.get(1);
             answer = randomQuestionSplit.get(2).trim().split("/");
 
+            // Setting the question label and the question type label
             questionLabel.setText("Question: " + question);
             questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
 
@@ -84,27 +103,45 @@ public class AskPracticeQuestionController implements Initializable {
 
     }
 
+    /**
+     * This method is used to speak the question when the play button is pressed
+     */
     public void handlePlayClueButton() {
         speak(question);
     }
 
+    /**
+     * This method handles the event when the user submits their answer and checks whether its correct
+     * or not and acts accordingly
+     */
     public void onAnswerSubmit() {
+        // Format the players input
         String playerAnswerInput = answerInput.getText().toLowerCase().trim();
 
+        // Boolean variable which is set to true if the answer is correct
         boolean eventFinished = false;
+        // Going over every potential answer for that question
         for (String correctAnswer : answer) {
+            // Formatting both the user and the correct answer
             String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(playerAnswerInput);
             String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
 
+            // Checking if its equal
             if (clearPlayerAnswer.equals(clearCorrectAnswer)) {
+                // Setting the eventFinished to true as the question has been answered correctly
                 eventFinished = true;
+                // Calling the correct answer given method
                 correctAnswerGiven();
+                // Transitioning the scene to the practice menu scene
                 PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;
             }
         }
 
+        // If the answer was not answered correctly
         if (!eventFinished) {
+            // Call the incorrect answer given method
             incorrectAnswerGiven();
+            // If all the attempts have been used up then transition the user to the practice menu scene
             if (attempts==0) {
                 PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
             }
@@ -112,50 +149,77 @@ public class AskPracticeQuestionController implements Initializable {
 
     }
 
+    /**
+     * This method handles the dont know button event and gives the used the answer and sends them
+     * to the practice main menu scene
+     */
     public void handleDontKnowButtonAction() {
         AskQuestionUtilities.answerUnknown(answer[0]);
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
-    public void correctAnswerGiven() {
+    /**
+     * This method is used when the user enters the correct answer and gives
+     * them an alert box saying they are right
+     */
+    private void correctAnswerGiven() {
+        // Creating a new alert box object
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+        // Setting the title, header and context
         alert.setTitle("Correct");
         alert.setHeaderText("Correct!");
         String contentText = "You are correct!";
 
+        // Resetting the espeak speed
         revertReadingSpeedToDefault();
+        // Speaking Correct
         speak("Correct");
 
+        // Setting the alert box, showing it and waiting for the user to click ok
         alert.getDialogPane().setContent(new Label(contentText));
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 
-    public void incorrectAnswerGiven() {
+    /**
+     * This method is used for when the user provides the incorrect answer and gives
+     * them an alert box depending on the number of attempts they have left
+     */
+    private void incorrectAnswerGiven() {
+        // Creating a new alert box object
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        // Decrementing the number of attempts
         attempts--;
 
+        // Setting the title and the header of the alert box
         alert.setTitle("Incorrect");
         alert.setHeaderText("Incorrect!");
+        // Resetting the reading speed of espeak
         revertReadingSpeedToDefault();
+        // Context string which is set depending on the number of attempts
         String contentText = "";
 
+        // If the user has more than 0 attempts left
         if (attempts>0) {
+            // Set the context to this and speak it
             contentText = "You have " + attempts + " attempt(s) left!";
             speak(contentText);
         }
 
+        // If the user is on their last attempt
         if (attempts==1) {
-
+            // Get all the answers for this question and show their first letter as a hint
             String answers = "";
+            // If there are multiple answers
             if (answer.length>1) {
                 for(int i=0;i<answer.length;i++) {
-
+                    // If its not a number then add it
                     if(!isNumeric(answer[i])){
                         answers+=answer[i].charAt(0);
 
+                        // If its not the last answer then add or to it
                         if(i!=answer.length-1){
                             answers+=" or ";
                         }
@@ -163,15 +227,18 @@ public class AskPracticeQuestionController implements Initializable {
                 }
             }
             else {
+                // Otherwise if there is only one answer then just add the single letter
                 answers += answer[0].charAt(0);
             }
 
+            // Display it
             hintLabel.setText("Hint: the first letter of the answer is " + answers);
         }
 
+        // If the user has used up all their attempts
         if (attempts==0) {
+            // Get all the answers
             String answers = "";
-
             if (answer.length>1) {
                 for(int i=0;i<answer.length;i++) {
                     answers+=answer[i];
@@ -184,44 +251,67 @@ public class AskPracticeQuestionController implements Initializable {
                 answers+=answer[0];
             }
 
+            // Display the correct answers and say they have run out of attempts and speak it
             contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers;
             speak(contentText);
         }
 
+        // Show the alert box with these properties
         alert.getDialogPane().setContent(new Label(contentText));
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        // Wait for the user to close it to continue with the main application
         alert.showAndWait();
     }
 
-    public boolean isNumeric(String strNum) {
+    /**
+     * Method used to check whether a string is numeric or not
+     * @param strNum
+     * @return
+     */
+    private boolean isNumeric(String strNum) {
+        // If the string is null then return false
         if (strNum == null) {
             return false;
         }
+        // If the string is parsable into an integer then return true
         try {
             int d = Integer.parseInt(strNum);
         } catch (NumberFormatException nfe) {
+            // Otherwise return false
             return false;
         }
         return true;
     }
 
+    /**
+     * This method is used for speaking a string of text using espeak
+     * @param text
+     */
     private void speak(String text) {
+        // If there is already an espeak process running then destroy it
         if (_espeakProcess != null && _espeakProcess.isAlive()) {
             _espeakProcess.destroy();
         }
 
+        // Format the string for espeak
         text = text.replaceAll("\"", "\\\\\"");
 
+        // Creating the command string
         String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
         try {
+            // Create a process builder with that command string
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+            // Start it
             _espeakProcess = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Sets the reading speed of espeak to default
+     */
     private void revertReadingSpeedToDefault() {
         _questionReadingSpeed = 175;
     }
