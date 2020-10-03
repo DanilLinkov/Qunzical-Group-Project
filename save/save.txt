@@ -1,6 +1,6 @@
--100,0
-Famous People,1,4,6,2,3,0
-History,5,2,1,4,3,0
-Fauna,3,2,5,12,8,3
-Oddities,0,5,2,3,6,0
-Geography,4,6,0,7,5,0
+0,500
+Oddities,3,1,6,4,2,0
+Geography,2,5,0,9,3,0
+Flora,8,6,4,2,1,0
+NZ Life,3,5,4,2,0,0
+History,6,1,3,4,2,0
