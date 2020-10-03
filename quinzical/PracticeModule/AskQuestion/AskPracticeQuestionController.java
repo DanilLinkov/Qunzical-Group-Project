@@ -33,12 +33,8 @@ public class AskPracticeQuestionController implements Initializable {
     private String[] answer;
     private String qType;
 
-    // Speed of espeak
-    private int _questionReadingSpeed = 160;
     // Number of attempts they have left
     private int attempts;
-    // Espeak process which can be killed to cancel it
-    private Process _espeakProcess;
 
     // Used for scene transitioning
     private static AskPracticeQuestionController _instance;
@@ -50,9 +46,9 @@ public class AskPracticeQuestionController implements Initializable {
         attempts = 3;
 
         // Adding an event handler to the speed slider to save the speed to the question reading speed variable
-        speedAdjustSlider.setValue(_questionReadingSpeed);
+        speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
-            _questionReadingSpeed = newSpeed.intValue();
+            AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
         });
     }
 
@@ -83,7 +79,6 @@ public class AskPracticeQuestionController implements Initializable {
             int randomLineIndex = (int)(Math.random() * (allLines.size()-1));
 
             String randomQuestion = allLines.get(randomLineIndex);
-            randomQuestion.replaceAll("\\s+","");
 
             // Splitting it to get the information about it
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
@@ -107,7 +102,7 @@ public class AskPracticeQuestionController implements Initializable {
      * This method is used to speak the question when the play button is pressed
      */
     public void handlePlayClueButton() {
-        speak(question);
+        AskQuestionUtilities.speak(question);
     }
 
     /**
@@ -172,9 +167,9 @@ public class AskPracticeQuestionController implements Initializable {
         String contentText = "You are correct!";
 
         // Resetting the espeak speed
-        revertReadingSpeedToDefault();
+        AskQuestionUtilities.revertReadingSpeedToDefault();
         // Speaking Correct
-        speak("Correct");
+        AskQuestionUtilities.speak("Correct!");
 
         // Setting the alert box, showing it and waiting for the player to click ok
         alert.getDialogPane().setContent(new Label(contentText));
@@ -197,7 +192,7 @@ public class AskPracticeQuestionController implements Initializable {
         alert.setTitle("Incorrect");
         alert.setHeaderText("Incorrect!");
         // Resetting the reading speed of espeak
-        revertReadingSpeedToDefault();
+        AskQuestionUtilities.revertReadingSpeedToDefault();
         // Context string which is set depending on the number of attempts
         String contentText = "";
 
@@ -205,7 +200,7 @@ public class AskPracticeQuestionController implements Initializable {
         if (attempts>0) {
             // Set the context to this and speak it
             contentText = "You have " + attempts + " attempt(s) left!";
-            speak(contentText);
+            AskQuestionUtilities.speak(contentText);
         }
 
         // If the player is on their last attempt
@@ -253,7 +248,7 @@ public class AskPracticeQuestionController implements Initializable {
 
             // Display the correct answers and say they have run out of attempts and speak it
             contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers;
-            speak(contentText);
+            AskQuestionUtilities.speak(contentText);
         }
 
         // Show the alert box with these properties
@@ -282,38 +277,6 @@ public class AskPracticeQuestionController implements Initializable {
             return false;
         }
         return true;
-    }
-
-    /**
-     * This method is used for speaking a string of text using espeak
-     * @param text
-     */
-    private void speak(String text) {
-        // If there is already an espeak process running then destroy it
-        if (_espeakProcess != null && _espeakProcess.isAlive()) {
-            _espeakProcess.destroy();
-        }
-
-        // Format the string for espeak
-        text = text.replaceAll("\"", "\\\\\"");
-
-        // Creating the command string
-        String command = "espeak \"" + text + "\"" + " -s " + _questionReadingSpeed;
-        try {
-            // Create a process builder with that command string
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-            // Start it
-            _espeakProcess = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets the reading speed of espeak to default
-     */
-    private void revertReadingSpeedToDefault() {
-        _questionReadingSpeed = 175;
     }
 
 }

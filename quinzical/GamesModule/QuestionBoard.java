@@ -81,9 +81,6 @@ public class QuestionBoard {
                     String answer;
                     String whatIs;
 
-                    // Pre-processing the string
-                    line.replaceAll("\\s+","");
-
                     // Splitting it based on | character
                     List<String> questionSplit = Arrays.asList(line.split("\\s*\\|\\s*"));
 
