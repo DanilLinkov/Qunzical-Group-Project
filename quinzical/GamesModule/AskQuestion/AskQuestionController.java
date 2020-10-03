@@ -139,6 +139,10 @@ public class AskQuestionController implements Initializable {
      * higher than the best score.
      */
     public void correctAnswerGiven() {
+        // Increment current score and check-and-update best score.
+        _gameManager.incrementCurrentScore(_question.getValue());
+        _gameManager.updateBestScore();
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
         // Formats texts inside the pop up.
@@ -146,10 +150,6 @@ public class AskQuestionController implements Initializable {
         alert.setHeaderText("Correct!");
         String contentText = "Added $" + _question.getValue() + " to the current score.\n\n"
                 + "Your current score is now $" + _gameManager.getCurrentScore();
-
-        // Increment current score and check-and-update best score.
-        _gameManager.incrementCurrentScore(_question.getValue());
-        _gameManager.updateBestScore();
 
         // Revert currently reading speed to default, then say "Correct".
         AskQuestionUtilities.revertReadingSpeedToDefault();
@@ -168,6 +168,9 @@ public class AskQuestionController implements Initializable {
      * score by the value of the question.
      */
     public void incorrectAnswerGiven() {
+        // Decrement current score.
+        _gameManager.decrementCurrentScore(_question.getValue());
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
         // Formats texts inside the pop up.
@@ -176,9 +179,6 @@ public class AskQuestionController implements Initializable {
         String contentText = "The correct answer was: " + _question.getAnswer()[0] + "\n"
                 + "$" + _question.getValue() + " has been deducted from your current winning.\n\n"
                 + "Your current winning is now $" + _gameManager.getCurrentScore();
-
-        // Decrement current score.
-        _gameManager.decrementCurrentScore(_question.getValue());
 
         // Revert currently reading speed to default, then say "Correct".
         AskQuestionUtilities.revertReadingSpeedToDefault();
