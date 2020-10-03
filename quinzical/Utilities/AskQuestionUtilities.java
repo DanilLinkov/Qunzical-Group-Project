@@ -15,7 +15,7 @@ public class AskQuestionUtilities {
     public static void answerUnknown(String questionAnswer) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-//        alert.setTitle("Answer");
+        alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
         String contentText = "That's alright, we all learn new things everyday.\n\n" +
                 "The correct answer was: " + questionAnswer;
@@ -58,7 +58,7 @@ public class AskQuestionUtilities {
     public static void speak(String text) {
 
         if (_espeakProcess != null && _espeakProcess.isAlive()) {
-            _espeakProcess.destroy();
+            endSpeakingProcess();
         }
 
         text = text.replaceAll("\"", "\\\\\"");
@@ -72,15 +72,23 @@ public class AskQuestionUtilities {
         }
     }
 
+    public static void endSpeakingProcess() {
+        _espeakProcess.destroy();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static int getDefaultReadingSpeed() {
+        return _defaultReadingSpeed;
+    }
+
     /**
      *
      */
     public static void revertReadingSpeedToDefault() {
         _readingSpeed = _defaultReadingSpeed;
-    }
-
-    public static int getDefaultReadingSpeed() {
-        return _defaultReadingSpeed;
     }
 
     public static void setReadingSpeed(int newSpeed) {

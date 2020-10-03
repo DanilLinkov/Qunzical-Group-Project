@@ -23,9 +23,9 @@ public class SelectQuestionController implements Initializable {
     public Label userScoreLabel;
     public Label bestScoreLabel;
 
-    // Instances stored for accessing respective instances.
-    private static SelectQuestionController _instance;
+    private MainMenu _mainMenuModel = MainMenu.getInstance();
     private GameManager _gameManager = GameManager.getInstance();
+    private static SelectQuestionController _instance;
 
     private Question _selectedQuestion;
 
@@ -46,9 +46,14 @@ public class SelectQuestionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initialization();
+    }
+
+    private void initialization() {
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
+        questionBoardArea.getChildren().clear();
         questionBoardArea.getChildren().add(GameManager.getInstance().getQuestionBoard());
     }
 
@@ -82,6 +87,11 @@ public class SelectQuestionController implements Initializable {
 
     public void handleReturnToGameMenuButtonAction() {
         GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+    }
+
+    public void setMainStageToGamesMenuScene() {
+        initialization();
+        _mainMenuModel.setMainStageScene(backToGameMenuButton.getScene());
     }
 
 }

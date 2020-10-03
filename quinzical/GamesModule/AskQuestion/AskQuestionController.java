@@ -12,6 +12,14 @@ import quinzical.Utilities.AskQuestionUtilities;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for a view to ask the question to the user,
+ * and tell the user about whether the user was correct or not.
+ * <p></p>
+ * It takes care of how events caused by button presses in the "askQuestion" view are handled.
+ *
+ * @author Hyung Park
+ */
 public class AskQuestionController implements Initializable {
 
     public Label questionInfoLabel;
@@ -22,25 +30,42 @@ public class AskQuestionController implements Initializable {
     public Button playClueButton;
     public Button dontKnowButton;
 
+    private GameManager _gameManager = GameManager.getInstance();
+    private SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
+
     private Question _question;
 
+    /**
+     * The initial method that fxml view calls from this controller as it loads.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _question = SelectQuestionController.getInstance().getSelectedQuestion();
+        // Retrieve selected question.
+        _question = _selectQuestionController.getSelectedQuestion();
+        // Mark the question as answered.
         _question.getParent().advanceLowestValuedQuestionIndex();
 
+        // Allocating respective labels for the question.
         questionInfoLabel.setText(_question.getParent() + ": $" + _question.getValue());
         questionTypeLabel.setText(
                 _question.get_whatIs().substring(0, 1).toUpperCase() + _question.get_whatIs().substring(1)
         );
 
+        // Initializing speed adjust slider (setting default view and event handler)
         speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
         });
+
+        // Read out the question.
         handlePlayClueButton();
     }
 
+    /**
+     * Handles the event of Play clue button (the large circular button in the middle) being pressed.
+     * <p></p>
+     * It speaks the clue of the selected question using speak method.
+     */
     public void handlePlayClueButton() {
         AskQuestionUtilities.speak(_question.get_clue());
     }
@@ -52,20 +77,21 @@ public class AskQuestionController implements Initializable {
         for (String correctAnswer : _question.get_answer()) {
             if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))) {
                 eventFinished = true;
-                GameManager.getInstance().incrementCurrentScore(_question.getValue());
+                _gameManager.incrementCurrentScore(_question.getValue());
                 correctAnswerGiven();
             }
         }
 
         if (!eventFinished) {
-            GameManager.getInstance().decrementCurrentScore(_question.getValue());
+            _gameManager.decrementCurrentScore(_question.getValue());
             incorrectAnswerGiven();
         }
 
         checkEveryQuestionAnswered();
 
-        // Return to the Games menu scene.
-        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        // End any currently-running speaking methods and return to the question board.
+        AskQuestionUtilities.endSpeakingProcess();
+        _selectQuestionController.setMainStageToGamesMenuScene();
     }
 
     public void handleDontKnowButtonAction() {
@@ -73,18 +99,19 @@ public class AskQuestionController implements Initializable {
 
         checkEveryQuestionAnswered();
 
-        // Return to the main menu scene.
-        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        // End any currently-running speaking methods and return to the question board.
+        AskQuestionUtilities.endSpeakingProcess();
+        _selectQuestionController.setMainStageToGamesMenuScene();
     }
 
     public void correctAnswerGiven() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-//        alert.setTitle("Correct");
+        alert.setTitle("Correct");
         alert.setHeaderText("Correct!");
         String contentText = "Added $" + _question.getValue() + " to the current score.\n\n"
-                + "Your current score is now $" + GameManager.getInstance().getCurrentScore();
-        GameManager.getInstance().updateBestScore();
+                + "Your current score is now $" + _gameManager.getCurrentScore();
+        _gameManager.updateBestScore();
         AskQuestionUtilities.revertReadingSpeedToDefault();
         AskQuestionUtilities.speak("Correct");
 
@@ -98,10 +125,11 @@ public class AskQuestionController implements Initializable {
     public void incorrectAnswerGiven() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+        alert.setTitle("Incorrect");
         alert.setHeaderText("Incorrect!");
         String contentText = "The correct answer was: " + _question.get_answer()[0] + "\n"
                 + "$" + _question.getValue() + " has been deducted from your current winning.\n\n"
-                + "Your current winning is now $" + GameManager.getInstance().getCurrentScore();
+                + "Your current winning is now $" + _gameManager.getCurrentScore();
 
         AskQuestionUtilities.revertReadingSpeedToDefault();
         AskQuestionUtilities.speak("The correct answer was " + _question.get_answer()[0]);
@@ -114,17 +142,18 @@ public class AskQuestionController implements Initializable {
     }
 
     public void checkEveryQuestionAnswered() {
-        if (GameManager.getInstance().isEveryQuestionAnswered()) {
+        if (_gameManager.isEveryQuestionAnswered()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+            alert.setTitle("Every Question Answered");
             alert.setHeaderText("Every Question Answered");
             String contentText = "Congratulations!" + "\n\n"
                     + "You have completed every question in the question board," + "\n"
-                    + "and your total score was $" + GameManager.getInstance().getCurrentScore() + ".\n\n"
+                    + "and your total score was $" + _gameManager.getCurrentScore() + ".\n\n"
                     + "The game will now reset and a new set of question board will be ready.";
 
             // Resetting the game.
-            GameManager.getInstance().newGame();
+            _gameManager.newGame();
 
             // Formats the pop-up.
             alert.getDialogPane().setContent(new Label(contentText));
