@@ -1,6 +1,5 @@
-# project
+# Welcome to Quinzical!
 
-Use this repo for both Assignment 3 and also your final Project (as you will be in the same team). 
-
-Be sure to update this README file to provide an easy-to-follow set of instructions on how to run your program. 
-
+### How to execute game
+- Place categories and play.sh in the identical directory as Jeopardy.jar file.
+- In terminal, enter `./play.sh` (basically run the script in terminal).
