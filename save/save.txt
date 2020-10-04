@@ -1,6 +1,6 @@
--100,0
-History,5,0,6,3,2,0
-Flora,0,5,6,2,1,1
-NZ Life,0,4,5,2,1,1
-Fauna,4,10,1,16,7,1
-Famous People,7,5,3,0,2,0
+0,0
+Fauna,12,5,8,7,10,0
+Famous People,3,7,5,6,4,0
+History,3,7,2,1,5,0
+Flora,7,0,8,5,3,0
+Geography,7,2,6,9,4,0

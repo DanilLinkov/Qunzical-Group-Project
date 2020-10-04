@@ -4,6 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The game manager for practice module which is used to load
+ * all the categories to be displayed in the drop down menu
+ *
+ * @author Danil Linkov
+ */
 public class PracticeGameManager {
 
     // Having a static instance of this game manager so that other controllers can access this

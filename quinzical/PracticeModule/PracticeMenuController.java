@@ -14,6 +14,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for a view for the player to select
+ * a category to practice and then pass down the category selected to
+ * ask practice question controller
+ * <p></p>
+ * It takes care of how events caused by button presses in the "PracticeMenu" view are handled.
+ *
+ * @author Danil Linkov
+ */
 public class PracticeMenuController implements Initializable {
 
     // fxml objects used in the scene

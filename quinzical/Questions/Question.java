@@ -1,7 +1,14 @@
 package quinzical.Questions;
 
+/**
+ * This class is used to store everything about a question
+ * which is then stored in a category object
+ *
+ * Authors: Hyung Park, Danil Linkov
+ */
 public class Question {
 
+    // Question properties
     private String _clue;
     private String[] _answer;
     private int _lineNumber;
@@ -16,6 +23,8 @@ public class Question {
         _parent = parent;
         _value = value;
     }
+
+    // Standard getters and setters
 
     public int getLineNumber() {
         return _lineNumber;

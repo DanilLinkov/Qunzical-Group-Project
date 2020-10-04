@@ -15,6 +15,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for a view to ask the question to the player in
+ * practice module after they have selected a category, and then to
+ * tell them whether they are right or not
+ * <p></p>
+ * It takes care of how events caused by button presses in the "AskPracticeQuestion" view are handled.
+ *
+ * @author Danil Linkov
+ */
 public class AskPracticeQuestionController implements Initializable {
 
     // Fxml objects used in the scene
