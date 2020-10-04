@@ -147,6 +147,8 @@ public class AskPracticeQuestionController implements Initializable {
             incorrectAnswerGiven();
             // If all the attempts have been used up then transition the player to the practice menu scene
             if (attempts==0) {
+                // End any currently speaking process before transition.
+                AskQuestionUtilities.endSpeakingProcess();
                 PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
             }
         }
@@ -159,6 +161,7 @@ public class AskPracticeQuestionController implements Initializable {
      */
     public void handleDontKnowButtonAction() {
         AskQuestionUtilities.answerUnknown(answer[0]);
+        AskQuestionUtilities.endSpeakingProcess();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
@@ -205,15 +208,19 @@ public class AskPracticeQuestionController implements Initializable {
         // Context string which is set depending on the number of attempts
         String contentText = "";
 
-        // If the player has more than 0 attempts left
-        if (attempts>0) {
+        // If the player has more than 1 attempts left
+        if (attempts>1) {
             // Set the context to this and speak it
-            contentText = "You have " + attempts + " attempt(s) left!";
+            contentText = "You have " + attempts + " attempts left!";
             AskQuestionUtilities.speak(contentText);
         }
 
         // If the player is on their last attempt
         if (attempts==1) {
+            // Set the context to this and speak it
+            contentText = "You have " + attempts + " attempt left!";
+            AskQuestionUtilities.speak(contentText);
+
             // Get all the answers for this question and show their first letter as a hint
             String answers = "";
             // If there are multiple answers
