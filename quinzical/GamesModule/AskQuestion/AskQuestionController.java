@@ -91,26 +91,41 @@ public class AskQuestionController implements Initializable {
         // Retrieve and clean up player's answer
         String cleanedPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerField.getText());
 
-        // Checking whether any of the correct answer matches the player's answer
-        boolean isUserAnswerCorrect = false;
-        for (String correctAnswer : _question.getAnswer()) {
-            if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))) {
-                isUserAnswerCorrect = true;
-                correctAnswerGiven();
+        if (!cleanedPlayerAnswer.isEmpty()) {
+            // Checking whether any of the correct answer matches the player's answer
+            boolean isUserAnswerCorrect = false;
+            for (String correctAnswer : _question.getAnswer()) {
+                if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))) {
+                    isUserAnswerCorrect = true;
+                    correctAnswerGiven();
+                }
             }
+
+            // If none of the correct answer matches the player's answer
+            if (!isUserAnswerCorrect) {
+                incorrectAnswerGiven();
+            }
+
+            // Check whether every question in the question board has been answered.
+            checkIsEveryQuestionAnswered();
+
+            // End any currently-running speaking methods and return to the question board.
+            AskQuestionUtilities.endSpeakingProcess();
+            _selectQuestionController.setMainStageToSelectQuestionScene();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            // Formats texts inside the pop up.
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText("Invalid Input!");
+            String contentText = "Please enter a non-empty answer.";
+
+            // Formats the pop-up.
+            alert.getDialogPane().setContent(new Label(contentText));
+            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
         }
-
-        // If none of the correct answer matches the player's answer
-        if (!isUserAnswerCorrect) {
-            incorrectAnswerGiven();
-        }
-
-        // Check whether every question in the question board has been answered.
-        checkIsEveryQuestionAnswered();
-
-        // End any currently-running speaking methods and return to the question board.
-        AskQuestionUtilities.endSpeakingProcess();
-        _selectQuestionController.setMainStageToSelectQuestionScene();
     }
 
     /**
