@@ -120,39 +120,50 @@ public class AskPracticeQuestionController implements Initializable {
      */
     public void onAnswerSubmit() {
         // Format the players input
-        String playerAnswerInput = answerInput.getText().toLowerCase().trim();
+        String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerInput.getText());
+        if (!clearPlayerAnswer.isEmpty()) {
+            // Boolean variable which is set to true if the answer is correct
+            boolean eventFinished = false;
+            // Going over every potential answer for that question
+            for (String correctAnswer : answer) {
+                // Formatting both the player and the correct answer
+                String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
 
-        // Boolean variable which is set to true if the answer is correct
-        boolean eventFinished = false;
-        // Going over every potential answer for that question
-        for (String correctAnswer : answer) {
-            // Formatting both the player and the correct answer
-            String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(playerAnswerInput);
-            String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
+                // Checking if its equal
+                if (clearPlayerAnswer.equals(clearCorrectAnswer)) {
+                    // Setting the eventFinished to true as the question has been answered correctly
+                    eventFinished = true;
+                    // Calling the correct answer given method
+                    correctAnswerGiven();
+                    // Transitioning the scene to the practice menu scene
+                    PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;
+                }
+            }
 
-            // Checking if its equal
-            if (clearPlayerAnswer.equals(clearCorrectAnswer)) {
-                // Setting the eventFinished to true as the question has been answered correctly
-                eventFinished = true;
-                // Calling the correct answer given method
-                correctAnswerGiven();
-                // Transitioning the scene to the practice menu scene
-                PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;
+            // If the answer was not answered correctly
+            if (!eventFinished) {
+                // Call the incorrect answer given method
+                incorrectAnswerGiven();
+                // If all the attempts have been used up then transition the player to the practice menu scene
+                if (attempts==0) {
+                    // End any currently speaking process before transition.
+                    AskQuestionUtilities.endSpeakingProcess();
+                    PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
+                }
             }
         }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        // If the answer was not answered correctly
-        if (!eventFinished) {
-            // Call the incorrect answer given method
-            incorrectAnswerGiven();
-            // If all the attempts have been used up then transition the player to the practice menu scene
-            if (attempts==0) {
-                // End any currently speaking process before transition.
-                AskQuestionUtilities.endSpeakingProcess();
-                PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
-            }
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText("Invalid Input!");
+            String contentText = "Please enter a non-empty answer.";
+
+            alert.getDialogPane().setContent(new Label(contentText));
+            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
         }
-
     }
 
     /**
