@@ -63,3 +63,20 @@
   - Danil : 
     - Merge code and change the small implementation details
     - Implement answer checking for practice module
+
+## 14/10/2020
+
+- Went over the assignment specifications and wrote down the tasks we need to do
+  - This can be seen in the Assign4-Tasks.md file
+- Discussed on which tasks to begin first and how much we need to complete before the peer assessment submission 
+- Touched up on the current implementations that would have to change to support new features
+- Discussed work to be done and split it up
+  - Hyung:
+    - Tts with Māori words
+    - Macron buttons to ask question view
+  - Danil:
+    - Timer, small UX tweaks relating buttons
+    - User category selection
+
+
+
