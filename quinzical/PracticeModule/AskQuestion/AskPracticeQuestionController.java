@@ -274,7 +274,7 @@ public class AskPracticeQuestionController implements Initializable {
             }
 
             // Display the correct answers and say they have run out of attempts and speak it
-            contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers;
+            contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers.replaceAll("`", "");
             AskQuestionUtilities.speak(contentText);
         }
 

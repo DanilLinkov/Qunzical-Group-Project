@@ -191,8 +191,8 @@ public class AskQuestionController implements Initializable {
         // Formats texts inside the pop up.
         alert.setTitle("Incorrect");
         alert.setHeaderText("Incorrect!");
-        String contentText = "The correct answer was: " + _question.getAnswer()[0] + "\n"
-                + "$" + _question.getValue() + " has been deducted from your current winning.\n\n"
+        String contentText = "The correct answer was: " + _question.getAnswer()[0].replaceAll("`", "")
+                + "\n$" + _question.getValue() + " has been deducted from your current winning.\n\n"
                 + "Your current winning is now $" + _gameManager.getCurrentScore();
 
         // Revert currently reading speed to default, then say "Correct".
