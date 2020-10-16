@@ -130,5 +130,9 @@
             <Insets top="20.0" />
          </VBox.margin>
       </VBox>
+      <Label fx:id="timeLabel" alignment="CENTER" prefHeight="50.0" prefWidth="330.0" textFill="WHITE">
+         <font>
+            <Font name="SansSerif Bold" size="25.0" />
+         </font></Label>
    </children>
 </VBox>

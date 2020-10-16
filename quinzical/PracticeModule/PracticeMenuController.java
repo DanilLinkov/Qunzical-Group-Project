@@ -1,5 +1,8 @@
 package quinzical.PracticeModule;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,6 +49,9 @@ public class PracticeMenuController implements Initializable {
         _practiceGameManager = new PracticeGameManager();
         // Setting the drop down list to have all the category files
         dropDownMenu.setItems(FXCollections.observableList(_practiceGameManager.getCategories()));
+
+        BooleanBinding isCategoryNull = Bindings.isNull(dropDownMenu.valueProperty());
+        selectCategoryButton.disableProperty().bind(isCategoryNull);
     }
 
     /**

@@ -1,15 +1,26 @@
 package quinzical.GamesModule.AskQuestion;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import javafx.util.Duration;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
 import quinzical.Questions.Question;
 import quinzical.Utilities.AskQuestionUtilities;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The controller for a view to ask the question to the player,
@@ -29,13 +40,17 @@ public class AskQuestionController implements Initializable {
     public Slider speedAdjustSlider;
     public Button playClueButton;
     public Button dontKnowButton;
+    public Label timeLabel;
 
     // Frequently used instances of classes.
     private GameManager _gameManager = GameManager.getInstance();
     private SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
+    final int questionTime = 60*1000*1;
 
     // Reference to the question currently being asked.
     private Question _question;
+    long endTime = System.currentTimeMillis()+1000*5;
+    boolean done = false;
 
     /**
      * The initial method that fxml view calls from this controller as it loads.
@@ -59,8 +74,46 @@ public class AskQuestionController implements Initializable {
             AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
         });
 
+        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
+        submitAnswerButton.disableProperty().bind(isTextFieldEmpty);
+
+        setTimer();
+        showTimer();
+
         // Read out the question.
         handlePlayClueButton();
+    }
+
+    private void setTimer() {
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask(){
+            @Override
+            public void run() {
+                    if (!done) {
+                        Platform.runLater(() -> handleSubmitAnswerButtonAction());
+                    }
+            }
+        }, questionTime);
+        endTime = System.currentTimeMillis()+questionTime;
+    }
+
+    private void showTimer() {
+        DateFormat timeFormat = new SimpleDateFormat( "mm:ss" );
+        final Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis( 200 ),
+                        event -> {
+                            final long diff = endTime - System.currentTimeMillis();
+                            if ( diff < 0 ) {
+                                timeLabel.setText( timeFormat.format( 0 ) );
+                            } else {
+                                timeLabel.setText( timeFormat.format( diff ) );
+                            }
+                        }
+                )
+        );
+        timeline.setCycleCount( Animation.INDEFINITE );
+        timeline.play();
     }
 
     /**
@@ -88,10 +141,9 @@ public class AskQuestionController implements Initializable {
      * {@link quinzical.GamesModule.AskQuestion.AskQuestionController#incorrectAnswerGiven()}
      */
     public void handleSubmitAnswerButtonAction() {
+        done = true;
         // Retrieve and clean up player's answer
         String cleanedPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerField.getText());
-
-        if (!cleanedPlayerAnswer.isEmpty()) {
             // Checking whether any of the correct answer matches the player's answer
             boolean isUserAnswerCorrect = false;
             for (String correctAnswer : _question.getAnswer()) {
@@ -112,20 +164,6 @@ public class AskQuestionController implements Initializable {
             // End any currently-running speaking methods and return to the question board.
             AskQuestionUtilities.endSpeakingProcess();
             _selectQuestionController.setMainStageToSelectQuestionScene();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-            // Formats texts inside the pop up.
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Input!");
-            String contentText = "Please enter a non-empty answer.";
-
-            // Formats the pop-up.
-            alert.getDialogPane().setContent(new Label(contentText));
-            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.showAndWait();
-        }
     }
 
     /**
@@ -136,6 +174,7 @@ public class AskQuestionController implements Initializable {
      * then returns the main stage to SelectQuestion view.
      */
     public void handleDontKnowButtonAction() {
+        done = true;
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
         checkIsEveryQuestionAnswered();

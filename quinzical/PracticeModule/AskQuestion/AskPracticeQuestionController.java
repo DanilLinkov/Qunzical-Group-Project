@@ -1,8 +1,15 @@
 package quinzical.PracticeModule.AskQuestion;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import javafx.util.Duration;
 import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
 
@@ -11,9 +18,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * The controller for a view to ask the question to the player in
@@ -36,6 +44,7 @@ public class AskPracticeQuestionController implements Initializable {
     public Button submitButton;
     public Button dontKnowButton;
     public Button playClueButton;
+    public Label timeLabel;
 
     // Storing the question, answers and question type
     private String question;
@@ -44,9 +53,11 @@ public class AskPracticeQuestionController implements Initializable {
 
     // Number of attempts they have left
     private int attempts;
+    final int questionTime = 60*1000*1;
 
     // Used for scene transitioning
     private static AskPracticeQuestionController _instance;
+    long endTime = System.currentTimeMillis()+1000*5;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,6 +70,44 @@ public class AskPracticeQuestionController implements Initializable {
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
         });
+        setTimer();
+        showTimer();
+
+        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerInput.textProperty());
+        submitButton.disableProperty().bind(isTextFieldEmpty);
+    }
+
+    private void setTimer() {
+        int oldAttempts = attempts;
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask(){
+            @Override
+            public void run() {
+                if (oldAttempts == attempts) {
+                    Platform.runLater(() -> onAnswerSubmit());
+                }
+            }
+        }, questionTime);
+        endTime = System.currentTimeMillis()+questionTime;
+    }
+
+    private void showTimer() {
+        DateFormat timeFormat = new SimpleDateFormat( "mm:ss" );
+        final Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis( 200 ),
+                        event -> {
+                            final long diff = endTime - System.currentTimeMillis();
+                            if ( diff < 0 ) {
+                                timeLabel.setText( timeFormat.format( 0 ) );
+                            } else {
+                                timeLabel.setText( timeFormat.format( diff ) );
+                            }
+                        }
+                )
+        );
+        timeline.setCycleCount( Animation.INDEFINITE );
+        timeline.play();
     }
 
     /**
@@ -103,8 +152,6 @@ public class AskPracticeQuestionController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -121,7 +168,6 @@ public class AskPracticeQuestionController implements Initializable {
     public void onAnswerSubmit() {
         // Format the players input
         String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerInput.getText());
-        if (!clearPlayerAnswer.isEmpty()) {
             // Boolean variable which is set to true if the answer is correct
             boolean eventFinished = false;
             // Going over every potential answer for that question
@@ -150,20 +196,10 @@ public class AskPracticeQuestionController implements Initializable {
                     AskQuestionUtilities.endSpeakingProcess();
                     PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
                 }
+                else {
+                    setTimer();
+                }
             }
-        }
-        else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Input!");
-            String contentText = "Please enter a non-empty answer.";
-
-            alert.getDialogPane().setContent(new Label(contentText));
-            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.showAndWait();
-        }
     }
 
     /**
@@ -171,6 +207,7 @@ public class AskPracticeQuestionController implements Initializable {
      * to the practice main menu scene
      */
     public void handleDontKnowButtonAction() {
+        attempts = -1;
         AskQuestionUtilities.answerUnknown(answer[0]);
         AskQuestionUtilities.endSpeakingProcess();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
@@ -181,6 +218,7 @@ public class AskPracticeQuestionController implements Initializable {
      * them an alert box saying they are right
      */
     private void correctAnswerGiven() {
+        attempts = -1;
         // Creating a new alert box object
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
