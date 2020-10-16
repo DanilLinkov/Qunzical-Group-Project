@@ -1,10 +1,16 @@
 package quinzical.Utilities;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * A utility class that contains methods that are used in AskQuestion views across different modules.
@@ -31,7 +37,7 @@ public class AskQuestionUtilities {
         alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
         String contentText = "That's alright, we all learn new things everyday.\n\n" +
-                "The correct answer was: " + questionAnswer;
+                "The correct answer was: " + questionAnswer.replaceAll("`", "");
 
         // Revert currently reading speed to default, then say "Correct".
         revertReadingSpeedToDefault();
@@ -58,6 +64,7 @@ public class AskQuestionUtilities {
                 .replace("a ","")
                 .replace("the ","")
                 .replace("an ","")
+                .replace("`", "")
                 .trim()
                 .replace("mt","mount")
                 .replace("nz","new zealand");
@@ -70,20 +77,68 @@ public class AskQuestionUtilities {
      * @param text A string for espeak to read.
      */
     public static void speak(String text) {
-
         // End any previously running speak processes.
         endSpeakingProcess();
 
         // Add "\" in front of quotation marks to make bash read this as normal character.
         text = text.replaceAll("\"", "\\\\\"");
 
-        String command = "espeak \"" + text + "\"" + " -s " + _readingSpeed;
+        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
+//        StringBuilder command = new StringBuilder("mkdir tts && cd tts");
+        StringBuilder command = new StringBuilder();
+        boolean isFirstSubStringMaori = false;
+        if (text.charAt(0) == '`') {
+            texts.pop();
+            isFirstSubStringMaori = true;
+        }
+
+        boolean firstIndex = true;
+        for (String textToSpeak : texts) {
+            if (!firstIndex) {
+                command.append("; ");
+            }
+            firstIndex = !firstIndex;
+
+            textToSpeak = textToSpeak.trim();
+
+            if (isFirstSubStringMaori) {
+                command.append("espeak -vde \"" + textToSpeak + "\"");
+                command.append(" -s " + _readingSpeed);
+//                command.append(" -w " + subStringIndex + ".wav");
+//                command.append(" && lame " + subStringIndex + ".wav " + subStringIndex + ".mp3");
+//                command.append(" && rm " + subStringIndex++ + ".wav");
+            } else {
+                command.append("espeak \"" + textToSpeak + "\"");
+                command.append(" -s " + _readingSpeed);
+//                command.append(" -w " + subStringIndex + ".wav");
+//                command.append(" && lame " + subStringIndex + ".wav " + subStringIndex + ".mp3");
+//                command.append(" && rm " + subStringIndex++ + ".wav");
+            }
+
+            isFirstSubStringMaori = !isFirstSubStringMaori;
+        }
+//
+//        command.append(" && ffmpeg -y -i \"concat:");
+//        for (int i = 0; i < subStringIndex; i++) {
+//            command.append(i + ".mp3");
+//            command.append(i == (subStringIndex - 1) ? "" : "|");
+//        }
+//        command.append("\" -acodec copy out.mp3");
+
+//        System.out.println(command.toString());
         try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
             _espeakProcess = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+//
+//        String bip = "tts/out.mp3";
+//        Media hit = new Media(new File(bip).toURI().toString());
+//        MediaPlayer mediaPlayer = new MediaPlayer(hit);
+//        mediaPlayer.play();
+
+
     }
 
     /**
