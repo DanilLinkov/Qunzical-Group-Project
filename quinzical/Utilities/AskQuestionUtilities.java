@@ -37,7 +37,7 @@ public class AskQuestionUtilities {
         alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
         String contentText = "That's alright, we all learn new things everyday.\n\n" +
-                "The correct answer was: " + questionAnswer;
+                "The correct answer was: " + questionAnswer.replaceAll("`", "");
 
         // Revert currently reading speed to default, then say "Correct".
         revertReadingSpeedToDefault();
