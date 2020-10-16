@@ -61,6 +61,7 @@ public class AskQuestionUtilities {
         // Removing a, the, an and changing mt to mount, nz to new zealand
         // Also trimming and lower casing the answer
         String cleanAnswer = answer.toLowerCase()
+                .replace("`","")
                 .replace("a ","")
                 .replace("the ","")
                 .replace("an ","")

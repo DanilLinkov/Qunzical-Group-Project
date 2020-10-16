@@ -277,7 +277,7 @@ public class AskPracticeQuestionController implements Initializable {
                 for(int i=0;i<answer.length;i++) {
                     // If its not a number then add it
                     if(!isNumeric(answer[i])){
-                        answers+=answer[i].charAt(0);
+                        answers+=AskQuestionUtilities.answerCleanUp(answer[i]).charAt(0);
 
                         // If its not the last answer then add or to it
                         if(i!=answer.length-1){

@@ -24,7 +24,7 @@
             <Insets bottom="20.0" top="30.0" />
          </VBox.margin>
       </Label>
-      <Label fx:id="questionLabel" alignment="CENTER" text="Q:" textFill="WHITE" wrapText="true">
+      <Label fx:id="questionLabel" alignment="CENTER" prefHeight="51.0" prefWidth="823.0" text="Q:" textFill="WHITE" wrapText="true">
          <font>
             <Font name="SansSerif Bold Italic" size="16.0" />
          </font>
