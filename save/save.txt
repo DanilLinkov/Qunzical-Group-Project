@@ -1,6 +1,6 @@
-0,0
-Flora,8,3,7,1,2,1
-Famous People,0,5,3,7,2,0
-Geography,7,3,1,6,10,1
-Symbols,0,4,2,6,3,1
-Places,7,8,2,5,11,1
+-400,400
+Famous People,4,0,3,7,2,5
+Places,5,3,6,10,9,5
+History,2,7,0,1,5,4
+Geography,2,7,3,5,10,3
+NZ Life,3,2,5,4,1,1
