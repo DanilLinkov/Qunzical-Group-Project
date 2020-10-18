@@ -1,6 +1,6 @@
--1300,0
-Fauna,0,9,6,15,10,0
-Geography,4,0,1,2,10,3
-Flora,4,7,3,6,0,4
-Oddities,1,0,6,2,4,3
-History,2,6,1,4,7,1
+0,0
+Flora,8,3,7,1,2,1
+Famous People,0,5,3,7,2,0
+Geography,7,3,1,6,10,1
+Symbols,0,4,2,6,3,1
+Places,7,8,2,5,11,1

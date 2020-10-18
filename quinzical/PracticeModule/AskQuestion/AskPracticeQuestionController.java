@@ -141,7 +141,7 @@ public class AskPracticeQuestionController implements Initializable {
             // Splitting it to get the information about it
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
-            question = randomQuestionSplit.get(0);
+            question = randomQuestionSplit.get(0).replace("`","");
             qType = randomQuestionSplit.get(1);
             answer = randomQuestionSplit.get(2).trim().split("/");
 
