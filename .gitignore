@@ -26,4 +26,7 @@ out/
 .idea/
 *.iml
 META-INF/
-save/save.txt
+
+# Resource files
+save/
+tts/
