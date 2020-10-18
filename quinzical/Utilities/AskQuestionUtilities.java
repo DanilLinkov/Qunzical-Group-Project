@@ -1,5 +1,6 @@
 package quinzical.Utilities;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -7,8 +8,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -25,6 +26,7 @@ public class AskQuestionUtilities {
     private static final int _defaultReadingSpeed = 160;
     private static int _readingSpeed = _defaultReadingSpeed;
     private static Process _espeakProcess;
+    private static MediaPlayer _ttsAudioPlayer;
 
     /**
      * Displays a pop up notifying the player what the answer to the unknown question was.
@@ -79,75 +81,102 @@ public class AskQuestionUtilities {
      */
     public static void speak(String text) {
         // End any previously running speak processes.
-        endSpeakingProcess();
+        endTTSSpeaking();
 
         // Add "\" in front of quotation marks to make bash read this as normal character.
         text = text.replaceAll("\"", "\\\\\"");
 
         LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
-//        StringBuilder command = new StringBuilder("mkdir tts && cd tts");
-        StringBuilder command = new StringBuilder();
-        boolean isFirstSubStringMaori = false;
+        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
+        boolean isSubStringMaori = false;
         if (text.charAt(0) == '`') {
             texts.pop();
-            isFirstSubStringMaori = true;
+            isSubStringMaori = true;
         }
 
-        boolean firstIndex = true;
+        int subStringIndex = 0;
         for (String textToSpeak : texts) {
-            if (!firstIndex) {
-                command.append("; ");
-            }
-            firstIndex = !firstIndex;
+            command.append("; ");
 
             textToSpeak = textToSpeak.trim();
 
-            if (isFirstSubStringMaori) {
+            if (isSubStringMaori) {
                 command.append("espeak -vde \"" + textToSpeak + "\"");
                 command.append(" -s " + _readingSpeed);
-//                command.append(" -w " + subStringIndex + ".wav");
-//                command.append(" && lame " + subStringIndex + ".wav " + subStringIndex + ".mp3");
-//                command.append(" && rm " + subStringIndex++ + ".wav");
+                command.append(" -w " + subStringIndex + ".wav");
             } else {
                 command.append("espeak \"" + textToSpeak + "\"");
                 command.append(" -s " + _readingSpeed);
-//                command.append(" -w " + subStringIndex + ".wav");
-//                command.append(" && lame " + subStringIndex + ".wav " + subStringIndex + ".mp3");
-//                command.append(" && rm " + subStringIndex++ + ".wav");
+                command.append(" -w " + subStringIndex + ".wav");
             }
 
-            isFirstSubStringMaori = !isFirstSubStringMaori;
+            subStringIndex++;
+            isSubStringMaori = !isSubStringMaori;
         }
-//
-//        command.append(" && ffmpeg -y -i \"concat:");
-//        for (int i = 0; i < subStringIndex; i++) {
-//            command.append(i + ".mp3");
-//            command.append(i == (subStringIndex - 1) ? "" : "|");
-//        }
-//        command.append("\" -acodec copy out.mp3");
 
-//        System.out.println(command.toString());
         try {
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
             _espeakProcess = pb.start();
-        } catch (IOException e) {
+            _espeakProcess.waitFor();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-//
-//        String bip = "tts/out.mp3";
-//        Media hit = new Media(new File(bip).toURI().toString());
-//        MediaPlayer mediaPlayer = new MediaPlayer(hit);
-//        mediaPlayer.play();
 
+        ArrayList<Media> medias = new ArrayList<>();
+        for (int i = 0; i < texts.size(); i++) {
+            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
+            medias.add(new Media(fileDirectory));
+        }
 
+        ObservableList<Media> mediaList = FXCollections.observableArrayList();
+        for (Media media : medias) {
+            mediaList.add(media);
+        }
+
+        playMediaTracks(mediaList);
+    }
+
+    /**
+     * Plays medias inside a provided list of media by recursively playing the very first
+     * media in the list.
+     * When the list has a size of 0, it stops.
+     * @param mediaList List of media to play.
+     */
+    private static void playMediaTracks(ObservableList<Media> mediaList) {
+        if (mediaList.size() == 0) {
+            return;
+        }
+
+        _ttsAudioPlayer = new MediaPlayer(mediaList.remove(0));
+        _ttsAudioPlayer.play();
+
+        _ttsAudioPlayer.setOnEndOfMedia(() -> playMediaTracks(mediaList));
     }
 
     /**
      * Ends any previously running speak processes.
      */
-    public static void endSpeakingProcess() {
-        if (_espeakProcess != null && _espeakProcess.isAlive()) {
-            _espeakProcess.destroy();
+    public static void endTTSSpeaking() {
+        if (_ttsAudioPlayer != null && (_ttsAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING)) {
+            _ttsAudioPlayer.stop();
+        }
+    }
+
+    /**
+     * Cleans up tts audio player and related temporary files.
+     */
+    public static void ttsCleanUp() {
+        endTTSSpeaking();
+
+        if (_ttsAudioPlayer != null) {
+            _ttsAudioPlayer.dispose();
+        }
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", "rm -r tts/");
+            pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

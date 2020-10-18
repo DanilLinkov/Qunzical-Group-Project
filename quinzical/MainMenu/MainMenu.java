@@ -115,10 +115,13 @@ public class MainMenu extends Application {
 
         Optional<ButtonType> result = confirmClose.showAndWait();
         if (result.get() == ButtonType.OK) {
-            // End any possible speaking processes.
-            AskQuestionUtilities.endSpeakingProcess();
+            // Clean up temporary TTS files.
+            AskQuestionUtilities.ttsCleanUp();
+
             _gameManager.saveGame();
             _mainStage.close();
+
+            System.exit(0);
         }
     }
 }

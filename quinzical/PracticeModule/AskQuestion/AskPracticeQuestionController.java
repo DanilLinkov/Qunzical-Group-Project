@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -141,12 +140,12 @@ public class AskPracticeQuestionController implements Initializable {
             // Splitting it to get the information about it
             List<String> randomQuestionSplit = Arrays.asList(randomQuestion.split("\\s*\\|\\s*"));
 
-            question = randomQuestionSplit.get(0).replace("`","");
+            question = randomQuestionSplit.get(0);
             qType = randomQuestionSplit.get(1);
             answer = randomQuestionSplit.get(2).trim().split("/");
 
             // Setting the question label and the question type label
-            questionLabel.setText("Question: " + question);
+            questionLabel.setText("Question: " + question.replaceAll("`",""));
             questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
 
         } catch (IOException e) {
@@ -193,7 +192,7 @@ public class AskPracticeQuestionController implements Initializable {
                 // If all the attempts have been used up then transition the player to the practice menu scene
                 if (attempts==0) {
                     // End any currently speaking process before transition.
-                    AskQuestionUtilities.endSpeakingProcess();
+                    AskQuestionUtilities.endTTSSpeaking();
                     PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
                 }
                 else {
@@ -209,7 +208,7 @@ public class AskPracticeQuestionController implements Initializable {
     public void handleDontKnowButtonAction() {
         attempts = -1;
         AskQuestionUtilities.answerUnknown(answer[0]);
-        AskQuestionUtilities.endSpeakingProcess();
+        AskQuestionUtilities.endTTSSpeaking();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
@@ -312,7 +311,11 @@ public class AskPracticeQuestionController implements Initializable {
             }
 
             // Display the correct answers and say they have run out of attempts and speak it
-            contentText = "You have run out of attempts!" + "\n\nThe answer to the question \n\n" + question + "\n\nWas " + answers.replaceAll("`", "");
+            contentText = "You have run out of attempts!"
+                    + "\n\nThe answer to the question \n\n"
+                    + question.replaceAll("`","")
+                    + "\n\nWas "
+                    + answers.replaceAll("`", "");
             AskQuestionUtilities.speak(contentText);
         }
 

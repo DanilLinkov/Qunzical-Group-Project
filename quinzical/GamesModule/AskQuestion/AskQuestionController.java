@@ -162,7 +162,7 @@ public class AskQuestionController implements Initializable {
             checkIsEveryQuestionAnswered();
 
             // End any currently-running speaking methods and return to the question board.
-            AskQuestionUtilities.endSpeakingProcess();
+            AskQuestionUtilities.endTTSSpeaking();
             _selectQuestionController.setMainStageToSelectQuestionScene();
     }
 
@@ -180,7 +180,7 @@ public class AskQuestionController implements Initializable {
         checkIsEveryQuestionAnswered();
 
         // End any currently-running speaking methods and return to the question board.
-        AskQuestionUtilities.endSpeakingProcess();
+        AskQuestionUtilities.endTTSSpeaking();
         _selectQuestionController.setMainStageToSelectQuestionScene();
     }
 
