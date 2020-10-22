@@ -3,7 +3,9 @@ package quinzical.Utilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -27,6 +29,30 @@ public class AskQuestionUtilities {
     private static int _readingSpeed = _defaultReadingSpeed;
     private static Process _espeakProcess;
     private static MediaPlayer _ttsAudioPlayer;
+    private static String[] macronsLowerCase = {"ā", "ē", "ī", "ō", "ū"};
+    private static String[] macronsUpperCase = {"Ā", "Ē", "Ī", "Ō", "Ū"};
+
+    /**
+     * Configures the event action of an array of macron buttons and returns a boolean value on
+     * whether a upper case macrons has been added. (simply, a boolean value of isMacronCaps)
+     * Such output was decided to simplify any further implementation changes.
+     * @param macronButtons an array of buttons with respective macrons to add to the answer field.
+     * @param answerField an answer field for macrons to be added when the buttons are pressed.
+     * @return a boolean value on whether the macrons set for buttons are in upper case; capitalized.
+     */
+    public static void configureMacronButtons(Button[] macronButtons, TextField answerField, boolean isMacronCaps) {
+        for (int i = 0; i < macronButtons.length; i++) {
+            int finalI = i;
+            macronButtons[i].setOnAction(e -> answerField.appendText(isMacronCaps ? macronsUpperCase[finalI] : macronsLowerCase[finalI]));
+        }
+    }
+
+    public static void macronSwitchCaps(Button[] macronButtons, boolean isMacronCaps, TextField answerField) {
+        for (int i = 0; i < macronButtons.length; i++) {
+            macronButtons[i].setText(isMacronCaps ? macronsLowerCase[i] : macronsUpperCase[i]);
+        }
+        configureMacronButtons(macronButtons, answerField, !isMacronCaps);
+    }
 
     /**
      * Displays a pop up notifying the player what the answer to the unknown question was.

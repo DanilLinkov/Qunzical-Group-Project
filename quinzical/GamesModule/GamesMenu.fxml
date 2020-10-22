@@ -93,7 +93,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="returnToMainMenuButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleReturnToMainMenuButtonAction" style="-fx-background-color: #b82b35;" text="Return to Main Menu" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="returnToMainMenuButton" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleReturnToMainMenuButtonAction" style="-fx-background-color: #b82b35;" text="Return to Main Menu" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
                </font>
