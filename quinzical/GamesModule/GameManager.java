@@ -146,6 +146,14 @@ public class GameManager {
 
     public void resetGame() {
         _questionBoard = null;
+
+        String savePath = new File("").getAbsolutePath();
+        savePath+="/save/save.txt";
+
+        if (Files.exists(Paths.get(savePath))) {
+            File saveFile = new File(savePath);
+            saveFile.delete();
+        }
     }
 
     /**
