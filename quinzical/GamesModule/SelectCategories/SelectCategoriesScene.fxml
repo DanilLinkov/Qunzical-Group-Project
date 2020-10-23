@@ -8,34 +8,50 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.SelectCategories.SelectCategoriesController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.SelectCategories.SelectCategoriesController">
    <children>
       <HBox alignment="TOP_CENTER" prefHeight="53.0" prefWidth="800.0">
          <children>
-            <Label alignment="TOP_CENTER" prefHeight="53.0" prefWidth="337.0" text="Select 5 categories">
+            <Label alignment="TOP_CENTER" prefHeight="53.0" prefWidth="337.0" text="Select 5 categories" textFill="WHITE">
                <font>
-                  <Font size="25.0" />
+                  <Font name="SansSerif Bold" size="30.0" />
                </font>
+               <HBox.margin>
+                  <Insets bottom="20.0" />
+               </HBox.margin>
             </Label>
          </children>
       </HBox>
-      <VBox fx:id="gridArea" alignment="CENTER" prefHeight="430.0" prefWidth="800.0" />
+      <VBox fx:id="gridArea" alignment="TOP_CENTER" prefHeight="424.0" prefWidth="800.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="selectButton" mnemonicParsing="false" onAction="#handleSelectButton" prefHeight="49.0" prefWidth="98.0" text="Select">
+            <Button fx:id="selectButton" mnemonicParsing="false" onAction="#handleSelectButton" prefHeight="49.0" prefWidth="120.0" style="-fx-background-color: #b82b35;" text="Select" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
             </Button>
-            <Button fx:id="randomButton" mnemonicParsing="false" onAction="#handleRandomSelect" prefHeight="47.0" prefWidth="93.0" text="Random">
+            <Button fx:id="randomButton" mnemonicParsing="false" onAction="#handleRandomSelect" prefHeight="47.0" prefWidth="120.0" style="-fx-background-color: #b82b35;" text="Random" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
             </Button>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleReturnToGamesMenuButtonAction" prefHeight="46.0" prefWidth="106.0" text="Back">
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleReturnToGamesMenuButtonAction" prefHeight="46.0" prefWidth="120.0" style="-fx-background-color: #b82b35;" text="Back" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
             </Button>
          </children>
       </HBox>

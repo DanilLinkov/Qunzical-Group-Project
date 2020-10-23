@@ -1,0 +1,11 @@
+.toggleButton {
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 20px;
+    -fx-background-color: #b82b35;
+    -fx-text-fill: white;
+}
+
+.toggleButton:selected {
+    -fx-text-fill: white;
+    -fx-background-color:  #fb7b86;
+}

@@ -15,6 +15,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -91,6 +92,9 @@ public class SelectCategoriesController implements Initializable {
 
         evenlySpreadOut(categoriesBoard,i);
         categoriesBoard.setVgap(20);
+        gridArea.setPadding(new Insets(30,0,0,0));
+        categoriesBoard.setStyle("-fx-background-color:#072365");
+
         return categoriesBoard;
     }
 
@@ -118,6 +122,13 @@ public class SelectCategoriesController implements Initializable {
         toggleButton.setPadding(new Insets(15,0,15,0));
         toggleButton.setPrefHeight(100);
         toggleButton.setPrefWidth(200);
+
+        toggleButton.getStyleClass().clear();
+        toggleButton.getStyleClass().add("toggleButton");
+        toggleButton.getStylesheets().add(getClass().getClassLoader().getResource(
+                "quinzical/GamesModule/SelectCategories/ToggleButton.css").toExternalForm()
+        );
+
         toggleButton.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
             boolean isSelected = newValue;
             if (isSelected) {
