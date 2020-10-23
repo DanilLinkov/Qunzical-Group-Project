@@ -1,5 +1,8 @@
 package quinzical.GamesModule.SelectCategories;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.IntegerBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,15 +51,21 @@ public class SelectCategoriesController implements Initializable {
 
     private ArrayList<String> _categories;
     private ObservableList<String> selectedCategories;
+    private ArrayList<ToggleButton> toggleButtons;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         _instance = this;
         loadAllCategories();
         selectedCategories = FXCollections.observableArrayList();
+        toggleButtons = new ArrayList<>();
 
         gridArea.getChildren().clear();
         gridArea.getChildren().add(getQuestionBoard());
+
+        IntegerBinding lengthSize = Bindings.size(selectedCategories);
+        BooleanBinding listPopulated = lengthSize.greaterThan(4);
+        selectButton.disableProperty().bind(listPopulated.not());
     }
 
     public static SelectCategoriesController getInstance() {
@@ -124,6 +133,8 @@ public class SelectCategoriesController implements Initializable {
             }
         });
 
+        toggleButtons.add(toggleButton);
+
         return toggleButton;
     }
 
@@ -160,6 +171,34 @@ public class SelectCategoriesController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleRandomSelect() {
+        clearSelectedCategories();
+        ArrayList<Integer> randomIndexArray = randomIndexArray(_categories.size());
+
+        for (int i = 0; i < 5; i++) {
+            toggleButtons.get(randomIndexArray.get(i)).setSelected(true);
+        }
+    }
+
+    private void clearSelectedCategories() {
+        for (ToggleButton tg : toggleButtons) {
+            tg.setSelected(false);
+        }
+    }
+
+    private ArrayList<Integer> randomIndexArray (int length) {
+        ArrayList<Integer> shuffledArray = new ArrayList<>();
+
+        for(int i = 0; i< length;i++) {
+            shuffledArray.add(i);
+        }
+
+        // Shuffling the array list and returning it
+        Collections.shuffle(shuffledArray);
+
+        return shuffledArray;
     }
 
 }
