@@ -42,7 +42,7 @@ public class QuestionBoard {
      * This method is used to generate a brand new question board with 5 random categories
      * each having 5 random questions
      */
-    public void createBoard() {
+    public void createBoard(ArrayList<String> selectedCategories) {
         // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
         categoriesPath+="/categories";
@@ -54,18 +54,18 @@ public class QuestionBoard {
         ArrayList<String> filePaths = new ArrayList<>(Arrays.asList(categoriesFolder.list()));
 
         // Generating a random index list of size 5 where the range is based on the number of categories
-        ArrayList<Integer> randomCategoryIndexList = randomIndexArray(filePaths.size());
+        // ArrayList<Integer> randomCategoryIndexList = randomIndexArray(filePaths.size());
 
         // Outer loop supposed to represent the 5 random categories selected
         for (int i = 0; i < 5; i++) {
             // Getting the random category index from the index list
-            int randomCategoryIndex = randomCategoryIndexList.get(i);
+            // int randomCategoryIndex = randomCategoryIndexList.get(i);
             // Creating the new category with the file name minus the .txt at the end
-            Category newCategory = new Category(filePaths.get(randomCategoryIndex).replace(".txt","")); // parent
+            Category newCategory = new Category(selectedCategories.get(i)); // parent
 
             try {
                 // Getting all the lines in that category as a list of strings
-                List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+filePaths.get(randomCategoryIndex)));
+                List<String> allLines = Files.readAllLines(Paths.get(categoriesPath+"/"+selectedCategories.get(i) + ".txt"));
 
                 // Generating a random index list of size 5 where the range is based on the number of questions/lines in that categories file
                 ArrayList<Integer> randomQuestionIndexList = randomIndexArray(allLines.size());

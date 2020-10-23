@@ -1,6 +1,6 @@
--400,400
-Famous People,4,0,3,7,2,5
-Places,5,3,6,10,9,5
-History,2,7,0,1,5,4
-Geography,2,7,3,5,10,3
-NZ Life,3,2,5,4,1,1
+0,0
+Famous People,7,2,5,4,6,0
+Geography,8,5,10,0,1,0
+Oddities,4,5,1,0,3,0
+Places,0,3,2,4,7,0
+History,0,1,7,6,3,0

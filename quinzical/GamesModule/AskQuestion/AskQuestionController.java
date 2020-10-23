@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.GamesMenuController;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
 import quinzical.Questions.Question;
 import quinzical.Utilities.AskQuestionUtilities;
@@ -163,7 +164,7 @@ public class AskQuestionController implements Initializable {
 
             // End any currently-running speaking methods and return to the question board.
             AskQuestionUtilities.endTTSSpeaking();
-            _selectQuestionController.setMainStageToSelectQuestionScene();
+            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
     }
 
     /**
@@ -181,7 +182,7 @@ public class AskQuestionController implements Initializable {
 
         // End any currently-running speaking methods and return to the question board.
         AskQuestionUtilities.endTTSSpeaking();
-        _selectQuestionController.setMainStageToSelectQuestionScene();
+        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
     }
 
     /**
@@ -267,7 +268,8 @@ public class AskQuestionController implements Initializable {
                     + "The game will now reset and a new set of question board will be ready.";
 
             // Resetting the game.
-            _gameManager.newGame();
+            //_gameManager.newGame();
+            _gameManager.resetGame();
 
             // Formats the pop-up.
             alert.getDialogPane().setContent(new Label(contentText));

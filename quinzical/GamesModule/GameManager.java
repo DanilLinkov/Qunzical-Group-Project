@@ -7,6 +7,7 @@ import quinzical.Questions.Question;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,6 +52,10 @@ public class GameManager {
      */
     public static GameManager getInstance() {
         return _instance == null ? new GameManager() : _instance;
+    }
+
+    public boolean questionBoardExists() {
+        return (_questionBoard!=null);
     }
 
     /**
@@ -132,11 +137,15 @@ public class GameManager {
     /**
      * Creates a new question board and resets the player's current score to 0 and saves the game
      */
-    public void newGame() {
+    public void newGame(ArrayList<String> selectedCategories) {
         _questionBoard = new QuestionBoard();
-        _questionBoard.createBoard();
+        _questionBoard.createBoard(selectedCategories);
         _currentScore = 0;
         saveGame();
+    }
+
+    public void resetGame() {
+        _questionBoard = null;
     }
 
     /**
@@ -144,61 +153,63 @@ public class GameManager {
      * into a txt file which can then be loaded with the loadGame method
      */
     public void saveGame() {
-        // Getting the path of the save folder outside of the application
-        String savePath = new File("").getAbsolutePath();
-        savePath+="/save";
+        if (_questionBoard!=null) {
+            // Getting the path of the save folder outside of the application
+            String savePath = new File("").getAbsolutePath();
+            savePath+="/save";
 
-        // Creating a file object based on that path
-        File saveDir = new File(savePath);
+            // Creating a file object based on that path
+            File saveDir = new File(savePath);
 
-        // If that folder does not exist then create it
-        if (!Files.exists(Paths.get(savePath))) {
-            saveDir.mkdir();
-        }
-
-        // Change the savePath to be to the save.txt file
-        savePath+="/save.txt";
-        // Create a file object of the save.txt file
-        File saveFile = new File(savePath);
-        // Delete it to start from scratch
-        saveFile.delete();
-
-        // Create a new save file
-        try {
-            saveFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            // Create a file writer for that save.txt file
-            FileWriter saveWriter = new FileWriter(savePath);
-            // Write the first line with the current score, best score
-            saveWriter.write(_currentScore + "," + _bestScore + "\n");
-
-            // Go over the question board categories
-            for(int i = 0; i < _questionBoard.getNumCategories(); i++) {
-                // Get the current category
-                Category currentCategory = _questionBoard.getCategory(i);
-                // This string saveLine is used as the line that will be saved to the txt
-                String saveLine = currentCategory.toString();
-
-                // Go over the questions in the categories
-                for (int j = 0; j < _questionBoard.getNumQuestions(); j++) {
-                    // Get the current question
-                    Question currentQuestion = currentCategory.getQuestion(j);
-                    // Append this question's line number to the saveLine
-                    saveLine += ","+currentQuestion.getLineNumber();
-                }
-
-                // Write this line with the last index being the lowest valued question index to indicate which questions
-                // were answered or not
-                saveWriter.write(saveLine + "," + currentCategory.getLowestValuedQuestionIndex() + "\n");
+            // If that folder does not exist then create it
+            if (!Files.exists(Paths.get(savePath))) {
+                saveDir.mkdir();
             }
 
-            saveWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Change the savePath to be to the save.txt file
+            savePath+="/save.txt";
+            // Create a file object of the save.txt file
+            File saveFile = new File(savePath);
+            // Delete it to start from scratch
+            saveFile.delete();
+
+            // Create a new save file
+            try {
+                saveFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                // Create a file writer for that save.txt file
+                FileWriter saveWriter = new FileWriter(savePath);
+                // Write the first line with the current score, best score
+                saveWriter.write(_currentScore + "," + _bestScore + "\n");
+
+                // Go over the question board categories
+                for(int i = 0; i < _questionBoard.getNumCategories(); i++) {
+                    // Get the current category
+                    Category currentCategory = _questionBoard.getCategory(i);
+                    // This string saveLine is used as the line that will be saved to the txt
+                    String saveLine = currentCategory.toString();
+
+                    // Go over the questions in the categories
+                    for (int j = 0; j < _questionBoard.getNumQuestions(); j++) {
+                        // Get the current question
+                        Question currentQuestion = currentCategory.getQuestion(j);
+                        // Append this question's line number to the saveLine
+                        saveLine += ","+currentQuestion.getLineNumber();
+                    }
+
+                    // Write this line with the last index being the lowest valued question index to indicate which questions
+                    // were answered or not
+                    saveWriter.write(saveLine + "," + currentCategory.getLowestValuedQuestionIndex() + "\n");
+                }
+
+                saveWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -260,8 +271,7 @@ public class GameManager {
             }
         }
         else {
-            // Else create a new game
-            newGame();
+            _questionBoard = null;
         }
     }
 }

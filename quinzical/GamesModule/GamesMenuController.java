@@ -65,8 +65,13 @@ public class GamesMenuController implements Initializable {
      */
     public void handlePlayGameButtonAction() {
         try {
-            Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            if(!_gameManager.questionBoardExists()) {
+                Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
+                _mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            } else {
+                Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
+                _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,7 +95,8 @@ public class GamesMenuController implements Initializable {
         Optional<ButtonType> result = confirmReset.showAndWait();
         if (result.get() == ButtonType.OK) {
             // Reset game and update score labels
-            GameManager.getInstance().newGame();
+            //GameManager.getInstance().newGame();
+            GameManager.getInstance().resetGame();
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
