@@ -48,7 +48,7 @@ public class PracticeGameManager {
 
         // Getting the categories folder path
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath+="/categories";
+        categoriesPath+="/categories/NZ";
         // Creating a file object based on the path
         File categoriesFolder = new File(categoriesPath);
 

@@ -149,7 +149,7 @@ public class AskPracticeQuestionController implements Initializable {
         categoryLabel.setText("Category: " + name);
 
         // Getting the specific categories file path
-        String categoriesPath = new File("").getAbsolutePath() + "/categories/" + name + ".txt";
+        String categoriesPath = new File("").getAbsolutePath() + "/categories/NZ/" + name + ".txt";
 
         try {
             // Getting all the lines in that category

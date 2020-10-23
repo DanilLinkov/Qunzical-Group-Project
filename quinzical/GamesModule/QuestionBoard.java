@@ -45,7 +45,7 @@ public class QuestionBoard {
     public void createBoard(ArrayList<String> selectedCategories) {
         // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath+="/categories";
+        categoriesPath+="/categories/NZ";
 
         // Creating a folder file given that path
         File categoriesFolder = new File(categoriesPath);

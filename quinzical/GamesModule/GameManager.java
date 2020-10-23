@@ -245,7 +245,7 @@ public class GameManager {
                     _questionBoard.addCategory(newCategory);
 
                     // Load the categories questions by going to the categories folder to find the question line
-                    savePath = new File("").getAbsolutePath()+"/categories/"+lineSplit.get(0)+".txt";
+                    savePath = new File("").getAbsolutePath()+"/categories/NZ/"+lineSplit.get(0)+".txt";
                     List<String> questionLines = Files.readAllLines(Paths.get(savePath));
                     // Set the lowest answered question index of that category
                     newCategory.setLowestValuedQuestionIndex(Integer.parseInt(lineSplit.get(6)));
