@@ -43,9 +43,18 @@ public class AskQuestionController implements Initializable {
     public Button dontKnowButton;
     public Label timeLabel;
 
+    private boolean isMacronCaps = false;
+    public Button macronAButton;
+    public Button macronEButton;
+    public Button macronIButton;
+    public Button macronOButton;
+    public Button macronUButton;
+    public Button switchMacronCapsButton;
+    private final Button[] macronButtons = new Button[5];
+
     // Frequently used instances of classes.
-    private GameManager _gameManager = GameManager.getInstance();
-    private SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
+    private final GameManager _gameManager = GameManager.getInstance();
+    private final SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
     final int questionTime = 60*1000*1;
 
     // Reference to the question currently being asked.
@@ -71,18 +80,28 @@ public class AskQuestionController implements Initializable {
 
         // Initializing speed adjust slider (setting default view and event handler)
         speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
-        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
-            AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
-        });
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> AskQuestionUtilities.setReadingSpeed(newSpeed.intValue()));
 
         BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
         submitAnswerButton.disableProperty().bind(isTextFieldEmpty);
+
+        macronButtons[0] = macronAButton;
+        macronButtons[1] = macronEButton;
+        macronButtons[2] = macronIButton;
+        macronButtons[3] = macronOButton;
+        macronButtons[4] = macronUButton;
+        AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 
         setTimer();
         showTimer();
 
         // Read out the question.
         handlePlayClueButton();
+    }
+
+    public void macronSwitchCaps() {
+        AskQuestionUtilities.macronSwitchCaps(macronButtons, isMacronCaps, answerField);
+        isMacronCaps = !isMacronCaps;
     }
 
     private void setTimer() {
@@ -95,25 +114,25 @@ public class AskQuestionController implements Initializable {
                     }
             }
         }, questionTime);
-        endTime = System.currentTimeMillis()+questionTime;
+        endTime = System.currentTimeMillis() + questionTime;
     }
 
     private void showTimer() {
-        DateFormat timeFormat = new SimpleDateFormat( "mm:ss" );
+        DateFormat timeFormat = new SimpleDateFormat("ss");
         final Timeline timeline = new Timeline(
                 new KeyFrame(
-                        Duration.millis( 200 ),
+                        Duration.millis(200),
                         event -> {
                             final long diff = endTime - System.currentTimeMillis();
                             if ( diff < 0 ) {
-                                timeLabel.setText( timeFormat.format( 0 ) );
+                                timeLabel.setText(timeFormat.format(0) + " secs left");
                             } else {
-                                timeLabel.setText( timeFormat.format( diff ) );
+                                timeLabel.setText(timeFormat.format(diff) + " secs left");
                             }
                         }
                 )
         );
-        timeline.setCycleCount( Animation.INDEFINITE );
+        timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 

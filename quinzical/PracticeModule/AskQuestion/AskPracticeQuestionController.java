@@ -39,11 +39,20 @@ public class AskPracticeQuestionController implements Initializable {
     public Label hintLabel;
     public Label questionTypeLabel;
     public Slider speedAdjustSlider;
-    public TextField answerInput;
+    public TextField answerField;
     public Button submitButton;
     public Button dontKnowButton;
     public Button playClueButton;
     public Label timeLabel;
+
+    private boolean isMacronCaps;
+    public Button macronAButton;
+    public Button macronEButton;
+    public Button macronIButton;
+    public Button macronOButton;
+    public Button macronUButton;
+    public Button switchMacronCapsButton;
+    private Button[] macronButtons = new Button[5];
 
     // Storing the question, answers and question type
     private String question;
@@ -69,11 +78,24 @@ public class AskPracticeQuestionController implements Initializable {
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
             AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
         });
+
+        macronButtons[0] = macronAButton;
+        macronButtons[1] = macronEButton;
+        macronButtons[2] = macronIButton;
+        macronButtons[3] = macronOButton;
+        macronButtons[4] = macronUButton;
+        AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
+
         setTimer();
         showTimer();
 
-        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerInput.textProperty());
+        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
         submitButton.disableProperty().bind(isTextFieldEmpty);
+    }
+
+    public void macronSwitchCaps() {
+        AskQuestionUtilities.macronSwitchCaps(macronButtons, isMacronCaps, answerField);
+        isMacronCaps = !isMacronCaps;
     }
 
     private void setTimer() {
@@ -91,16 +113,16 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     private void showTimer() {
-        DateFormat timeFormat = new SimpleDateFormat( "mm:ss" );
+        DateFormat timeFormat = new SimpleDateFormat( "ss" );
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis( 200 ),
                         event -> {
                             final long diff = endTime - System.currentTimeMillis();
                             if ( diff < 0 ) {
-                                timeLabel.setText( timeFormat.format( 0 ) );
+                                timeLabel.setText(timeFormat.format(0) + " secs left");
                             } else {
-                                timeLabel.setText( timeFormat.format( diff ) );
+                                timeLabel.setText(timeFormat.format(diff) + " secs left");
                             }
                         }
                 )
@@ -166,7 +188,7 @@ public class AskPracticeQuestionController implements Initializable {
      */
     public void onAnswerSubmit() {
         // Format the players input
-        String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerInput.getText());
+        String clearPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerField.getText());
             // Boolean variable which is set to true if the answer is correct
             boolean eventFinished = false;
             // Going over every potential answer for that question
