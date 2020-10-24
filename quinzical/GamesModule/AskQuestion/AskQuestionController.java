@@ -6,16 +6,21 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GamesMenuController;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
+import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Question;
 import quinzical.Utilities.AskQuestionUtilities;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -178,16 +183,7 @@ public class AskQuestionController implements Initializable {
                 incorrectAnswerGiven();
             }
 
-            if(!checkIsEveryQuestionAnswered()){
-                // End any currently-running speaking methods and return to the question board.
-                AskQuestionUtilities.endTTSSpeaking();
-                SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
-            }
-            else {
-                // End any currently-running speaking methods and return to the question board.
-                AskQuestionUtilities.endTTSSpeaking();
-                GamesMenuController.getInstance().setMainStageToGamesMenuScene();
-            }
+            checkIsEveryQuestionAnswered();
     }
 
     /**
@@ -201,16 +197,7 @@ public class AskQuestionController implements Initializable {
         done = true;
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
-        if(!checkIsEveryQuestionAnswered()){
-            // End any currently-running speaking methods and return to the question board.
-            AskQuestionUtilities.endTTSSpeaking();
-            SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
-        }
-        else {
-            // End any currently-running speaking methods and return to the question board.
-            AskQuestionUtilities.endTTSSpeaking();
-            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
-        }
+        checkIsEveryQuestionAnswered();
     }
 
     /**
@@ -283,31 +270,43 @@ public class AskQuestionController implements Initializable {
      * player that the player has completed every question in the question
      * board, the player's total score, and that the game will now reset.
      */
-    public boolean checkIsEveryQuestionAnswered() {
+    public void checkIsEveryQuestionAnswered() {
         if (_gameManager.isEveryQuestionAnswered()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-            // Formats texts inside the pop up.
-            alert.setTitle("Every Question Answered");
-            alert.setHeaderText("Every Question Answered");
-            String contentText = "Congratulations!" + "\n\n"
-                    + "You have completed every question in the question board," + "\n"
-                    + "and your total score was $" + _gameManager.getCurrentScore() + ".\n\n"
-                    + "The game will now reset and a new set of question board will be ready.";
-
-            // Resetting the game.
-            //_gameManager.newGame();
-            _gameManager.resetGame();
-
-            // Formats the pop-up.
-            alert.getDialogPane().setContent(new Label(contentText));
-            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.showAndWait();
-            return true;
+            setSceneToEndGameScene();
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//
+//            // Formats texts inside the pop up.
+//            alert.setTitle("Every Question Answered");
+//            alert.setHeaderText("Every Question Answered");
+//            String contentText = "Congratulations!" + "\n\n"
+//                    + "You have completed every question in the question board," + "\n"
+//                    + "and your total score was $" + _gameManager.getCurrentScore() + ".\n\n"
+//                    + "The game will now reset and a new set of question board will be ready.";
+//
+//            // Resetting the game.
+//            //_gameManager.newGame();
+//            _gameManager.resetGame();
+//
+//            // Formats the pop-up.
+//            alert.getDialogPane().setContent(new Label(contentText));
+//            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+//            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+//            alert.showAndWait();
         }
         else {
-            return false;
+            // End any currently-running speaking methods and return to the question board.
+            AskQuestionUtilities.endTTSSpeaking();
+            SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
         }
     }
+
+    private void setSceneToEndGameScene() {
+        try {
+            Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/EndGame/EndGameScene.fxml"));
+            MainMenu.getInstance().setMainStageScene(new Scene(scoreBoard, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

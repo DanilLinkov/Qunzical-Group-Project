@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenuController">
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenuController">
    <children>
       <GridPane alignment="TOP_CENTER">
          <columnConstraints>
@@ -93,6 +100,20 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="scoreBoardButton" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleScoreBoardButton" prefHeight="63.0" prefWidth="218.0" style="-fx-background-color: #b82b35;" text="Score Board" textAlignment="CENTER" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect>
+               <font>
+                  <Font name="SansSerif Bold" size="20.0" />
+               </font>
+               <padding>
+                  <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+               </padding>
+            </Button>
             <Button fx:id="returnToMainMenuButton" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#handleReturnToMainMenuButtonAction" style="-fx-background-color: #b82b35;" text="Return to Main Menu" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="SansSerif Bold" size="20.0" />
@@ -112,7 +133,7 @@
             </Button>
          </children>
          <VBox.margin>
-            <Insets top="100.0" />
+            <Insets top="55.0" />
          </VBox.margin>
       </VBox>
    </children>

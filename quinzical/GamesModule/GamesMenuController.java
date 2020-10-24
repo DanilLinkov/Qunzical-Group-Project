@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import quinzical.GamesModule.ScoreBoard.ScoreBoardController;
 import quinzical.MainMenu.MainMenu;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class GamesMenuController implements Initializable {
     public Button playGameButton;
     public Button resetGameButton;
     public Button returnToMainMenuButton;
+    public Button scoreBoardButton;
     public Label userScoreLabel;
     public Label bestScoreLabel;
 
@@ -126,5 +128,14 @@ public class GamesMenuController implements Initializable {
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
         _mainMenuModel.setMainStageScene(playGameButton.getScene());
+    }
+
+    public void handleScoreBoardButton() {
+        try {
+            Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/ScoreBoard/ScoreBoardScene.fxml"));
+            _mainMenuModel.setMainStageScene(new Scene(scoreBoard, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
