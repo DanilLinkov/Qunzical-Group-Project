@@ -178,12 +178,16 @@ public class AskQuestionController implements Initializable {
                 incorrectAnswerGiven();
             }
 
-            // Check whether every question in the question board has been answered.
-            checkIsEveryQuestionAnswered();
-
-            // End any currently-running speaking methods and return to the question board.
-            AskQuestionUtilities.endTTSSpeaking();
-            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+            if(!checkIsEveryQuestionAnswered()){
+                // End any currently-running speaking methods and return to the question board.
+                AskQuestionUtilities.endTTSSpeaking();
+                SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
+            }
+            else {
+                // End any currently-running speaking methods and return to the question board.
+                AskQuestionUtilities.endTTSSpeaking();
+                GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+            }
     }
 
     /**
@@ -197,11 +201,16 @@ public class AskQuestionController implements Initializable {
         done = true;
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
-        checkIsEveryQuestionAnswered();
-
-        // End any currently-running speaking methods and return to the question board.
-        AskQuestionUtilities.endTTSSpeaking();
-        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        if(!checkIsEveryQuestionAnswered()){
+            // End any currently-running speaking methods and return to the question board.
+            AskQuestionUtilities.endTTSSpeaking();
+            SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
+        }
+        else {
+            // End any currently-running speaking methods and return to the question board.
+            AskQuestionUtilities.endTTSSpeaking();
+            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        }
     }
 
     /**
@@ -274,7 +283,7 @@ public class AskQuestionController implements Initializable {
      * player that the player has completed every question in the question
      * board, the player's total score, and that the game will now reset.
      */
-    public void checkIsEveryQuestionAnswered() {
+    public boolean checkIsEveryQuestionAnswered() {
         if (_gameManager.isEveryQuestionAnswered()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
@@ -295,6 +304,10 @@ public class AskQuestionController implements Initializable {
             alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.showAndWait();
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
