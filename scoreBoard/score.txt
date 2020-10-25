@@ -1,8 +1,4 @@
-fefe,0
-asd,123
-asdasd,21
-Danil,0
-asd,0
-yeeter,10000
-heheahshdhasd,99999
-,0
+test1,100
+test2,200
+test3,400
+test4,50

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,30 +9,54 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.EndGame.EndGameController">
+<AnchorPane style="-fx-background-color: #072365;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.EndGame.EndGameController">
    <children>
-      <ImageView fx:id="rewardImage" fitHeight="600.0" fitWidth="800.0" opacity="0.22" pickOnBounds="true" />
+      <ImageView fx:id="rewardImage" fitHeight="600.0" fitWidth="800.0" opacity="0.08" pickOnBounds="true" />
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
          <children>
             <HBox alignment="CENTER" prefHeight="94.0" prefWidth="800.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="197.0" text="Game Finished!" />
+                  <Label alignment="TOP_CENTER" prefHeight="53.0" prefWidth="337.0" text="Game Finished!" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="30.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="182.0" prefWidth="800.0">
+            <HBox alignment="CENTER" prefHeight="265.0" prefWidth="800.0">
                <children>
-                  <Label fx:id="scoreLabel" alignment="TOP_CENTER" prefHeight="143.0" prefWidth="800.0" text="Score etc" wrapText="true" />
+                  <Label fx:id="scoreLabel" alignment="TOP_CENTER" contentDisplay="CENTER" lineSpacing="1.0" prefHeight="272.0" prefWidth="776.0" text="Score etc" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font></Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="200.0" prefWidth="800.0">
+            <HBox alignment="CENTER" prefHeight="71.0" prefWidth="800.0">
                <children>
-                  <TextField fx:id="nameTextField" promptText="Enter Name" />
+                  <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="46.0" prefWidth="204.0" promptText="Enter Name">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font></TextField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="52.0" prefWidth="107.0" text="Submit" />
-                  <Button fx:id="dontSaveButton" mnemonicParsing="false" onAction="#handleDontSaveButton" prefHeight="51.0" prefWidth="114.0" text="Don't Save Score" />
+                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="49.0" prefWidth="160.0" style="-fx-background-color: #b82b35;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="dontSaveButton" mnemonicParsing="false" onAction="#handleDontSaveButton" prefHeight="49.0" prefWidth="160.0" style="-fx-background-color: #b82b35;" text="Don't Save" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
          </children>

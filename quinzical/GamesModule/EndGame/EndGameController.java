@@ -41,13 +41,13 @@ public class EndGameController implements Initializable {
         int playerScore = GameManager.getInstance().getCurrentScore();
         if(playerScore > ScoreBoardManager.getInstance().getBestScore()) {
             rewardImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/EndGame/RewardGifs/best.gif").toExternalForm()));
-            scoreLabel.setText("Congratulations on completing the game!\n You have achieved a new high score of $" + playerScore + "!" +
+            scoreLabel.setText("Congratulations on completing the game!\n\nYou have achieved a new high score of $" + playerScore + "!" +
                     "\nPlease enter your name and hit submit if you would like to save your score." +
                     "\nOtherwise you could click Don't Save Score.");
         }
         else {
             rewardImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/EndGame/RewardGifs/notBest.gif").toExternalForm()));
-            scoreLabel.setText("Congratulations on completing the game!\n You have achieved a score of $" + playerScore + "!" +
+            scoreLabel.setText("Congratulations on completing the game!\n\nYou have achieved a score of $" + playerScore + "!" +
                     "\nPlease enter your name and hit submit if you would like to save your score." +
                     "\nOtherwise you could click Don't Save Score.");
         }

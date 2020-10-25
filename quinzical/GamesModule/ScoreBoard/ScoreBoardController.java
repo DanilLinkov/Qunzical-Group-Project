@@ -28,8 +28,6 @@ public class ScoreBoardController implements Initializable {
     public VBox scoreArea;
 
     private static ScoreBoardController _instance;
-    private MainMenu _mainMenuModel = MainMenu.getInstance();
-    private GamesMenuController gamesMenuController = GamesMenuController.getInstance();
 
     private Map<String,Integer> scoreBoardMap;
 
@@ -54,7 +52,7 @@ public class ScoreBoardController implements Initializable {
 
         int i = 0;
         for (String name : scoreBoardMap.keySet()) {
-            Label playerName = new Label(name);
+            Label playerName = createLabel(name);
             playerBoardGrid.add(playerName,0,i);
             i++;
         }
@@ -64,18 +62,30 @@ public class ScoreBoardController implements Initializable {
 
         int j = 0;
         for (Integer score : scoreBoardMap.values()) {
-            Label playerScore = new Label(Integer.toString(score));
+            Label playerScore = createLabel(Integer.toString(score));
             scoreBoardGrid.add(playerScore,0,j);
             j++;
         }
 
-        playerBoardGrid.setAlignment(Pos.CENTER);
+        playerBoardGrid.setAlignment(Pos.CENTER_RIGHT);
         nameArea.getChildren().clear();
         nameArea.getChildren().add(playerBoardGrid);
+        nameArea.setPadding(new Insets(5,60,0,0));
 
-        scoreBoardGrid.setAlignment(Pos.CENTER);
+        scoreBoardGrid.setAlignment(Pos.CENTER_LEFT);
         scoreArea.getChildren().clear();
         scoreArea.getChildren().add(scoreBoardGrid);
+        scoreArea.setPadding(new Insets(5,0,0,60));
+    }
+
+    private Label createLabel(String labelName) {
+        Label label = new Label(labelName);
+
+        label.getStyleClass().clear();
+        label.getStyleClass().add("label");
+        label.getStylesheets().add(getClass().getClassLoader().getResource("quinzical/GamesModule/ScoreBoard/Label.css").toExternalForm());
+
+        return label;
     }
 
 }

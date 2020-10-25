@@ -1,0 +1,6 @@
+.label {
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-label-padding: 15px;
+}
