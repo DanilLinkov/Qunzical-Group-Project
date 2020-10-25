@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.EndGame.EndGameController">
    <children>
+      <ImageView fx:id="rewardImage" fitHeight="600.0" fitWidth="800.0" opacity="0.22" pickOnBounds="true" />
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
          <children>
             <HBox alignment="CENTER" prefHeight="94.0" prefWidth="800.0">
@@ -35,6 +35,5 @@
             </HBox>
          </children>
       </VBox>
-      <ImageView fx:id="rewardImage" fitHeight="600.0" fitWidth="800.0" opacity="0.22" pickOnBounds="true" />
    </children>
 </AnchorPane>
