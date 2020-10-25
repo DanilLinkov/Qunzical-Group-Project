@@ -1,5 +1,7 @@
 package quinzical.GamesModule.EndGame;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +33,9 @@ public class EndGameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         _instance = this;
         setScoreLabel();
+
+        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(nameTextField.textProperty());
+        submitButton.disableProperty().bind(isTextFieldEmpty);
     }
 
     public static EndGameController getInstance() {
