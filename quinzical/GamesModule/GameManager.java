@@ -146,6 +146,7 @@ public class GameManager {
 
     public void resetGame() {
         _questionBoard = null;
+        _currentScore = 0;
 
         String savePath = new File("").getAbsolutePath();
         savePath+="/save/save.txt";

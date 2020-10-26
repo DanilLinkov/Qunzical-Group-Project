@@ -273,6 +273,7 @@ public class AskQuestionController implements Initializable {
     public void checkIsEveryQuestionAnswered() {
         if (_gameManager.isEveryQuestionAnswered()) {
             setSceneToEndGameScene();
+            GameManager.getInstance().resetGame();
 //            Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //
 //            // Formats texts inside the pop up.
