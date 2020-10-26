@@ -8,10 +8,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +46,11 @@ public class AskPracticeQuestionController implements Initializable {
     public Button dontKnowButton;
     public Button playClueButton;
     public Label timeLabel;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     private boolean isMacronCaps;
     public Button macronAButton;
@@ -367,6 +374,15 @@ public class AskPracticeQuestionController implements Initializable {
             return false;
         }
         return true;
+    }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
     }
 
 }

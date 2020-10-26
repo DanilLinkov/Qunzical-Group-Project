@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GamesMenuController;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Question;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +32,11 @@ public class SelectQuestionController implements Initializable {
     public VBox questionBoardArea;
     public Label userScoreLabel;
     public Label bestScoreLabel;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     // Frequently used instances of classes, including current class.
     private MainMenu _mainMenuModel = MainMenu.getInstance();
@@ -113,4 +120,14 @@ public class SelectQuestionController implements Initializable {
         initialization();
         _mainMenuModel.setMainStageScene(backToGameMenuButton.getScene());
     }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
+    }
+
 }

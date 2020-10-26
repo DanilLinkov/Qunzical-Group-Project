@@ -8,8 +8,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import quinzical.GamesModule.ScoreBoard.ScoreBoardController;
 import quinzical.MainMenu.MainMenu;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +34,11 @@ public class GamesMenuController implements Initializable {
     public Button scoreBoardButton;
     public Label userScoreLabel;
     public Label bestScoreLabel;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     // Frequently used instances of classes, including current class.
     private final MainMenu _mainMenuModel = MainMenu.getInstance();
@@ -138,4 +145,14 @@ public class GamesMenuController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
+    }
+
 }

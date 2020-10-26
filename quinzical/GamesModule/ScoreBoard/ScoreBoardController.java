@@ -7,12 +7,10 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import quinzical.GamesModule.GamesMenuController;
 import quinzical.MainMenu.MainMenu;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +24,11 @@ public class ScoreBoardController implements Initializable {
     public Button backButton;
     public VBox nameArea;
     public VBox scoreArea;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     private static ScoreBoardController _instance;
 
@@ -86,6 +89,15 @@ public class ScoreBoardController implements Initializable {
         label.getStylesheets().add(getClass().getClassLoader().getResource("quinzical/GamesModule/ScoreBoard/Label.css").toExternalForm());
 
         return label;
+    }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
     }
 
 }

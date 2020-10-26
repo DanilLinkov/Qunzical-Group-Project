@@ -20,15 +20,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GamesMenuController;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Category;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +42,11 @@ public class SelectCategoriesController implements Initializable {
     public Button randomButton;
     public Button backButton;
     public VBox gridArea;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     private GameManager gameManager = GameManager.getInstance();
     private GamesMenuController gamesMenuController = GamesMenuController.getInstance();
@@ -210,6 +213,15 @@ public class SelectCategoriesController implements Initializable {
         Collections.shuffle(shuffledArray);
 
         return shuffledArray;
+    }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
     }
 
 }

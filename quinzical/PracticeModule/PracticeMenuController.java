@@ -10,8 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import quinzical.MainMenu.MainMenu;
 import quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController;
+import quinzical.Utilities.HelpUtilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +35,11 @@ public class PracticeMenuController implements Initializable {
     public Button selectCategoryButton;
     public Button backToMainMenuButton;
     public ComboBox<String> dropDownMenu;
+
+    public Button helpCloseButton;
+    public Button helpButton;
+    public Label helpLabel;
+    public HBox helpArea;
 
     // Used to store the selected category from the drop down menu
     private String selectedCategory;
@@ -103,6 +111,15 @@ public class PracticeMenuController implements Initializable {
      */
     public void setMainStageToPracticeMenuScene() {
         _mainMenuModel.setMainStageScene(selectCategoryButton.getScene());
+    }
+
+    public void handleHelpButton() {
+        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.bringToFront(helpArea);
+    }
+
+    public void handleHelpCloseButton() {
+        HelpUtilities.bringToBack(helpArea);
     }
 
 }
