@@ -31,7 +31,7 @@ public class MainMenuController {
      */
     public void handleGamesModuleButtonClick() {
         try {
-            Parent gamesMenu = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/GamesMenu.fxml"));
+            Parent gamesMenu = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/GamesMenu/GamesMenu.fxml"));
             _mainMenuModel.setMainStageScene(new Scene(gamesMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();

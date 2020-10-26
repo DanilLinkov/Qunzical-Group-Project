@@ -1,4 +1,4 @@
-package quinzical.GamesModule;
+package quinzical.GamesModule.GamesMenu;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import quinzical.GamesModule.ScoreBoard.ScoreBoardController;
+import quinzical.GamesModule.GameManager;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Utilities.HelpUtilities;
 

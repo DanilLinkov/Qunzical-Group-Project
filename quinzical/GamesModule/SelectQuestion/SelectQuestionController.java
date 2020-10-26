@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import quinzical.GamesModule.GameManager;
-import quinzical.GamesModule.GamesMenuController;
+import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Question;
 import quinzical.Utilities.HelpUtilities;

@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenuController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenu.GamesMenuController">
    <children>
       <HBox fx:id="helpArea" alignment="TOP_CENTER" layoutX="-2.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: rgba(169,169,169,0.4);">
          <children>

@@ -9,13 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import quinzical.GamesModule.GameManager;
-import quinzical.GamesModule.GamesMenuController;
+import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.GamesModule.ScoreBoard.ScoreBoardManager;
 
-import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ResourceBundle;
 
 public class EndGameController implements Initializable {

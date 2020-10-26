@@ -1,22 +1,15 @@
 package quinzical.GamesModule.ScoreBoard;
 
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import quinzical.GamesModule.GamesMenuController;
-import quinzical.MainMenu.MainMenu;
+import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.Utilities.HelpUtilities;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class ScoreBoardController implements Initializable {
