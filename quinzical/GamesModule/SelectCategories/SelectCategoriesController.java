@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.GameType;
 import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Utilities.HelpUtilities;
@@ -149,7 +150,8 @@ public class SelectCategoriesController implements Initializable {
 
         // Getting the categories folder path
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath+="/categories/NZ";
+        categoriesPath += gameManager.getCurrentGameType() == GameType.NZ ? "/categories/NZ" : "/categories/international";
+
         // Creating a file object based on the path
         File categoriesFolder = new File(categoriesPath);
 

@@ -38,6 +38,12 @@ public class QuestionBoard {
     // List of categories in the question board.
     private final ArrayList<Category> _categoriesList = new ArrayList<>();
 
+    private GameType _gameType;
+
+    public QuestionBoard(GameType gameType) {
+        _gameType = gameType;
+    }
+
     /**
      * This method is used to generate a brand new question board with 5 random categories
      * each having 5 random questions
@@ -45,7 +51,7 @@ public class QuestionBoard {
     public void createBoard(ArrayList<String> selectedCategories) {
         // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath+="/categories/NZ";
+        categoriesPath += _gameType == GameType.NZ ? "/categories/NZ" : "/categories/international";
 
         // Creating a folder file given that path
         File categoriesFolder = new File(categoriesPath);
@@ -107,6 +113,10 @@ public class QuestionBoard {
             // Adding the category to the question board
             _categoriesList.add(newCategory);
         }
+    }
+
+    public boolean isQuestionBoardCreated() {
+        return _categoriesList != null && _categoriesList.size() == 5;
     }
 
     /**

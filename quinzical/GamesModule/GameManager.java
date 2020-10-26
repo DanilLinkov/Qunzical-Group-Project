@@ -25,8 +25,11 @@ import java.util.List;
  */
 public class GameManager {
 
-    // Question board used in this game.
-    private QuestionBoard _questionBoard;
+    private QuestionBoard[] _questionBoards = new QuestionBoard[2];
+
+    // Question board currently used in this game type.
+    private QuestionBoard _questionBoardInUse;
+    private GameType _currentGameType;
 
     // Score status.
     private int _currentScore;
@@ -41,6 +44,7 @@ public class GameManager {
      */
     private GameManager() {
         _instance = this;
+        _currentGameType = GameType.NZ;
         loadGame();
     }
 
@@ -54,8 +58,16 @@ public class GameManager {
         return _instance == null ? new GameManager() : _instance;
     }
 
-    public boolean questionBoardExists() {
-        return (_questionBoard!=null);
+    public boolean isQuestionBoardSetUp() {
+        if (_questionBoardInUse == null) {
+            return false;
+        } else {
+            return _questionBoardInUse.isQuestionBoardCreated();
+        }
+    }
+
+    public GameType getCurrentGameType() {
+        return _currentGameType;
     }
 
     /**
@@ -63,7 +75,7 @@ public class GameManager {
      * @return GridPane component which contains the question board.
      */
     public GridPane getQuestionBoard() {
-        return _questionBoard.getQuestionBoard();
+        return _questionBoardInUse.getQuestionBoard();
     }
 
     /**
@@ -73,7 +85,7 @@ public class GameManager {
      * @return
      */
     public Question getQuestionInCategory(int categoryIndex, int questionIndex) {
-        return _questionBoard.getCategory(categoryIndex).getQuestion(questionIndex);
+        return _questionBoardInUse.getCategory(categoryIndex).getQuestion(questionIndex);
     }
 
     /**
@@ -85,12 +97,20 @@ public class GameManager {
         for (int i = 0; i < 5; i++) {
             // If its smallest value question index is not equal to 5 then return false
             // as that category is not yet done
-            if (_questionBoard.getCategory(i).getLowestValuedQuestionIndex() != 5) {
+            if (_questionBoardInUse.getCategory(i).getLowestValuedQuestionIndex() != 5) {
                 return false;
             }
         }
         // Return true if every category is at 5 for their lowest value question index
         return true;
+    }
+
+    public boolean isCategoryComplete(int categoryIndex) {
+        if (_questionBoardInUse == null) {
+            return false;
+        } else {
+            return _questionBoardInUse.getCategory(categoryIndex).getLowestValuedQuestionIndex() == 5;
+        }
     }
 
     /**
@@ -134,18 +154,32 @@ public class GameManager {
         return _bestScore;
     }
 
+    public void initializeQuestionBoard(GameType questionBoardTypeToInitialize) {
+        if (questionBoardTypeToInitialize == GameType.NZ) {
+            _questionBoards[0] = new QuestionBoard(questionBoardTypeToInitialize);
+        } else if (questionBoardTypeToInitialize == GameType.INTERNATIONAL) {
+            _questionBoards[1] = new QuestionBoard(questionBoardTypeToInitialize);
+        }
+    }
+
+    public void setQuestionBoardInUse(GameType gameTypeToSet) {
+        _questionBoardInUse = gameTypeToSet == GameType.NZ ? _questionBoards[0] : _questionBoards[1];
+        _currentGameType = gameTypeToSet;
+    }
+
     /**
      * Creates a new question board and resets the player's current score to 0 and saves the game
      */
     public void newGame(ArrayList<String> selectedCategories) {
-        _questionBoard = new QuestionBoard();
-        _questionBoard.createBoard(selectedCategories);
+        initializeQuestionBoard(GameType.NZ);
+        setQuestionBoardInUse(GameType.NZ);
+        _questionBoardInUse.createBoard(selectedCategories);
         _currentScore = 0;
         saveGame();
     }
 
     public void resetGame() {
-        _questionBoard = null;
+        _questionBoardInUse = null;
         _currentScore = 0;
 
         String savePath = new File("").getAbsolutePath();
@@ -162,7 +196,7 @@ public class GameManager {
      * into a txt file which can then be loaded with the loadGame method
      */
     public void saveGame() {
-        if (_questionBoard!=null) {
+        if (_questionBoardInUse != null) {
             // Getting the path of the save folder outside of the application
             String savePath = new File("").getAbsolutePath();
             savePath+="/save";
@@ -196,14 +230,14 @@ public class GameManager {
                 saveWriter.write(_currentScore + "," + _bestScore + "\n");
 
                 // Go over the question board categories
-                for(int i = 0; i < _questionBoard.getNumCategories(); i++) {
+                for(int i = 0; i < _questionBoardInUse.getNumCategories(); i++) {
                     // Get the current category
-                    Category currentCategory = _questionBoard.getCategory(i);
+                    Category currentCategory = _questionBoardInUse.getCategory(i);
                     // This string saveLine is used as the line that will be saved to the txt
                     String saveLine = currentCategory.toString();
 
                     // Go over the questions in the categories
-                    for (int j = 0; j < _questionBoard.getNumQuestions(); j++) {
+                    for (int j = 0; j < _questionBoardInUse.getNumQuestions(); j++) {
                         // Get the current question
                         Question currentQuestion = currentCategory.getQuestion(j);
                         // Append this question's line number to the saveLine
@@ -243,7 +277,7 @@ public class GameManager {
                 _bestScore = Integer.parseInt(lineSplit.get(1));
 
                 // Initialise a new question board
-                _questionBoard = new QuestionBoard();
+                _questionBoardInUse = new QuestionBoard(GameType.NZ);
 
                 // Go over every line in the save.txt file
                 for (int i = 1; i < allLines.size(); i++) {
@@ -251,7 +285,7 @@ public class GameManager {
                     lineSplit = Arrays.asList(allLines.get(i).split("\\s*,\\s*"));
                     // Create the new category to load and add it
                     Category newCategory = new Category(lineSplit.get(0)); // parent
-                    _questionBoard.addCategory(newCategory);
+                    _questionBoardInUse.addCategory(newCategory);
 
                     // Load the categories questions by going to the categories folder to find the question line
                     savePath = new File("").getAbsolutePath()+"/categories/NZ/"+lineSplit.get(0)+".txt";
@@ -280,7 +314,7 @@ public class GameManager {
             }
         }
         else {
-            _questionBoard = null;
+            _questionBoardInUse = null;
         }
     }
 }

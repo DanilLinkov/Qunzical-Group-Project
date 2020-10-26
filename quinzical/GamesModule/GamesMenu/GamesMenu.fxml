@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenu.GamesMenuController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenu.GamesMenuController">
    <children>
       <HBox fx:id="helpArea" alignment="TOP_CENTER" layoutX="-2.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: rgba(169,169,169,0.4);">
          <children>
@@ -60,17 +55,37 @@
                   <RowConstraints minHeight="-Infinity" valignment="TOP" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
-                  <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Games Module" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-                     <font>
-                        <Font name="SansSerif Bold" size="30.0" />
-                     </font>
+                  <Button fx:id="helpButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleHelpButton" prefHeight="29.0" prefWidth="24.0" style="-fx-background-color: #b82b35;" text="?" textFill="WHITE">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="30.0" />
                      </GridPane.margin>
-                     <effect>
-                        <Bloom />
-                     </effect>
-                  </Label>
+                     <font>
+                        <Font name="SansSerif Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <VBox alignment="CENTER" GridPane.columnIndex="1">
+                     <children>
+                        <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Games Menu" textFill="WHITE">
+                           <font>
+                              <Font name="SansSerif Bold" size="30.0" />
+                           </font>
+                           <effect>
+                              <Bloom />
+                           </effect>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="gameTypeLabel" text="International" textFill="WHITE" visible="false">
+                           <font>
+                              <Font name="SansSerif Regular" size="25.0" />
+                           </font>
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </Label>
+                     </children>
+                  </VBox>
                   <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER">
                      <children>
                         <Label fx:id="userScoreLabel" text="User Score: $" textFill="WHITE">
@@ -88,14 +103,6 @@
                         <Insets right="20.0" top="3.0" />
                      </GridPane.margin>
                   </VBox>
-                  <Button fx:id="helpButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleHelpButton" prefHeight="29.0" prefWidth="24.0" style="-fx-background-color: #b82b35;" text="?" textFill="WHITE">
-                     <GridPane.margin>
-                        <Insets left="30.0" />
-                     </GridPane.margin>
-                     <font>
-                        <Font name="SansSerif Bold" size="15.0" />
-                     </font>
-                  </Button>
                </children>
                <VBox.margin>
                   <Insets top="30.0" />
@@ -137,7 +144,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="scoreBoardButton" alignment="CENTER" cancelButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleScoreBoardButton" prefHeight="63.0" prefWidth="218.0" style="-fx-background-color: #b82b35;" text="Score Board" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="scoreBoardButton" alignment="CENTER" cancelButton="true" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleScoreBoardButton" style="-fx-background-color: #b82b35;" text="Score Board" textAlignment="CENTER" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -172,6 +179,30 @@
                <VBox.margin>
                   <Insets top="55.0" />
                </VBox.margin>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" fillWidth="false">
+               <children>
+                  <VBox fx:id="switchGameTypeArea" alignment="CENTER" fillWidth="false" visible="false" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="15.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button fx:id="switchGameTypeButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #b82b35 #b82b35;" textFill="WHITE">
+                           <font>
+                              <Font name="SansSerif Bold" size="26.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="8.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label fx:id="switchGameTypeLabel" text="to Int'l Game" textFill="WHITE">
+                           <font>
+                              <Font name="SansSerif Regular" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
             </VBox>
          </children>
       </VBox>

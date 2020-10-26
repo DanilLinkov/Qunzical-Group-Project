@@ -8,8 +8,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.GameType;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Utilities.HelpUtilities;
 
@@ -32,8 +36,12 @@ public class GamesMenuController implements Initializable {
     public Button resetGameButton;
     public Button returnToMainMenuButton;
     public Button scoreBoardButton;
+    public Button switchGameTypeButton;
     public Label userScoreLabel;
     public Label bestScoreLabel;
+    public Label switchGameTypeLabel;
+    public Label gameTypeLabel;
+    public VBox switchGameTypeArea;
 
     public Button helpCloseButton;
     public Button helpButton;
@@ -64,7 +72,10 @@ public class GamesMenuController implements Initializable {
         bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
+        scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
+
+        checkTwoCategoriesComplete();
     }
 
     /**
@@ -74,10 +85,12 @@ public class GamesMenuController implements Initializable {
      */
     public void handlePlayGameButtonAction() {
         try {
-            if(!_gameManager.questionBoardExists()) {
+            if(!_gameManager.isQuestionBoardSetUp()) {
+                System.out.println("Question Board does not exist");
                 Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
                 _mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
+                System.out.println("Question board does exist");
                 Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
                 _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             }
@@ -104,7 +117,6 @@ public class GamesMenuController implements Initializable {
         Optional<ButtonType> result = confirmReset.showAndWait();
         if (result.get() == ButtonType.OK) {
             // Reset game and update score labels
-            //GameManager.getInstance().newGame();
             GameManager.getInstance().resetGame();
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
 
@@ -153,6 +165,53 @@ public class GamesMenuController implements Initializable {
 
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
+    }
+
+    private void configureSwitchGameTypeButton(GameType gameTypeToUseButton) {
+        if (gameTypeToUseButton == GameType.NZ) {
+            ImageView buttonImage = new ImageView();
+            buttonImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/GamesMenu/Images/globe.png").toExternalForm()));
+            buttonImage.setFitHeight(50);
+            buttonImage.setFitWidth(50);
+            switchGameTypeButton.setGraphic(buttonImage);
+            switchGameTypeButton.setOnAction(e -> setGameType(GameType.INTERNATIONAL));
+        } else if (gameTypeToUseButton == GameType.INTERNATIONAL) {
+            ImageView buttonImage = new ImageView();
+            buttonImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/GamesMenu/Images/nz.png").toExternalForm()));
+            buttonImage.setFitHeight(50);
+            buttonImage.setFitWidth(50);
+            switchGameTypeButton.setGraphic(buttonImage);
+            switchGameTypeButton.setOnAction(e -> setGameType(GameType.NZ));
+        }
+    }
+
+    public void setGameType(GameType gameTypeToSet) {
+        configureSwitchGameTypeButton(gameTypeToSet);
+
+        if (gameTypeToSet == GameType.NZ) {
+            switchGameTypeLabel.setText("to Int'l Game");
+            gameTypeLabel.setVisible(false);
+            _gameManager.setQuestionBoardInUse(GameType.NZ);
+        } else if (gameTypeToSet == GameType.INTERNATIONAL) {
+            switchGameTypeLabel.setText("to NZ Game");
+            gameTypeLabel.setVisible(true);
+            _gameManager.setQuestionBoardInUse(GameType.INTERNATIONAL);
+        }
+
+        switchGameTypeArea.setVisible(true);
+
+    }
+
+    private void checkTwoCategoriesComplete() {
+        int numCategoriesComplete = 0;
+        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
+            if (_gameManager.isCategoryComplete(categoryIndex)) {
+                numCategoriesComplete++;
+            }
+        }
+        if (numCategoriesComplete >= 2) {
+            setGameType(GameType.NZ);
+        }
     }
 
 }

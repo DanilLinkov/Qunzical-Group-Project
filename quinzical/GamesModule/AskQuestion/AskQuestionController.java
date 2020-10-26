@@ -15,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.GamesModule.GameManager;
+import quinzical.GamesModule.GameType;
+import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.GamesModule.SelectQuestion.SelectQuestionController;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Questions.Question;
@@ -189,7 +191,13 @@ public class AskQuestionController implements Initializable {
                 incorrectAnswerGiven();
             }
 
-            checkIsEveryQuestionAnswered();
+            AskQuestionUtilities.endTTSSpeaking();
+            if (checkIsTwoCategoriesComplete()) {
+                // Because international section has now been enabled, go back to Games menu.
+                GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+            } else {
+                checkIsEveryQuestionAnswered();
+            }
     }
 
     /**
@@ -203,7 +211,13 @@ public class AskQuestionController implements Initializable {
         done = true;
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
-        checkIsEveryQuestionAnswered();
+        AskQuestionUtilities.endTTSSpeaking();
+        if (checkIsTwoCategoriesComplete()) {
+            // Because international section has now been enabled, go back to Games menu.
+            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        } else {
+            checkIsEveryQuestionAnswered();
+        }
     }
 
     /**
@@ -267,6 +281,41 @@ public class AskQuestionController implements Initializable {
         alert.showAndWait();
     }
 
+    public boolean checkIsTwoCategoriesComplete() {
+        int numCategoriesComplete = 0;
+        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
+            if (_gameManager.isCategoryComplete(categoryIndex)) {
+                numCategoriesComplete++;
+            }
+        }
+        if (numCategoriesComplete == 2) {
+            // Display popup saying international section is complete here.
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            // Formats texts inside the pop up.
+            alert.setTitle("International Unlocked");
+            alert.setHeaderText("International Game Mode has been unlocked!");
+            String contentText = "Congratulations on completing two categories!" + "\n\n"
+                    + "You have unlocked international game module." + "\n"
+                    + "You can now switch between two modules by pressing a button on the"
+                    + "bottom right section of the games menu screen." + "\n\n"
+                    + "Let's now take a tour outside NZ...";
+
+            // Unlock international section and allow user to switch between them.
+            GamesMenuController.getInstance().setGameType(GameType.NZ);
+            _gameManager.initializeQuestionBoard(GameType.INTERNATIONAL);
+
+            // Formats the pop-up.
+            alert.getDialogPane().setContent(new Label(contentText));
+            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.showAndWait();
+
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Checks whether every question in the question has been answered by
      * checking whether the lowest valued question index in every category
@@ -291,7 +340,6 @@ public class AskQuestionController implements Initializable {
 //                    + "The game will now reset and a new set of question board will be ready.";
 //
 //            // Resetting the game.
-//            //_gameManager.newGame();
 //            _gameManager.resetGame();
 //
 //            // Formats the pop-up.
