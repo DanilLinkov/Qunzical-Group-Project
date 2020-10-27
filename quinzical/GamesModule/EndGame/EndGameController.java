@@ -59,12 +59,10 @@ public class EndGameController implements Initializable {
         int userScore = gameManager.getCurrentScore();
         scoreBoardManager.addScore(nameTextField.getText(),userScore);
         GamesMenuController.getInstance().setMainStageToGamesMenuScene();
-        GameManager.getInstance().resetGame();
     }
 
     public void handleDontSaveButton() {
         GamesMenuController.getInstance().setMainStageToGamesMenuScene();
-        GameManager.getInstance().resetGame();
     }
 
 }

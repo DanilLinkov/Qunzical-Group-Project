@@ -75,6 +75,7 @@ public class GamesMenuController implements Initializable {
         scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
 
+        _gameManager.setQuestionBoardInUse(GameType.NZ);
         checkTwoCategoriesComplete();
     }
 
@@ -84,6 +85,14 @@ public class GamesMenuController implements Initializable {
      * It changes the scene of the main stage to the select question scene.
      */
     public void handlePlayGameButtonAction() {
+        if (_gameManager.isGameFinished(_gameManager.getCurrentGameType())) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Finished!");
+            alert.setHeaderText("Current game mode has been completed!");
+            alert.setContentText("Please play the other game mode or reset to play this game mode again.");
+            alert.showAndWait();
+            return;
+        }
         try {
             if(!_gameManager.isQuestionBoardSetUp()) {
                 System.out.println("Question Board does not exist");

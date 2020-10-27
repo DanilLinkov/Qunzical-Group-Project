@@ -27,6 +27,7 @@ import java.util.List;
 public class GameManager {
 
     private QuestionBoard[] _questionBoards = new QuestionBoard[2];
+    private boolean[] _gameFinished = new boolean[2];
 
     // Question board currently used in this game type.
     private QuestionBoard _questionBoardInUse;
@@ -66,6 +67,18 @@ public class GameManager {
         } else {
             return _questionBoardInUse.isQuestionBoardCreated();
         }
+    }
+
+    public boolean isGameFinished(GameType gameType) {
+        return _gameFinished[gameType == GameType.NZ ? 0 : 1];
+    }
+
+    public void setCurrentGameFinished() {
+        _gameFinished[_currentGameType == GameType.NZ ? 0 : 1] = true;
+    }
+
+    public void setCurrentGameType(GameType gameTypeToSet) {
+        _currentGameType = gameTypeToSet;
     }
 
     public void unlockInternationalGame() {

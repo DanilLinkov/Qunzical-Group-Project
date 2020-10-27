@@ -294,7 +294,7 @@ public class AskQuestionController implements Initializable {
                 numCategoriesComplete++;
             }
         }
-        return numCategoriesComplete == 2 ? true : false;
+        return numCategoriesComplete == 2;
     }
 
     /**
@@ -308,8 +308,11 @@ public class AskQuestionController implements Initializable {
      */
     public void checkIsEveryQuestionAnswered() {
         if (_gameManager.isEveryQuestionAnswered()) {
+            _gameManager.setCurrentGameFinished();
             setSceneToEndGameScene();
-            GameManager.getInstance().resetGame();
+            if (_gameManager.isGameFinished(GameType.NZ) && _gameManager.isGameFinished(GameType.INTERNATIONAL)) {
+                _gameManager.resetGame();
+            }
         }
         else {
             // End any currently-running speaking methods and return to the question board.
