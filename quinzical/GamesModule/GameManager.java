@@ -250,7 +250,7 @@ public class GameManager {
 
                 for (QuestionBoard questionBoard : _questionBoards) {
 
-                    if (questionBoard == null || !questionBoard.isInitialized() ) {
+                    if (questionBoard == null || !questionBoard.isQuestionBoardCreated() ) {
                         break;
                     }
 
@@ -307,7 +307,9 @@ public class GameManager {
                 _questionBoards[1] = new QuestionBoard(GameType.INTERNATIONAL);
 
                 loadQuestionBoard(allLines.subList(1,6),lineSplit,savePath,_questionBoards[0],"NZ");
-                loadQuestionBoard(allLines.subList(6,11),lineSplit,savePath,_questionBoards[1],"international");
+                if (allLines.size()>7) {
+                    loadQuestionBoard(allLines.subList(6,11),lineSplit,savePath,_questionBoards[1],"international");
+                }
                 _questionBoardInUse = _questionBoards[0];
             } catch (IOException e) {
                 e.printStackTrace();
