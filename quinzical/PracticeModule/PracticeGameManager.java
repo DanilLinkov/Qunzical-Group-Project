@@ -19,8 +19,6 @@ public class PracticeGameManager {
 
     public PracticeGameManager() {
         _instance = this;
-        // Loading all the categories
-        loadAllCategories();
     }
 
     /**
@@ -42,13 +40,13 @@ public class PracticeGameManager {
     /**
      * Load a list of all the categories in the categories folder
      */
-    private void loadAllCategories() {
+    public void loadAllCategories(String location) {
         // Used to store all the file paths in the folder
         ArrayList<String> filePaths;
 
         // Getting the categories folder path
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath+="/categories/NZ";
+        categoriesPath+="/categories/"+location;
         // Creating a file object based on the path
         File categoriesFolder = new File(categoriesPath);
 

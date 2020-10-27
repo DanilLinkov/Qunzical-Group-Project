@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import quinzical.MainMenu.MainMenu;
 import quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController;
@@ -40,6 +41,7 @@ public class PracticeMenuController implements Initializable {
     public Button helpButton;
     public Label helpLabel;
     public HBox helpArea;
+    public ToggleButton locationToggle;
 
     // Used to store the selected category from the drop down menu
     private String selectedCategory;
@@ -55,6 +57,7 @@ public class PracticeMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         _instance = this;
         _practiceGameManager = new PracticeGameManager();
+        _practiceGameManager.loadAllCategories("NZ");
         // Setting the drop down list to have all the category files
         dropDownMenu.setItems(FXCollections.observableList(_practiceGameManager.getCategories()));
 
@@ -90,13 +93,20 @@ public class PracticeMenuController implements Initializable {
 
                 AskPracticeQuestionController askPracticeQuestionController = loader.getController();
                 // Set its category name equal to the selected category name which is then used inside that controller
-                askPracticeQuestionController.setCategoryName(selectedCategory);
+                askPracticeQuestionController.setCategoryName(selectedCategory,locationToggle.isSelected() ? "international":"NZ" );
 
                 _mainMenuModel.setMainStageScene(new Scene(root));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void handleToggleClick() {
+        String location = locationToggle.isSelected() ? "international":"NZ";
+        _practiceGameManager.loadAllCategories(location);
+        dropDownMenu.setItems(FXCollections.observableList(_practiceGameManager.getCategories()));
+        dropDownMenu.setPromptText("Select "+location + " category");
     }
 
     /**
