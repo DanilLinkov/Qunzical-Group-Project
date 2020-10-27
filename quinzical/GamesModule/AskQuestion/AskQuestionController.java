@@ -192,7 +192,10 @@ public class AskQuestionController implements Initializable {
             }
 
             AskQuestionUtilities.endTTSSpeaking();
-            if ((_gameManager.getCurrentGameType() == GameType.NZ) && checkIsTwoCategoriesComplete()) {
+            if (!_gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+                _gameManager.unlockInternationalGame();
+                notifyInternationalGameUnlock();
+
                 // Because international section has now been enabled, go back to Games menu.
                 GamesMenuController.getInstance().setMainStageToGamesMenuScene();
             } else {
@@ -212,7 +215,10 @@ public class AskQuestionController implements Initializable {
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
         AskQuestionUtilities.endTTSSpeaking();
-        if ((_gameManager.getCurrentGameType() == GameType.NZ) && checkIsTwoCategoriesComplete()) {
+        if (!_gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+            _gameManager.unlockInternationalGame();
+            notifyInternationalGameUnlock();
+
             // Because international section has now been enabled, go back to Games menu.
             GamesMenuController.getInstance().setMainStageToGamesMenuScene();
         } else {
@@ -281,40 +287,14 @@ public class AskQuestionController implements Initializable {
         alert.showAndWait();
     }
 
-    public boolean checkIsTwoCategoriesComplete() {
+    public boolean isTwoCategoriesComplete() {
         int numCategoriesComplete = 0;
         for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
             if (_gameManager.isCategoryComplete(categoryIndex)) {
                 numCategoriesComplete++;
             }
         }
-       // if (numCategoriesComplete == 2) {
-        if (true) {
-            // Display popup saying international section is complete here.
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-            // Formats texts inside the pop up.
-            alert.setTitle("International Unlocked");
-            alert.setHeaderText("International Game Mode has been unlocked!");
-            String contentText = "Congratulations on completing two categories!" + "\n\n"
-                    + "You have unlocked international game module." + "\n"
-                    + "You can now switch between two modules by pressing a button on the"
-                    + "bottom right section of the games menu screen." + "\n\n"
-                    + "Let's now take a tour outside NZ...";
-
-            // Unlock international section and allow user to switch between them.
-            GamesMenuController.getInstance().setGameType(GameType.NZ);
-            _gameManager.initializeQuestionBoard(GameType.INTERNATIONAL);
-
-            // Formats the pop-up.
-            alert.getDialogPane().setContent(new Label(contentText));
-            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.showAndWait();
-
-            return true;
-        }
-        return false;
+        return numCategoriesComplete == 2 ? true : false;
     }
 
     /**
@@ -330,30 +310,32 @@ public class AskQuestionController implements Initializable {
         if (_gameManager.isEveryQuestionAnswered()) {
             setSceneToEndGameScene();
             GameManager.getInstance().resetGame();
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//
-//            // Formats texts inside the pop up.
-//            alert.setTitle("Every Question Answered");
-//            alert.setHeaderText("Every Question Answered");
-//            String contentText = "Congratulations!" + "\n\n"
-//                    + "You have completed every question in the question board," + "\n"
-//                    + "and your total score was $" + _gameManager.getCurrentScore() + ".\n\n"
-//                    + "The game will now reset and a new set of question board will be ready.";
-//
-//            // Resetting the game.
-//            _gameManager.resetGame();
-//
-//            // Formats the pop-up.
-//            alert.getDialogPane().setContent(new Label(contentText));
-//            alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-//            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-//            alert.showAndWait();
         }
         else {
             // End any currently-running speaking methods and return to the question board.
             AskQuestionUtilities.endTTSSpeaking();
             SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
         }
+    }
+
+    private void notifyInternationalGameUnlock() {
+        // Display popup saying international section is complete here.
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        // Formats texts inside the pop up.
+        alert.setTitle("International Unlocked");
+        alert.setHeaderText("International Game Mode has been unlocked!");
+        String contentText = "Congratulations on completing two categories!" + "\n\n"
+                + "You have unlocked international game module." + "\n"
+                + "You can now switch between two modules by pressing a button on the "
+                + "bottom right section of the games menu screen." + "\n\n"
+                + "Let's now take a tour outside NZ...";
+
+        // Formats the pop-up.
+        alert.getDialogPane().setContent(new Label(contentText));
+        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
     }
 
     private void setSceneToEndGameScene() {

@@ -1,6 +1,7 @@
 package quinzical.GamesModule;
 
 import javafx.scene.layout.GridPane;
+import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.Questions.Category;
 import quinzical.Questions.Question;
 
@@ -30,6 +31,7 @@ public class GameManager {
     // Question board currently used in this game type.
     private QuestionBoard _questionBoardInUse;
     private GameType _currentGameType;
+    private boolean isInternationalGameUnlocked = false;
 
     // Score status.
     private int _currentScore;
@@ -64,6 +66,22 @@ public class GameManager {
         } else {
             return _questionBoardInUse.isQuestionBoardCreated();
         }
+    }
+
+    public void unlockInternationalGame() {
+        // Unlock international section and allow user to switch between them.
+        GamesMenuController.getInstance().setGameType(GameType.NZ);
+        // Generates QuestionBoard instance for international game type
+        initializeQuestionBoard(GameType.INTERNATIONAL);
+        isInternationalGameUnlocked = true;
+    }
+
+    public void lockInternationalGame() {
+        isInternationalGameUnlocked = false;
+    }
+
+    public boolean isInternationalGameUnlocked() {
+        return isInternationalGameUnlocked;
     }
 
     public GameType getCurrentGameType() {
