@@ -192,7 +192,7 @@ public class AskQuestionController implements Initializable {
             }
 
             AskQuestionUtilities.endTTSSpeaking();
-            if (checkIsTwoCategoriesComplete()) {
+            if ((_gameManager.getCurrentGameType() == GameType.NZ) && checkIsTwoCategoriesComplete()) {
                 // Because international section has now been enabled, go back to Games menu.
                 GamesMenuController.getInstance().setMainStageToGamesMenuScene();
             } else {
@@ -212,7 +212,7 @@ public class AskQuestionController implements Initializable {
         AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
 
         AskQuestionUtilities.endTTSSpeaking();
-        if (checkIsTwoCategoriesComplete()) {
+        if ((_gameManager.getCurrentGameType() == GameType.NZ) && checkIsTwoCategoriesComplete()) {
             // Because international section has now been enabled, go back to Games menu.
             GamesMenuController.getInstance().setMainStageToGamesMenuScene();
         } else {
@@ -288,7 +288,8 @@ public class AskQuestionController implements Initializable {
                 numCategoriesComplete++;
             }
         }
-        if (numCategoriesComplete == 2) {
+       // if (numCategoriesComplete == 2) {
+        if (true) {
             // Display popup saying international section is complete here.
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 

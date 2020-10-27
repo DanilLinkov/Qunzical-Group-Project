@@ -118,6 +118,9 @@ public class GamesMenuController implements Initializable {
         if (result.get() == ButtonType.OK) {
             // Reset game and update score labels
             GameManager.getInstance().resetGame();
+            // Revert back to NZ Game Type
+            setGameType(GameType.NZ);
+            lockInternationalSection();
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
@@ -200,6 +203,12 @@ public class GamesMenuController implements Initializable {
 
         switchGameTypeArea.setVisible(true);
 
+    }
+
+    public void lockInternationalSection() {
+        setGameType(GameType.NZ);
+        switchGameTypeArea.setVisible(false);
+        gameTypeLabel.setVisible(false);
     }
 
     private void checkTwoCategoriesComplete() {

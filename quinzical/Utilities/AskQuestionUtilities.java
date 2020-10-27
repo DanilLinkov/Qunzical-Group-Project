@@ -106,60 +106,60 @@ public class AskQuestionUtilities {
      * @param text A string for espeak to read.
      */
     public static void speak(String text) {
-        // End any previously running speak processes.
-        endTTSSpeaking();
-
-        // Add "\" in front of quotation marks to make bash read this as normal character.
-        text = text.replaceAll("\"", "\\\\\"");
-
-        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
-        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
-        boolean isSubStringMaori = false;
-        if (text.charAt(0) == '`') {
-            texts.pop();
-            isSubStringMaori = true;
-        }
-
-        int subStringIndex = 0;
-        for (String textToSpeak : texts) {
-            command.append("; ");
-
-            textToSpeak = textToSpeak.trim();
-
-            if (isSubStringMaori) {
-                command.append("espeak -vde \"" + textToSpeak + "\"");
-                command.append(" -s " + _readingSpeed);
-                command.append(" -w " + subStringIndex + ".wav");
-            } else {
-                command.append("espeak \"" + textToSpeak + "\"");
-                command.append(" -s " + _readingSpeed);
-                command.append(" -w " + subStringIndex + ".wav");
-            }
-
-            subStringIndex++;
-            isSubStringMaori = !isSubStringMaori;
-        }
-
-        try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
-            _espeakProcess = pb.start();
-            _espeakProcess.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<Media> medias = new ArrayList<>();
-        for (int i = 0; i < texts.size(); i++) {
-            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
-            medias.add(new Media(fileDirectory));
-        }
-
-        ObservableList<Media> mediaList = FXCollections.observableArrayList();
-        for (Media media : medias) {
-            mediaList.add(media);
-        }
-
-        playMediaTracks(mediaList);
+//        // End any previously running speak processes.
+//        endTTSSpeaking();
+//
+//        // Add "\" in front of quotation marks to make bash read this as normal character.
+//        text = text.replaceAll("\"", "\\\\\"");
+//
+//        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
+//        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
+//        boolean isSubStringMaori = false;
+//        if (text.charAt(0) == '`') {
+//            texts.pop();
+//            isSubStringMaori = true;
+//        }
+//
+//        int subStringIndex = 0;
+//        for (String textToSpeak : texts) {
+//            command.append("; ");
+//
+//            textToSpeak = textToSpeak.trim();
+//
+//            if (isSubStringMaori) {
+//                command.append("espeak -vde \"" + textToSpeak + "\"");
+//                command.append(" -s " + _readingSpeed);
+//                command.append(" -w " + subStringIndex + ".wav");
+//            } else {
+//                command.append("espeak \"" + textToSpeak + "\"");
+//                command.append(" -s " + _readingSpeed);
+//                command.append(" -w " + subStringIndex + ".wav");
+//            }
+//
+//            subStringIndex++;
+//            isSubStringMaori = !isSubStringMaori;
+//        }
+//
+//        try {
+//            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
+//            _espeakProcess = pb.start();
+//            _espeakProcess.waitFor();
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ArrayList<Media> medias = new ArrayList<>();
+//        for (int i = 0; i < texts.size(); i++) {
+//            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
+//            medias.add(new Media(fileDirectory));
+//        }
+//
+//        ObservableList<Media> mediaList = FXCollections.observableArrayList();
+//        for (Media media : medias) {
+//            mediaList.add(media);
+//        }
+//
+//        playMediaTracks(mediaList);
     }
 
     /**
