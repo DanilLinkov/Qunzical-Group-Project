@@ -265,5 +265,4 @@ public class QuestionBoard {
     public Category getCategory(int index) {
         return _categoriesList.get(index);
     }
-
 }

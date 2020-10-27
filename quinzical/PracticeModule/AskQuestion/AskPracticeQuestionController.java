@@ -151,12 +151,12 @@ public class AskPracticeQuestionController implements Initializable {
      * selected and then to load the questions in that category and select a random question
      * @param name
      */
-    public void setCategoryName(String name) {
+    public void setCategoryName(String name,String location) {
         // Setting the label to be category + its name
         categoryLabel.setText("Category: " + name);
 
         // Getting the specific categories file path
-        String categoriesPath = new File("").getAbsolutePath() + "/categories/NZ/" + name + ".txt";
+        String categoriesPath = new File("").getAbsolutePath() + "/categories/"+location+"/" + name + ".txt";
 
         try {
             // Getting all the lines in that category
