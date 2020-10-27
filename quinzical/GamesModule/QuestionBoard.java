@@ -37,6 +37,7 @@ public class QuestionBoard {
 
     // List of categories in the question board.
     private final ArrayList<Category> _categoriesList = new ArrayList<>();
+    private boolean initialized = false;
 
     private GameType _gameType;
 
@@ -49,6 +50,7 @@ public class QuestionBoard {
      * each having 5 random questions
      */
     public void createBoard(ArrayList<String> selectedCategories) {
+        initialized = true;
         // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
         categoriesPath += _gameType == GameType.NZ ? "/categories/NZ" : "/categories/international";
@@ -266,4 +268,7 @@ public class QuestionBoard {
         return _categoriesList.get(index);
     }
 
+    public boolean isInitialized() {
+        return initialized;
+    }
 }
