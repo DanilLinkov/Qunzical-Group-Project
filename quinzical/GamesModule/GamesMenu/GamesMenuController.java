@@ -38,7 +38,6 @@ public class GamesMenuController implements Initializable {
     public Button scoreBoardButton;
     public Button switchGameTypeButton;
     public Label userScoreLabel;
-    public Label bestScoreLabel;
     public Label switchGameTypeLabel;
     public Label gameTypeLabel;
     public VBox switchGameTypeArea;
@@ -69,7 +68,6 @@ public class GamesMenuController implements Initializable {
         _instance = this;
 
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
-        bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
@@ -155,7 +153,6 @@ public class GamesMenuController implements Initializable {
     public void setMainStageToGamesMenuScene() {
         // Refresh score labels for possible change.
         userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
-        bestScoreLabel.setText("Best Score: $" + _gameManager.getBestScore());
 
         _mainMenuModel.setMainStageScene(playGameButton.getScene());
     }

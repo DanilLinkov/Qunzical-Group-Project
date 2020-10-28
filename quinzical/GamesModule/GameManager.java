@@ -36,7 +36,6 @@ public class GameManager {
 
     // Score status.
     private int _currentScore;
-    private int _bestScore;
 
     // Singleton instance of this class.
     private static GameManager _instance;
@@ -173,23 +172,6 @@ public class GameManager {
         _currentScore -= value;
     }
 
-    /**
-     * Updating the users best score if the current score is greater than the current best score
-     */
-    public void updateBestScore() {
-        if (_currentScore > _bestScore) {
-            _bestScore = _currentScore;
-        }
-    }
-
-    /**
-     * Return the player's best score
-     * @return
-     */
-    public int getBestScore() {
-        return _bestScore;
-    }
-
     public void initializeQuestionBoard(GameType questionBoardTypeToInitialize) {
         if (questionBoardTypeToInitialize == GameType.NZ) {
             _questionBoards[0] = new QuestionBoard(questionBoardTypeToInitialize);
@@ -264,7 +246,7 @@ public class GameManager {
                 // Create a file writer for that save.txt file
                 FileWriter saveWriter = new FileWriter(savePath);
                 // Write the first line with the current score, best score
-                saveWriter.write(_currentScore + "," + _bestScore + "\n");
+                saveWriter.write(_currentScore + "," + "\n");
 
                 for (QuestionBoard questionBoard : _questionBoards) {
 
@@ -318,7 +300,6 @@ public class GameManager {
                 // Split the first line to get the current and best scores
                 List<String> lineSplit = Arrays.asList(allLines.get(0).split("\\s*,\\s*"));
                 _currentScore = Integer.parseInt(lineSplit.get(0));
-                _bestScore = Integer.parseInt(lineSplit.get(1));
 
                 // Initialise a new question board
                 _questionBoards[0] = new QuestionBoard(GameType.NZ);
