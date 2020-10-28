@@ -23,19 +23,19 @@ public class ScoreBoardController implements Initializable {
     public Label helpLabel;
     public HBox helpArea;
 
-    private static ScoreBoardController _instance;
+    private static ScoreBoardController instance;
 
     private Map<String,Integer> scoreBoardMap;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
         scoreBoardMap = ScoreBoardManager.getInstance().getScoreBoardMap();
         loadScoreBoard();
     }
 
     public static ScoreBoardController getInstance() {
-        return _instance;
+        return instance;
     }
 
     public void handleBackButton() {

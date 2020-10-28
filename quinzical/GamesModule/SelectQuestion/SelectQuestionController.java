@@ -38,19 +38,19 @@ public class SelectQuestionController implements Initializable {
     public HBox helpArea;
 
     // Frequently used instances of classes, including current class.
-    private MainMenu _mainMenuModel = MainMenu.getInstance();
-    private GameManager _gameManager = GameManager.getInstance();
-    private static SelectQuestionController _instance;
+    private final MainMenu mainMenuModel = MainMenu.getInstance();
+    private final GameManager gameManager = GameManager.getInstance();
+    private static SelectQuestionController instance;
 
     // The selected question of the player.
-    private Question _selectedQuestion;
+    private Question selectedQuestion;
 
     /**
      * Returns the instance of this class.
      * @return The instance of this class.
      */
     public static SelectQuestionController getInstance() {
-        return _instance;
+        return instance;
     }
 
     /**
@@ -58,7 +58,7 @@ public class SelectQuestionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
         initialization();
     }
 
@@ -66,11 +66,11 @@ public class SelectQuestionController implements Initializable {
      * Initializes the view by filling in the current score, the best score, and the question board.
      */
     private void initialization() {
-        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
         // Clear any child nodes in the VBox used to store question board, then add the question board.
         questionBoardArea.getChildren().clear();
-        questionBoardArea.getChildren().add(_gameManager.getQuestionBoard());
+        questionBoardArea.getChildren().add(gameManager.getQuestionBoard());
     }
 
     /**
@@ -84,7 +84,7 @@ public class SelectQuestionController implements Initializable {
      * @param questionIndex The index of the question in its category.
      */
     public void handlePointButtonAction(int categoryIndex, int questionIndex) {
-        _selectedQuestion = _gameManager.getQuestionInCategory(categoryIndex, questionIndex);
+        selectedQuestion = gameManager.getQuestionInCategory(categoryIndex, questionIndex);
 
         try {
             Parent askQuestionWindow = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/AskQuestion/AskQuestion.fxml"));
@@ -108,7 +108,7 @@ public class SelectQuestionController implements Initializable {
      * @return The question the player has selected.
      */
     public Question getSelectedQuestion() {
-        return _selectedQuestion;
+        return selectedQuestion;
     }
 
     /**
@@ -116,7 +116,7 @@ public class SelectQuestionController implements Initializable {
      */
     public void setMainStageToSelectQuestionScene() {
         initialization();
-        _mainMenuModel.setMainStageScene(backToGameMenuButton.getScene());
+        mainMenuModel.setMainStageScene(backToGameMenuButton.getScene());
     }
 
     public void handleHelpButton() {

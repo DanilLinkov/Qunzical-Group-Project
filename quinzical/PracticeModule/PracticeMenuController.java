@@ -2,7 +2,6 @@ package quinzical.PracticeModule;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -47,19 +46,19 @@ public class PracticeMenuController implements Initializable {
     private String selectedCategory;
 
     // Used for scene transitioning
-    private MainMenu _mainMenuModel = MainMenu.getInstance();
-    private PracticeGameManager _practiceGameManager;
+    private final MainMenu mainMenuModel = MainMenu.getInstance();
+    private PracticeGameManager practiceGameManager;
 
     // Creating its own static instance for scene transitioning
-    private static PracticeMenuController _instance;
+    private static PracticeMenuController instance;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
-        _practiceGameManager = new PracticeGameManager();
-        _practiceGameManager.loadAllCategories("NZ");
+        instance = this;
+        practiceGameManager = new PracticeGameManager();
+        practiceGameManager.loadAllCategories("NZ");
         // Setting the drop down list to have all the category files
-        dropDownMenu.setItems(FXCollections.observableList(_practiceGameManager.getCategories()));
+        dropDownMenu.setItems(FXCollections.observableList(practiceGameManager.getCategories()));
 
         BooleanBinding isCategoryNull = Bindings.isNull(dropDownMenu.valueProperty());
         selectCategoryButton.disableProperty().bind(isCategoryNull);
@@ -67,10 +66,10 @@ public class PracticeMenuController implements Initializable {
 
     /**
      * This method is used to return the instance of this controller
-     * @return
+     * @return Returns current instance of this scene
      */
     public static PracticeMenuController getInstance() {
-        return _instance;
+        return instance;
     }
 
     /**
@@ -95,7 +94,7 @@ public class PracticeMenuController implements Initializable {
                 // Set its category name equal to the selected category name which is then used inside that controller
                 askPracticeQuestionController.setCategoryName(selectedCategory,locationToggle.isSelected() ? "international" : "NZ");
 
-                _mainMenuModel.setMainStageScene(new Scene(root));
+                mainMenuModel.setMainStageScene(new Scene(root));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,8 +103,8 @@ public class PracticeMenuController implements Initializable {
 
     public void handleToggleClick() {
         String location = locationToggle.isSelected() ? "international":"NZ";
-        _practiceGameManager.loadAllCategories(location);
-        dropDownMenu.setItems(FXCollections.observableList(_practiceGameManager.getCategories()));
+        practiceGameManager.loadAllCategories(location);
+        dropDownMenu.setItems(FXCollections.observableList(practiceGameManager.getCategories()));
         dropDownMenu.setPromptText("Select "+location + " category");
     }
 
@@ -120,7 +119,7 @@ public class PracticeMenuController implements Initializable {
      * Method used to set the main stage into this scene
      */
     public void setMainStageToPracticeMenuScene() {
-        _mainMenuModel.setMainStageScene(selectCategoryButton.getScene());
+        mainMenuModel.setMainStageScene(selectCategoryButton.getScene());
     }
 
     public void handleHelpButton() {

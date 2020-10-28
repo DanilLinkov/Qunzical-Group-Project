@@ -9,56 +9,56 @@ package quinzical.Questions;
 public class Question {
 
     // Question properties
-    private String _clue;
-    private String[] _answer;
-    private int _lineNumber;
-    private Category _parent;
-    private String _questionType;
-    private int _value;
+    private String clue;
+    private String[] answer;
+    private int lineNumber;
+    private Category parent;
+    private String questionType;
+    private int value;
 
     // String[] pass into || _parent = parent; Category parent
     public Question(String clue, String[] answer, Category parent, int value) {
-        _clue = clue;
-        _answer = answer;
-        _parent = parent;
-        _value = value;
+        this.clue = clue;
+        this.answer = answer;
+        this.parent = parent;
+        this.value = value;
     }
 
     // Standard getters and setters
 
     public int getLineNumber() {
-        return _lineNumber;
+        return lineNumber;
     }
 
     public void setLineNumber(int lineNumber) {
-        _lineNumber = lineNumber;
+        this.lineNumber = lineNumber;
     }
 
     public String getClue() {
-        return _clue;
+        return clue;
     }
 
     public void setClue(String clue) {
-        _clue = clue;
+        this.clue = clue;
     }
 
     public void setQuestionType(String questionType) {
-        _questionType = questionType;
+        this.questionType = questionType;
     }
 
     public String getQuestionType() {
-        return _questionType;
+        return questionType;
     }
 
     public String[] getAnswer() {
-        return _answer;
+        return answer;
     }
 
     public Category getParent() {
-        return _parent;
+        return parent;
     }
 
     public int getValue() {
-        return _value;
+        return value;
     }
 }

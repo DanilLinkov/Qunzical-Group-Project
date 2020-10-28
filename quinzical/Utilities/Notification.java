@@ -35,16 +35,16 @@ public class Notification {
     }
 
     public static boolean confirmationPopup(String title, String headerText, String contentText) {
-        Alert confirmReset = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         // Formats texts inside the pop up.
-        confirmReset.setTitle(title);
-        confirmReset.setHeaderText(headerText);
-        confirmReset.setContentText(contentText);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
 
         // Waits for the button result
-        Optional<ButtonType> result = confirmReset.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
         // Return true if button pressed from the pop up was OK button.
-        return result.get() == ButtonType.OK;
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }

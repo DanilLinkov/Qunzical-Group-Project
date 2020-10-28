@@ -22,7 +22,7 @@ import quinzical.Questions.Question;
 import quinzical.Utilities.AskQuestionUtilities;
 import quinzical.Utilities.HelpUtilities;
 import quinzical.Utilities.Notification;
-import quinzical.Utilities.TTSUtility;
+import quinzical.Utilities.TTSUtilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -65,12 +65,12 @@ public class AskQuestionController implements Initializable {
     public HBox helpArea;
 
     // Frequently used instances of classes.
-    private final GameManager _gameManager = GameManager.getInstance();
-    private final SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
+    private final GameManager gameManager = GameManager.getInstance();
+    private final SelectQuestionController selectQuestionController = SelectQuestionController.getInstance();
     final int questionTime = 60*1000;
 
     // Reference to the question currently being asked.
-    private Question _question;
+    private Question question;
     long endTime = System.currentTimeMillis()+1000*5;
     boolean done = false;
 
@@ -80,17 +80,17 @@ public class AskQuestionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Retrieve selected question.
-        _question = _selectQuestionController.getSelectedQuestion();
+        question = selectQuestionController.getSelectedQuestion();
         // Mark the question as answered.
-        _question.getParent().advanceLowestValuedQuestionIndex();
+        question.getParent().advanceLowestValuedQuestionIndex();
 
         // Allocating respective labels for the question.
-        questionInfoLabel.setText(_question.getParent() + ": $" + _question.getValue());
+        questionInfoLabel.setText(question.getParent() + ": $" + question.getValue());
         selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
 
         // Initializing speed adjust slider (setting default view and event handler)
-        speedAdjustSlider.setValue(TTSUtility.getDefaultReadingSpeed());
-        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtility.setReadingSpeed(newSpeed.intValue()));
+        speedAdjustSlider.setValue(TTSUtilities.getDefaultReadingSpeed());
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtilities.setReadingSpeed(newSpeed.intValue()));
 
         // Only enable submit button when both question type has been selected and some answer has been entered.
         submitAnswerButton.disableProperty().bind(Bindings.or(
@@ -151,7 +151,7 @@ public class AskQuestionController implements Initializable {
      * It speaks the clue of the selected question.
      */
     public void handlePlayClueButton() {
-        TTSUtility.speak(_question.getClue());
+        TTSUtilities.speak(question.getClue());
     }
 
     /**
@@ -175,9 +175,9 @@ public class AskQuestionController implements Initializable {
         String cleanedPlayerAnswer = AskQuestionUtilities.answerCleanUp(answerField.getText());
             // Checking whether any of the correct answer matches the player's answer
             boolean isUserAnswerCorrect = false;
-            for (String correctAnswer : _question.getAnswer()) {
+            for (String correctAnswer : question.getAnswer()) {
                 if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))
-                && selectQuestionType.getValue().toLowerCase().equals(_question.getQuestionType())) {
+                && selectQuestionType.getValue().toLowerCase().equals(question.getQuestionType())) {
                     isUserAnswerCorrect = true;
                     correctAnswerGiven();
                 }
@@ -188,9 +188,9 @@ public class AskQuestionController implements Initializable {
                 incorrectAnswerGiven();
             }
 
-            TTSUtility.endTTSSpeaking();
-            if (!_gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
-                _gameManager.unlockInternationalGame();
+            TTSUtilities.endTTSSpeaking();
+            if (!gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+                gameManager.unlockInternationalGame();
                 notifyInternationalGameUnlock();
 
                 // Because international section has now been enabled, go back to Games menu.
@@ -209,11 +209,11 @@ public class AskQuestionController implements Initializable {
      */
     public void handleDontKnowButtonAction() {
         done = true;
-        AskQuestionUtilities.answerUnknown(_question.getAnswer()[0], _question.getQuestionType());
+        AskQuestionUtilities.answerUnknown(question.getAnswer()[0], question.getQuestionType());
 
-        TTSUtility.endTTSSpeaking();
-        if (!_gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
-            _gameManager.unlockInternationalGame();
+        TTSUtilities.endTTSSpeaking();
+        if (!gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+            gameManager.unlockInternationalGame();
             notifyInternationalGameUnlock();
 
             // Because international section has now been enabled, go back to Games menu.
@@ -233,14 +233,14 @@ public class AskQuestionController implements Initializable {
      */
     public void correctAnswerGiven() {
         // Increment current score and check-and-update best score.
-        _gameManager.incrementCurrentScore(_question.getValue());
+        gameManager.incrementCurrentScore(question.getValue());
 
         // Revert currently reading speed to default, then say "Correct".
-        TTSUtility.revertReadingSpeedToDefault();
-        TTSUtility.speak("Correct");
+        TTSUtilities.revertReadingSpeedToDefault();
+        TTSUtilities.speak("Correct");
 
-        String contentText = "Added $" + _question.getValue() + " to the current score.\n\n"
-                + "Your current score is now $" + _gameManager.getCurrentScore();
+        String contentText = "Added $" + question.getValue() + " to the current score.\n\n"
+                + "Your current score is now $" + gameManager.getCurrentScore();
 
         Notification.smallInformationPopup("Correct", "Correct!", contentText);
     }
@@ -252,28 +252,27 @@ public class AskQuestionController implements Initializable {
      */
     public void incorrectAnswerGiven() {
         // Decrement current score.
-        _gameManager.decrementCurrentScore(_question.getValue());
+        gameManager.decrementCurrentScore(question.getValue());
 
         // Revert currently reading speed to default, then say "Correct".
-        TTSUtility.revertReadingSpeedToDefault();
-        TTSUtility.speak("The correct answer was: "
-                + _question.getQuestionType() + " " + _question.getAnswer()[0]);
+        TTSUtilities.revertReadingSpeedToDefault();
+        TTSUtilities.speak("The correct answer was: "
+                + question.getQuestionType() + " " + question.getAnswer()[0]);
 
-        StringBuilder contentText = new StringBuilder();
-        contentText.append("The correct answer was: ")
-                .append(_question.getQuestionType().substring(0,1).toUpperCase())
-                .append(_question.getQuestionType().substring(1)).append(" ")
-                .append(_question.getAnswer()[0].replaceAll("`", ""))
-                .append("\n$" + _question.getValue()).append(" has been deducted from your current winning.\n\n")
-                .append("Your current winning is now $").append(_gameManager.getCurrentScore());
+        String contentText = "The correct answer was: "
+                + question.getQuestionType().substring(0,1).toUpperCase()
+                + question.getQuestionType().substring(1) + " "
+                + question.getAnswer()[0].replaceAll("`", "")
+                + "\n$" + question.getValue() + " has been deducted from your current winning.\n\n"
+                + "Your current winning is now $" + gameManager.getCurrentScore();
 
-        Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText.toString());
+        Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText);
     }
 
     public boolean isTwoCategoriesComplete() {
         int numCategoriesComplete = 0;
         for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
-            if (_gameManager.isCategoryComplete(categoryIndex)) {
+            if (gameManager.isCategoryComplete(categoryIndex)) {
                 numCategoriesComplete++;
             }
         }
@@ -290,29 +289,28 @@ public class AskQuestionController implements Initializable {
      * board, the player's total score, and that the game will now reset.
      */
     public void checkIsEveryQuestionAnswered() {
-        if (_gameManager.isEveryQuestionAnswered()) {
-            _gameManager.setCurrentGameFinished();
+        if (gameManager.isEveryQuestionAnswered()) {
+            gameManager.setCurrentGameFinished();
             setSceneToEndGameScene();
-            if (_gameManager.isGameFinished(GameType.NZ) && _gameManager.isGameFinished(GameType.INTERNATIONAL)) {
-                _gameManager.resetGame();
+            if (gameManager.isGameFinished(GameType.NZ) && gameManager.isGameFinished(GameType.INTERNATIONAL)) {
+                gameManager.resetGame();
             }
         }
         else {
             // End any currently-running speaking methods and return to the question board.
-            TTSUtility.endTTSSpeaking();
+            TTSUtilities.endTTSSpeaking();
             SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
         }
     }
 
     private void notifyInternationalGameUnlock() {
-        StringBuilder contentText = new StringBuilder();
-        contentText.append("Congratulations on completing two categories!\n\n")
-                .append("You have unlocked international game module.\n")
-                .append("You can now switch between two modules by pressing a button on the ")
-                .append("bottom right section of the games menu screen.\n\n")
-                .append("Let's now take a tour outside NZ...");
+        String contentText = "Congratulations on completing two categories!\n\n"
+                + "You have unlocked international game module.\n"
+                + "You can now switch between two modules by pressing a button on the "
+                + "bottom right section of the games menu screen.\n\n"
+                + "Let's now take a tour outside NZ...";
 
-        Notification.largeInformationPopup("International Unlocked", "International Game Mode has been unlocked!", contentText.toString());
+        Notification.largeInformationPopup("International Unlocked", "International Game Mode has been unlocked!", contentText);
     }
 
     private void setSceneToEndGameScene() {

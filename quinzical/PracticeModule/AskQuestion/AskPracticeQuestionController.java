@@ -14,7 +14,7 @@ import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
 import quinzical.Utilities.HelpUtilities;
 import quinzical.Utilities.Notification;
-import quinzical.Utilities.TTSUtility;
+import quinzical.Utilities.TTSUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,8 +82,8 @@ public class AskPracticeQuestionController implements Initializable {
         attempts = 3;
 
         // Adding an event handler to the speed slider to save the speed to the question reading speed variable
-        speedAdjustSlider.setValue(TTSUtility.getDefaultReadingSpeed());
-        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtility.setReadingSpeed(newSpeed.intValue()));
+        speedAdjustSlider.setValue(TTSUtilities.getDefaultReadingSpeed());
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtilities.setReadingSpeed(newSpeed.intValue()));
 
         selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
 
@@ -191,7 +191,7 @@ public class AskPracticeQuestionController implements Initializable {
      * This method is used to speak the question when the play button is pressed
      */
     public void handlePlayClueButton() {
-        TTSUtility.speak(question);
+        TTSUtilities.speak(question);
     }
 
     /**
@@ -226,7 +226,7 @@ public class AskPracticeQuestionController implements Initializable {
                 // If all the attempts have been used up then transition the player to the practice menu scene
                 if (attempts==0) {
                     // End any currently speaking process before transition.
-                    TTSUtility.endTTSSpeaking();
+                    TTSUtilities.endTTSSpeaking();
                     PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
                 }
                 else {
@@ -242,7 +242,7 @@ public class AskPracticeQuestionController implements Initializable {
     public void handleDontKnowButtonAction() {
         attempts = -1;
         AskQuestionUtilities.answerUnknown(answer[0], qType);
-        TTSUtility.endTTSSpeaking();
+        TTSUtilities.endTTSSpeaking();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
@@ -254,9 +254,9 @@ public class AskPracticeQuestionController implements Initializable {
         attempts = -1;
 
         // Resetting the espeak speed
-        TTSUtility.revertReadingSpeedToDefault();
+        TTSUtilities.revertReadingSpeedToDefault();
         // Speaking Correct
-        TTSUtility.speak("Correct!");
+        TTSUtilities.speak("Correct!");
 
         Notification.smallInformationPopup("Correct", "Correct!", "You are correct!");
     }
@@ -270,7 +270,7 @@ public class AskPracticeQuestionController implements Initializable {
         attempts--;
 
         // Resetting the reading speed of espeak
-        TTSUtility.revertReadingSpeedToDefault();
+        TTSUtilities.revertReadingSpeedToDefault();
         // Context string which is set depending on the number of attempts
         StringBuilder contentText = new StringBuilder();
 
@@ -278,7 +278,7 @@ public class AskPracticeQuestionController implements Initializable {
         if (attempts>1) {
             // Set the context to this and speak it
             contentText.append("You have ").append(attempts).append(" attempts left!");
-            TTSUtility.speak(contentText.toString());
+            TTSUtilities.speak(contentText.toString());
         }
 
         // Get all the answers for this question and show their first letter as a hint
@@ -288,7 +288,7 @@ public class AskPracticeQuestionController implements Initializable {
         if (attempts==1) {
             // Set the context to this and speak it
             contentText.append("You have ").append(attempts).append(" attempt left!");
-            TTSUtility.speak(contentText.toString());
+            TTSUtilities.speak(contentText.toString());
 
             // If there are multiple answers
             if (answer.length>1) {
@@ -334,7 +334,7 @@ public class AskPracticeQuestionController implements Initializable {
                     .append("\n\nwas: ")
                     .append(qType.substring(0,1).toUpperCase()).append(qType.substring(1)).append(" ")
                     .append(answers.toString());
-            TTSUtility.speak(contentText.toString());
+            TTSUtilities.speak(contentText.toString());
         }
 
         Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText.toString().replaceAll("`", ""));

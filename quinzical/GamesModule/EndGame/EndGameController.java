@@ -22,13 +22,13 @@ public class EndGameController implements Initializable {
     public Button dontSaveButton;
     public ImageView rewardImage;
 
-    private static EndGameController _instance;
-    private GameManager gameManager = GameManager.getInstance();
-    private ScoreBoardManager scoreBoardManager = ScoreBoardManager.getInstance();
+    private static EndGameController instance;
+    private final GameManager gameManager = GameManager.getInstance();
+    private final ScoreBoardManager scoreBoardManager = ScoreBoardManager.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
         setScoreLabel();
 
         BooleanBinding isTextFieldEmpty = Bindings.isEmpty(nameTextField.textProperty());
@@ -36,7 +36,7 @@ public class EndGameController implements Initializable {
     }
 
     public static EndGameController getInstance() {
-        return _instance;
+        return instance;
     }
 
     private void setScoreLabel() {

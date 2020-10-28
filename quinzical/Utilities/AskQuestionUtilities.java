@@ -1,6 +1,5 @@
 package quinzical.Utilities;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -53,25 +52,24 @@ public class AskQuestionUtilities {
      * @param questionAnswer The answer to the question.
      */
     public static void answerUnknown(String questionAnswer, String questionType) {
-        StringBuilder contentText = new StringBuilder();
-        contentText.append("That's alright, we all learn new things everyday.\n\n")
-                .append("The correct answer was: ")
-                .append(questionType.substring(0,1).toUpperCase()).append(questionType.substring(1)).append(" ")
-                .append(questionAnswer.replaceAll("`", ""));
+        String contentText = "That's alright, we all learn new things everyday.\n\n"
+                + "The correct answer was: "
+                + questionType.substring(0,1).toUpperCase() + questionType.substring(1) + " "
+                + questionAnswer.replaceAll("`", "");
 
         // Revert currently reading speed to default, then say "Correct".
-        TTSUtility.revertReadingSpeedToDefault();
-        TTSUtility.speak("The correct answer was " + questionType + " " + questionAnswer);
+        TTSUtilities.revertReadingSpeedToDefault();
+        TTSUtilities.speak("The correct answer was " + questionType + " " + questionAnswer);
 
-        Notification.largeInformationPopup("Don't Know", "Don't know the question?", contentText.toString());
+        Notification.largeInformationPopup("Don't Know", "Don't know the question?", contentText);
     }
 
     /**
      * User or actual answer input clean up method so that
      * the player's answer and the actual answer are comparable
      * even if the player used a different way of expressing the answer
-     * @param answer
-     * @return
+     * @param answer User answer to clean
+     * @return cleaned up answer
      */
     public static String answerCleanUp(String answer) {
         // Removing a, the, an and changing mt to mount, nz to new zealand

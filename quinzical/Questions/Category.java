@@ -12,41 +12,41 @@ public class Category {
 
     // Array list used to store the questions belonging to this category that have
     // been randomly selected
-    private ArrayList<Question> _questions = new ArrayList<>();
+    private ArrayList<Question> questions = new ArrayList<>();
     // Shows the current index of the first un answered question
-    private int _lowestValuedQuestionIndex = 0;
+    private int lowestValuedQuestionIndex = 0;
 
     // Category name
-    private String _categoryName;
+    private String categoryName;
 
     public Category(String categoryName) {
-        _categoryName = categoryName;
+        this.categoryName = categoryName;
     }
 
     public String toString() {
-        return _categoryName;
+        return categoryName;
     }
 
     // Standard getters, setters and Array list operations
 
     public void advanceLowestValuedQuestionIndex() {
-        _lowestValuedQuestionIndex++;
+        lowestValuedQuestionIndex++;
     }
 
     public int getLowestValuedQuestionIndex() {
-        return _lowestValuedQuestionIndex;
+        return lowestValuedQuestionIndex;
     }
 
     public void addQuestion(Question question){
-        _questions.add(question);
+        questions.add(question);
     }
 
     public Question getQuestion(int index){
-        return _questions.get(index);
+        return questions.get(index);
     }
 
     public void setLowestValuedQuestionIndex(int lowestValuedQuestionIndex) {
-        _lowestValuedQuestionIndex = lowestValuedQuestionIndex;
+        this.lowestValuedQuestionIndex = lowestValuedQuestionIndex;
     }
 
 }

@@ -22,7 +22,7 @@ public class MainMenuController {
     public Button exitButton;
 
     // Instance of the model of this controller.
-    private final MainMenu _mainMenuModel = MainMenu.getInstance();
+    private final MainMenu mainMenuModel = MainMenu.getInstance();
 
     /**
      * Handles the event of "Games Module" button being pressed.
@@ -32,7 +32,7 @@ public class MainMenuController {
     public void handleGamesModuleButtonClick() {
         try {
             Parent gamesMenu = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/GamesMenu/GamesMenu.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(gamesMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            mainMenuModel.setMainStageScene(new Scene(gamesMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class MainMenuController {
     public void handlePracticeModuleButtonClick() {
         try {
             Parent practiceMenu = FXMLLoader.load(getClass().getResource("/quinzical/PracticeModule/PracticeMenu.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(practiceMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            mainMenuModel.setMainStageScene(new Scene(practiceMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class MainMenuController {
      * It closes the main stage by invoking closeMainStage() method of the Main class.
      */
     public void handleExitButton() {
-        _mainMenuModel.closeMainStage();
+        mainMenuModel.closeMainStage();
     }
 
 }

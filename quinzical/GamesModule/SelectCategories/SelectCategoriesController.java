@@ -40,18 +40,18 @@ public class SelectCategoriesController implements Initializable {
     public Label helpLabel;
     public HBox helpArea;
 
-    private GameManager gameManager = GameManager.getInstance();
-    private GamesMenuController gamesMenuController = GamesMenuController.getInstance();
-    private final MainMenu _mainMenuModel = MainMenu.getInstance();
-    private static SelectCategoriesController _instance;
+    private final GameManager gameManager = GameManager.getInstance();
+    private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
+    private final MainMenu mainMenuModel = MainMenu.getInstance();
+    private static SelectCategoriesController instance;
 
-    private ArrayList<String> _categories;
+    private ArrayList<String> categories;
     private ObservableList<String> selectedCategories;
     private ArrayList<ToggleButton> toggleButtons;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
         loadAllCategories();
         selectedCategories = FXCollections.observableArrayList();
         toggleButtons = new ArrayList<>();
@@ -65,7 +65,7 @@ public class SelectCategoriesController implements Initializable {
     }
 
     public static SelectCategoriesController getInstance() {
-        return _instance;
+        return instance;
     }
 
     public GridPane getQuestionBoard() {
@@ -76,7 +76,7 @@ public class SelectCategoriesController implements Initializable {
         int i = 0;
         int j = 0;
 
-        for (String category : _categories) {
+        for (String category : categories) {
             categoriesBoard.add(createToggleButton(category),j,i);
             j++;
             if (j == 3) {
@@ -156,12 +156,12 @@ public class SelectCategoriesController implements Initializable {
         File categoriesFolder = new File(categoriesPath);
 
         // Getting all the file paths in that folder
-        filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
-        _categories = new ArrayList<>();
+        filePaths = new ArrayList<>(Arrays.asList(categoriesFolder.list()));
+        categories = new ArrayList<>();
 
         // Adding them to the list
         for (String filePath : filePaths) {
-            _categories.add(filePath.replace(".txt", ""));
+            categories.add(filePath.replace(".txt", ""));
         }
     }
 
@@ -174,7 +174,7 @@ public class SelectCategoriesController implements Initializable {
 
         try {
             Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,7 +182,7 @@ public class SelectCategoriesController implements Initializable {
 
     public void handleRandomSelect() {
         clearSelectedCategories();
-        ArrayList<Integer> randomIndexArray = randomIndexArray(_categories.size());
+        ArrayList<Integer> randomIndexArray = randomIndexArray(categories.size());
 
         for (int i = 0; i < 5; i++) {
             toggleButtons.get(randomIndexArray.get(i)).setSelected(true);

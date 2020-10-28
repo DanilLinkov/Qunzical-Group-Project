@@ -4,9 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +18,6 @@ import quinzical.Utilities.Notification;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -49,16 +46,16 @@ public class GamesMenuController implements Initializable {
     public HBox helpArea;
 
     // Frequently used instances of classes, including current class.
-    private final MainMenu _mainMenuModel = MainMenu.getInstance();
-    private final GameManager _gameManager = GameManager.getInstance();
-    private static GamesMenuController _instance;
+    private final MainMenu mainMenuModel = MainMenu.getInstance();
+    private final GameManager gameManager = GameManager.getInstance();
+    private static GamesMenuController instance;
 
     /**
      * Returns the instance of this class.
      * @return The instance of this class.
      */
     public static GamesMenuController getInstance() {
-        return _instance;
+        return instance;
     }
 
     /**
@@ -66,23 +63,23 @@ public class GamesMenuController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
 
-        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
 
-        _gameManager.setQuestionBoardInUse(GameType.NZ);
+        gameManager.setQuestionBoardInUse(GameType.NZ);
 
         // Checks whether international section should be unlocked
-        if (_gameManager.isTwoCategoriesComplete()) {
-            _gameManager.unlockInternationalGame();
+        if (gameManager.isTwoCategoriesComplete()) {
+            gameManager.unlockInternationalGame();
             setGameType(GameType.NZ);
         }
-        if (_gameManager.isEveryQuestionAnswered()) {
-            _gameManager.setCurrentGameFinished();
+        if (gameManager.isEveryQuestionAnswered()) {
+            gameManager.setCurrentGameFinished();
         }
     }
 
@@ -92,19 +89,19 @@ public class GamesMenuController implements Initializable {
      * It changes the scene of the main stage to the select question scene.
      */
     public void handlePlayGameButtonAction() {
-        if (_gameManager.isGameFinished(_gameManager.getCurrentGameType())) {
+        if (gameManager.isGameFinished(gameManager.getCurrentGameType())) {
             Notification.smallInformationPopup("Game Finished",
                     "Current game mode has been completed",
                     "Please play the other game mode or reset to play this game mode again.");
             return;
         }
         try {
-            if(!_gameManager.isQuestionBoardSetUp()) {
+            if(!gameManager.isQuestionBoardSetUp()) {
                 Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
-                _mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+                mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
                 Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
-                _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+                mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,8 +126,8 @@ public class GamesMenuController implements Initializable {
             // Revert back to NZ Game Type
             setGameType(GameType.NZ);
             lockInternationalSection();
-            _gameManager.resetGameFinished();
-            userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+            gameManager.resetGameFinished();
+            userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
             Notification.smallInformationPopup("Reset Game", "Your game has been reset!", "Press OK to continue.");
@@ -143,7 +140,7 @@ public class GamesMenuController implements Initializable {
      * It changes the scene of the main stage to the main menu scene.
      */
     public void handleReturnToMainMenuButtonAction() {
-        _mainMenuModel.returnToMainMenuScene();
+        mainMenuModel.returnToMainMenuScene();
     }
 
     /**
@@ -151,15 +148,15 @@ public class GamesMenuController implements Initializable {
      */
     public void setMainStageToGamesMenuScene() {
         // Refresh score labels for possible change.
-        userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
+        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
-        _mainMenuModel.setMainStageScene(playGameButton.getScene());
+        mainMenuModel.setMainStageScene(playGameButton.getScene());
     }
 
     public void handleScoreBoardButton() {
         try {
             Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/ScoreBoard/ScoreBoardScene.fxml"));
-            _mainMenuModel.setMainStageScene(new Scene(scoreBoard, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
+            mainMenuModel.setMainStageScene(new Scene(scoreBoard, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,11 +193,11 @@ public class GamesMenuController implements Initializable {
         if (gameTypeToSet == GameType.NZ) {
             switchGameTypeLabel.setText("to Int'l Game");
             gameTypeLabel.setVisible(false);
-            _gameManager.setQuestionBoardInUse(GameType.NZ);
+            gameManager.setQuestionBoardInUse(GameType.NZ);
         } else if (gameTypeToSet == GameType.INTERNATIONAL) {
             switchGameTypeLabel.setText("to NZ Game");
             gameTypeLabel.setVisible(true);
-            _gameManager.setQuestionBoardInUse(GameType.INTERNATIONAL);
+            gameManager.setQuestionBoardInUse(GameType.INTERNATIONAL);
         }
 
         switchGameTypeArea.setVisible(true);

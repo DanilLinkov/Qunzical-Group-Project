@@ -32,16 +32,16 @@ import java.util.List;
 public class QuestionBoard {
 
     // Constants in question board.
-    private final int _numQuestions = 5;
-    private final int _numCategories = 5;
+    private final int numQuestions = 5;
+    private final int numCategories = 5;
 
     // List of categories in the question board.
-    private final ArrayList<Category> _categoriesList = new ArrayList<>();
+    private final ArrayList<Category> categoriesList = new ArrayList<>();
 
-    private GameType _gameType;
+    private final GameType gameType;
 
     public QuestionBoard(GameType gameType) {
-        _gameType = gameType;
+        this.gameType = gameType;
     }
 
     /**
@@ -51,7 +51,7 @@ public class QuestionBoard {
     public void createBoard(ArrayList<String> selectedCategories) {
         // Getting the string path to the categories folder outside the application
         String categoriesPath = new File("").getAbsolutePath();
-        categoriesPath += _gameType == GameType.NZ ? "/categories/NZ" : "/categories/international";
+        categoriesPath += gameType == GameType.NZ ? "/categories/NZ" : "/categories/international";
 
         // Creating a folder file given that path
         File categoriesFolder = new File(categoriesPath);
@@ -111,12 +111,12 @@ public class QuestionBoard {
             }
 
             // Adding the category to the question board
-            _categoriesList.add(newCategory);
+            categoriesList.add(newCategory);
         }
     }
 
     public boolean isQuestionBoardCreated() {
-        return _categoriesList != null && _categoriesList.size() == 5;
+        return categoriesList.size() == 5;
     }
 
     /**
@@ -152,7 +152,7 @@ public class QuestionBoard {
         Label categoryLabel;
         int categoryIndex = 0;
         // Add categories to the top bar of question board
-        for (Category category : _categoriesList) {
+        for (Category category : categoriesList) {
             // Extract category name, make it into upper case, and store it in the list of labels of categories.
             categoryLabel = new Label(category.toString().toUpperCase());
             // Format each cell of category
@@ -164,9 +164,9 @@ public class QuestionBoard {
         }
 
         Button pointButton;
-        for (categoryIndex = 0; categoryIndex < _numCategories; categoryIndex++) {
-            int lowestValuedQuestionIndex = _categoriesList.get(categoryIndex).getLowestValuedQuestionIndex();
-            for (int questionIndex = 0; questionIndex < _numQuestions; questionIndex++) {
+        for (categoryIndex = 0; categoryIndex < numCategories; categoryIndex++) {
+            int lowestValuedQuestionIndex = categoriesList.get(categoryIndex).getLowestValuedQuestionIndex();
+            for (int questionIndex = 0; questionIndex < numQuestions; questionIndex++) {
                 // Only create buttons for questions that are not yet answered.
                 if (questionIndex >= lowestValuedQuestionIndex) {
                     pointButton = createPointButton(categoryIndex, questionIndex);
@@ -219,16 +219,16 @@ public class QuestionBoard {
         // Format each rows to be center aligned and have identical height.
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setValignment(VPos.CENTER);
-        rowConstraints.setPercentHeight(100d / _numQuestions);
-        for (int i = 0; i <= _numQuestions; i++) {
+        rowConstraints.setPercentHeight(100d / numQuestions);
+        for (int i = 0; i <= numQuestions; i++) {
             questionBoard.getRowConstraints().add(rowConstraints);
         }
 
         // Format each columns to be center aligned and have identical width.
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHalignment(HPos.CENTER);
-        columnConstraints.setPercentWidth(100d / (_numCategories));
-        for (int i = 0; i < _numCategories; i++) {
+        columnConstraints.setPercentWidth(100d / (numCategories));
+        for (int i = 0; i < numCategories; i++) {
             questionBoard.getColumnConstraints().add(columnConstraints);
         }
     }
@@ -238,7 +238,7 @@ public class QuestionBoard {
      * @return the number of categories in a question board; 5.
      */
     public int getNumCategories() {
-        return _numCategories;
+        return numCategories;
     }
 
     /**
@@ -246,7 +246,7 @@ public class QuestionBoard {
      * @return the number of questions in each category in a question board.
      */
     public int getNumQuestions() {
-        return _numQuestions;
+        return numQuestions;
     }
 
     /**
@@ -254,7 +254,7 @@ public class QuestionBoard {
      * @param category A category to add to the list of categories of this question board.
      */
     public void addCategory(Category category) {
-        _categoriesList.add(category);
+        categoriesList.add(category);
     }
 
     /**
@@ -263,6 +263,6 @@ public class QuestionBoard {
      * @return The category at the given index.
      */
     public Category getCategory(int index) {
-        return _categoriesList.get(index);
+        return categoriesList.get(index);
     }
 }

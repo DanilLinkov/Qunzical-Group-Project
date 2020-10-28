@@ -26,27 +26,27 @@ import java.util.List;
  */
 public class GameManager {
 
-    private QuestionBoard[] _questionBoards = new QuestionBoard[2];
-    private boolean[] _gameFinished = new boolean[2];
+    private QuestionBoard[] questionBoards = new QuestionBoard[2];
+    private boolean[] gameFinished = new boolean[2];
 
     // Question board currently used in this game type.
-    private QuestionBoard _questionBoardInUse;
-    private GameType _currentGameType;
+    private QuestionBoard questionBoardInUse;
+    private GameType currentGameType;
     private boolean isInternationalGameUnlocked = false;
 
     // Score status.
-    private int _currentScore;
+    private int currentScore;
 
     // Singleton instance of this class.
-    private static GameManager _instance;
+    private static GameManager instance;
 
     /**
      * Singleton constructor of this class.
      * It loads {@link GameManager#loadGame()}.
      */
     private GameManager() {
-        _instance = this;
-        _currentGameType = GameType.NZ;
+        instance = this;
+        currentGameType = GameType.NZ;
         loadGame();
     }
 
@@ -57,32 +57,32 @@ public class GameManager {
      * @return An instance of this class.
      */
     public static GameManager getInstance() {
-        return _instance == null ? new GameManager() : _instance;
+        return instance == null ? new GameManager() : instance;
     }
 
     public boolean isQuestionBoardSetUp() {
-        if (_questionBoardInUse == null) {
+        if (questionBoardInUse == null) {
             return false;
         } else {
-            return _questionBoardInUse.isQuestionBoardCreated();
+            return questionBoardInUse.isQuestionBoardCreated();
         }
     }
 
     public boolean isGameFinished(GameType gameType) {
-        return _gameFinished[gameType == GameType.NZ ? 0 : 1];
+        return gameFinished[gameType == GameType.NZ ? 0 : 1];
     }
 
     public void resetGameFinished() {
-        _gameFinished[0] = false;
-        _gameFinished[1] = false;
+        gameFinished[0] = false;
+        gameFinished[1] = false;
     }
 
     public void setCurrentGameFinished() {
-        _gameFinished[_currentGameType == GameType.NZ ? 0 : 1] = true;
+        gameFinished[currentGameType == GameType.NZ ? 0 : 1] = true;
     }
 
     public void setCurrentGameType(GameType gameTypeToSet) {
-        _currentGameType = gameTypeToSet;
+        currentGameType = gameTypeToSet;
     }
 
     public void unlockInternationalGame() {
@@ -102,7 +102,7 @@ public class GameManager {
     }
 
     public GameType getCurrentGameType() {
-        return _currentGameType;
+        return currentGameType;
     }
 
     /**
@@ -110,7 +110,7 @@ public class GameManager {
      * @return GridPane component which contains the question board.
      */
     public GridPane getQuestionBoard() {
-        return _questionBoardInUse.getQuestionBoard();
+        return questionBoardInUse.getQuestionBoard();
     }
 
     /**
@@ -120,7 +120,7 @@ public class GameManager {
      * @return
      */
     public Question getQuestionInCategory(int categoryIndex, int questionIndex) {
-        return _questionBoardInUse.getCategory(categoryIndex).getQuestion(questionIndex);
+        return questionBoardInUse.getCategory(categoryIndex).getQuestion(questionIndex);
     }
 
     /**
@@ -129,7 +129,7 @@ public class GameManager {
      */
     public boolean isEveryQuestionAnswered() {
         // If question board that is in use is null, obviously just return false.
-        if (_questionBoardInUse == null) {
+        if (questionBoardInUse == null) {
             return false;
         }
 
@@ -155,10 +155,10 @@ public class GameManager {
     }
 
     public boolean isCategoryComplete(int categoryIndex) {
-        if (_questionBoardInUse == null) {
+        if (questionBoardInUse == null) {
             return false;
         } else {
-            return _questionBoardInUse.getCategory(categoryIndex).getLowestValuedQuestionIndex() == 5;
+            return questionBoardInUse.getCategory(categoryIndex).getLowestValuedQuestionIndex() == 5;
         }
     }
 
@@ -167,7 +167,7 @@ public class GameManager {
      * @return
      */
     public int getCurrentScore() {
-        return _currentScore;
+        return currentScore;
     }
 
     /**
@@ -175,7 +175,7 @@ public class GameManager {
      * @param value
      */
     public void incrementCurrentScore(int value) {
-        _currentScore += value;
+        currentScore += value;
     }
 
     /**
@@ -183,37 +183,37 @@ public class GameManager {
      * @param value
      */
     public void decrementCurrentScore(int value) {
-        _currentScore -= value;
+        currentScore -= value;
     }
 
     public void initializeQuestionBoard(GameType questionBoardTypeToInitialize) {
         if (questionBoardTypeToInitialize == GameType.NZ) {
-            _questionBoards[0] = new QuestionBoard(questionBoardTypeToInitialize);
+            questionBoards[0] = new QuestionBoard(questionBoardTypeToInitialize);
         } else if (questionBoardTypeToInitialize == GameType.INTERNATIONAL) {
-            _questionBoards[1] = new QuestionBoard(questionBoardTypeToInitialize);
+            questionBoards[1] = new QuestionBoard(questionBoardTypeToInitialize);
         }
     }
 
     public void setQuestionBoardInUse(GameType gameTypeToSet) {
-        _questionBoardInUse = gameTypeToSet == GameType.NZ ? _questionBoards[0] : _questionBoards[1];
-        _currentGameType = gameTypeToSet;
+        questionBoardInUse = gameTypeToSet == GameType.NZ ? questionBoards[0] : questionBoards[1];
+        currentGameType = gameTypeToSet;
     }
 
     /**
      * Creates a new question board and resets the player's current score to 0 and saves the game
      */
     public void newGame(ArrayList<String> selectedCategories) {
-        initializeQuestionBoard(_currentGameType);
-        setQuestionBoardInUse(_currentGameType);
-        _questionBoardInUse.createBoard(selectedCategories);
-        _currentScore = 0;
+        initializeQuestionBoard(currentGameType);
+        setQuestionBoardInUse(currentGameType);
+        questionBoardInUse.createBoard(selectedCategories);
+        currentScore = 0;
         saveGame();
     }
 
     public void resetGame() {
-        _questionBoards[0] = null;
-        _questionBoards[1] = null;
-        _currentScore = 0;
+        questionBoards[0] = null;
+        questionBoards[1] = null;
+        currentScore = 0;
 
         String savePath = new File("").getAbsolutePath();
         savePath+="/save/save.txt";
@@ -229,7 +229,7 @@ public class GameManager {
      * into a txt file which can then be loaded with the loadGame method
      */
     public void saveGame() {
-        if (_questionBoardInUse != null) {
+        if (questionBoardInUse != null) {
             // Getting the path of the save folder outside of the application
             String savePath = new File("").getAbsolutePath();
             savePath+="/save";
@@ -260,9 +260,9 @@ public class GameManager {
                 // Create a file writer for that save.txt file
                 FileWriter saveWriter = new FileWriter(savePath);
                 // Write the first line with the current score, best score
-                saveWriter.write(_currentScore + "," + "\n");
+                saveWriter.write(currentScore + "," + "\n");
 
-                for (QuestionBoard questionBoard : _questionBoards) {
+                for (QuestionBoard questionBoard : questionBoards) {
 
                     if (questionBoard == null || !questionBoard.isQuestionBoardCreated() ) {
                         break;
@@ -313,23 +313,23 @@ public class GameManager {
                 List<String> allLines = Files.readAllLines(Paths.get(savePath));
                 // Split the first line to get the current and best scores
                 List<String> lineSplit = Arrays.asList(allLines.get(0).split("\\s*,\\s*"));
-                _currentScore = Integer.parseInt(lineSplit.get(0));
+                currentScore = Integer.parseInt(lineSplit.get(0));
 
                 // Initialise a new question board
-                _questionBoards[0] = new QuestionBoard(GameType.NZ);
-                _questionBoards[1] = new QuestionBoard(GameType.INTERNATIONAL);
+                questionBoards[0] = new QuestionBoard(GameType.NZ);
+                questionBoards[1] = new QuestionBoard(GameType.INTERNATIONAL);
 
-                loadQuestionBoard(allLines.subList(1,6),lineSplit,savePath,_questionBoards[0],"NZ");
+                loadQuestionBoard(allLines.subList(1,6),lineSplit,savePath, questionBoards[0],"NZ");
                 if (allLines.size()>7) {
-                    loadQuestionBoard(allLines.subList(6,11),lineSplit,savePath,_questionBoards[1],"international");
+                    loadQuestionBoard(allLines.subList(6,11),lineSplit,savePath, questionBoards[1],"international");
                 }
-                _questionBoardInUse = _questionBoards[0];
+                questionBoardInUse = questionBoards[0];
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         else {
-            _questionBoardInUse = null;
+            questionBoardInUse = null;
         }
     }
 

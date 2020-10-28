@@ -13,12 +13,12 @@ import java.util.Arrays;
 public class PracticeGameManager {
 
     // Having a static instance of this game manager so that other controllers can access this
-    private static PracticeGameManager _instance;
+    private static PracticeGameManager instance;
     // String list of all the categories in the categories folder
-    private ArrayList<String> _categories;
+    private ArrayList<String> categories;
 
     public PracticeGameManager() {
-        _instance = this;
+        instance = this;
     }
 
     /**
@@ -26,7 +26,7 @@ public class PracticeGameManager {
      * @return
      */
     public static PracticeGameManager getInstance() {
-        return _instance;
+        return instance;
     }
 
     /**
@@ -34,7 +34,7 @@ public class PracticeGameManager {
      * @return
      */
     public ArrayList<String> getCategories() {
-        return _categories;
+        return categories;
     }
 
     /**
@@ -52,11 +52,11 @@ public class PracticeGameManager {
 
         // Getting all the file paths in that folder
         filePaths = new ArrayList(Arrays.asList(categoriesFolder.list()));
-        _categories = new ArrayList<>();
+        categories = new ArrayList<>();
 
         // Adding them to the list
         for (String filePath : filePaths) {
-            _categories.add(filePath.replace(".txt", ""));
+            categories.add(filePath.replace(".txt", ""));
         }
     }
 

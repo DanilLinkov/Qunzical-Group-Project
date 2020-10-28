@@ -10,24 +10,51 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class TTSUtility {
+/**
+ * A utility class that provides TTS related functionalities.
+ *
+ * @author Hyung Park
+ */
+public class TTSUtilities {
 
     private static final int _defaultReadingSpeed = 160;
     private static int _readingSpeed = _defaultReadingSpeed;
     private static MediaPlayer _ttsAudioPlayer;
 
+    /**
+     * Processes given English text so that certain words are pronounced
+     * more correctly with espeak, our current TTS engine.
+     * <p></p>
+     * Word of notice: It makes the entire string be in lower case to simplify
+     * the process.
+     * @param englishTextToProcess English word to process.
+     * @return String after processing.
+     */
     private static String processEnglishStringForEspeak(String englishTextToProcess) {
         return englishTextToProcess.toLowerCase()
                 .replaceAll("christchurch", "christ church");
     }
 
+    /**
+     * Processes given Māori text so that certain words are pronounced
+     * more correctly with espeak, our current TTS engine.
+     * <p></p>
+     * Word of notice: It makes the entire string be in lower case to simplify
+     * the process.
+     * @param maoriTextToProcess Māori word to process.
+     * @return String after processing.
+     */
     private static String processMaoriStringForEspeak(String maoriTextToProcess) {
+        // Make it all lowercase for easy detection.
         maoriTextToProcess = maoriTextToProcess.toLowerCase();
+
+        // Check whether any word starts with "ng", and if it does, change it to "n".
         if (maoriTextToProcess.startsWith("ng") || maoriTextToProcess.contains(" ng")) {
             maoriTextToProcess = maoriTextToProcess.replaceFirst("ng", "n")
                     .replaceFirst(" ng", " n");
         }
 
+        // Change any vowels that are not pronounced in Māori way.
         maoriTextToProcess = maoriTextToProcess.replaceAll("ae", "a-e")
                 .replaceAll("ei", "e-i")
                 .replaceAll("eu", "e-u")
