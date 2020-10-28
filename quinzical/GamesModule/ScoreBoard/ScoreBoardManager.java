@@ -30,12 +30,17 @@ public class ScoreBoardManager {
 
     public Integer getBestScore() {
         loadQuestionBoard();
-        return (Integer) scoreBoardMap.values().toArray()[0];
+        return !scoreBoardMap.values().isEmpty() ? (Integer) scoreBoardMap.values().toArray()[0] : 0;
     }
 
     public void addScore(String playerName,Integer score) {
         try {
-            Files.write(Paths.get((new File("").getAbsolutePath())+"/scoreBoard/score.txt"), ("\n"+playerName + "," + Integer.toString(score)).getBytes(), StandardOpenOption.APPEND);
+            if (scoreBoardMap.isEmpty()) {
+                Files.write(Paths.get((new File("").getAbsolutePath())+"/scoreBoard/score.txt"), (playerName + "," + Integer.toString(score)).getBytes(), StandardOpenOption.APPEND);
+            }
+            else {
+                Files.write(Paths.get((new File("").getAbsolutePath())+"/scoreBoard/score.txt"), ("\n"+playerName + "," + Integer.toString(score)).getBytes(), StandardOpenOption.APPEND);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

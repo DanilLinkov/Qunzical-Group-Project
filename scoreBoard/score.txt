@@ -1,4 +1,1 @@
-test1,100
-test2,200
-test3,400
-test4,50
+asd,0
