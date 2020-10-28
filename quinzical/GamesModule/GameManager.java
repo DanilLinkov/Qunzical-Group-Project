@@ -73,6 +73,11 @@ public class GameManager {
         return _gameFinished[gameType == GameType.NZ ? 0 : 1];
     }
 
+    public void resetGameFinished() {
+        _gameFinished[0] = false;
+        _gameFinished[1] = false;
+    }
+
     public void setCurrentGameFinished() {
         _gameFinished[_currentGameType == GameType.NZ ? 0 : 1] = true;
     }

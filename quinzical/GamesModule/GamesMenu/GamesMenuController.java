@@ -95,11 +95,9 @@ public class GamesMenuController implements Initializable {
         }
         try {
             if(!_gameManager.isQuestionBoardSetUp()) {
-                System.out.println("Question Board does not exist");
                 Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
                 _mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
-                System.out.println("Question board does exist");
                 Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
                 _mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             }
@@ -130,6 +128,7 @@ public class GamesMenuController implements Initializable {
             // Revert back to NZ Game Type
             setGameType(GameType.NZ);
             lockInternationalSection();
+            _gameManager.resetGameFinished();
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
@@ -228,6 +227,7 @@ public class GamesMenuController implements Initializable {
             }
         }
         if (numCategoriesComplete >= 2) {
+            _gameManager.unlockInternationalGame();
             setGameType(GameType.NZ);
         }
     }
