@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import quinzical.GamesModule.GameManager;
 import quinzical.Utilities.AskQuestionUtilities;
+import quinzical.Utilities.TTSUtility;
 
 import java.util.Optional;
 
@@ -116,7 +117,7 @@ public class MainMenu extends Application {
         Optional<ButtonType> result = confirmClose.showAndWait();
         if (result.get() == ButtonType.OK) {
             // Clean up temporary TTS files.
-            AskQuestionUtilities.ttsCleanUp();
+            TTSUtility.ttsCleanUp();
 
             _gameManager.saveGame();
             _mainStage.close();

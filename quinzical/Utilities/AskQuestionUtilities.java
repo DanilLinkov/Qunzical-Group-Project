@@ -1,19 +1,11 @@
 package quinzical.Utilities;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,9 +18,6 @@ import java.util.List;
  */
 public class AskQuestionUtilities {
 
-    private static final int _defaultReadingSpeed = 160;
-    private static int _readingSpeed = _defaultReadingSpeed;
-    private static MediaPlayer _ttsAudioPlayer;
     private static final String[] macronsLowerCase = {"ā", "ē", "ī", "ō", "ū"};
     private static final String[] macronsUpperCase = {"Ā", "Ē", "Ī", "Ō", "Ū"};
     private static final ArrayList<String> questionTypes = new ArrayList<>(Arrays.asList("What is", "What are", "Who is", "Who are"));
@@ -64,25 +53,17 @@ public class AskQuestionUtilities {
      * @param questionAnswer The answer to the question.
      */
     public static void answerUnknown(String questionAnswer, String questionType) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-        // Formats texts inside the pop up.
-        alert.setTitle("Don't Know");
-        alert.setHeaderText("Don't know the question?");
-        String contentText = "That's alright, we all learn new things everyday.\n\n"
-                + "The correct answer was: "
-                + questionType.substring(0,1).toUpperCase() + questionType.substring(1) + " "
-                + questionAnswer.replaceAll("`", "");
+        StringBuilder contentText = new StringBuilder();
+        contentText.append("That's alright, we all learn new things everyday.\n\n")
+                .append("The correct answer was: ")
+                .append(questionType.substring(0,1).toUpperCase()).append(questionType.substring(1)).append(" ")
+                .append(questionAnswer.replaceAll("`", ""));
 
         // Revert currently reading speed to default, then say "Correct".
-        revertReadingSpeedToDefault();
-        speak("The correct answer was " + questionType + " " + questionAnswer);
+        TTSUtility.revertReadingSpeedToDefault();
+        TTSUtility.speak("The correct answer was " + questionType + " " + questionAnswer);
 
-        // Formats the pop-up.
-        alert.getDialogPane().setContent(new Label(contentText));
-        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
+        Notification.largePopup("Don't Know", "Don't know the question?", contentText.toString(), Alert.AlertType.INFORMATION);
     }
 
     /**
@@ -105,151 +86,4 @@ public class AskQuestionUtilities {
                 .replace("nz","new zealand");
     }
 
-    private static String processEnglishStringForEspeak(String englishTextToProcess) {
-        return englishTextToProcess.toLowerCase()
-                .replaceAll("christchurch", "christ church");
-    }
-
-    private static String processMaoriStringForEspeak(String maoriTextToProcess) {
-        maoriTextToProcess = maoriTextToProcess.toLowerCase();
-        if (maoriTextToProcess.startsWith("ng") || maoriTextToProcess.contains(" ng")) {
-            maoriTextToProcess = maoriTextToProcess.replaceFirst("ng", "n")
-                    .replaceFirst(" ng", " n");
-        }
-
-        maoriTextToProcess = maoriTextToProcess.replaceAll("ae", "a-e")
-                .replaceAll("ei", "e-i")
-                .replaceAll("eu", "e-u")
-                .replaceAll("ie", "i-e")
-                .replaceAll("oe", "o-e")
-                .replaceAll("ou", "o-u");
-
-        return maoriTextToProcess;
-    }
-
-    /**
-     * Using a bash function "espeak", a string inside the argument is read by "espeak".
-     * @param text A string for espeak to read.
-     */
-    public static void speak(String text) {
-        // End any previously running speak processes.
-        endTTSSpeaking();
-
-        // Add "\" in front of quotation marks to make bash read this as normal character.
-        text = text.replaceAll("\"", "\\\\\"");
-
-        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
-        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
-        boolean isSubStringMaori = false;
-        if (text.charAt(0) == '`') {
-            texts.pop();
-            isSubStringMaori = true;
-        }
-
-        int subStringIndex = 0;
-        for (String textToSpeak : texts) {
-            command.append("; ");
-
-            textToSpeak = textToSpeak.trim();
-            if (isSubStringMaori) {
-                textToSpeak = processMaoriStringForEspeak(textToSpeak);
-            } else {
-                textToSpeak = processEnglishStringForEspeak(textToSpeak);
-            }
-
-            command.append("espeak ").append(isSubStringMaori ? "-vde " : "");
-            command.append("\"").append(textToSpeak).append("\"");
-            command.append(" -s ").append(_readingSpeed);
-            command.append(" -w ").append(subStringIndex).append(".wav");
-
-            subStringIndex++;
-            isSubStringMaori = !isSubStringMaori;
-        }
-
-        try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
-            Process espeakProcess = pb.start();
-            espeakProcess.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<Media> medias = new ArrayList<>();
-        for (int i = 0; i < texts.size(); i++) {
-            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
-            medias.add(new Media(fileDirectory));
-        }
-
-        ObservableList<Media> mediaList = FXCollections.observableArrayList();
-        mediaList.addAll(medias);
-
-        playMediaTracks(mediaList);
-    }
-
-    /**
-     * Plays medias inside a provided list of media by recursively playing the very first
-     * media in the list.
-     * When the list has a size of 0, it stops.
-     * @param mediaList List of media to play.
-     */
-    private static void playMediaTracks(ObservableList<Media> mediaList) {
-        if (mediaList.size() == 0) {
-            return;
-        }
-
-        _ttsAudioPlayer = new MediaPlayer(mediaList.remove(0));
-        _ttsAudioPlayer.play();
-
-        _ttsAudioPlayer.setOnEndOfMedia(() -> playMediaTracks(mediaList));
-    }
-
-    /**
-     * Ends any previously running speak processes.
-     */
-    public static void endTTSSpeaking() {
-        if (_ttsAudioPlayer != null && (_ttsAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING)) {
-            _ttsAudioPlayer.stop();
-        }
-    }
-
-    /**
-     * Cleans up tts audio player and related temporary files.
-     */
-    public static void ttsCleanUp() {
-        endTTSSpeaking();
-
-        if (_ttsAudioPlayer != null) {
-            _ttsAudioPlayer.dispose();
-        }
-
-        try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", "rm -r tts/");
-            pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Returns the default reading speed; 160 WPM (words per minute)
-     * @return The default reading speed; 160 WPM.
-     */
-    public static int getDefaultReadingSpeed() {
-        return _defaultReadingSpeed;
-    }
-
-    /**
-     * Reverts the reading speed of the reading process to default; 160 WPM (words per minute)
-     */
-    public static void revertReadingSpeedToDefault() {
-        _readingSpeed = _defaultReadingSpeed;
-    }
-
-    /**
-     * Sets the reading speed of the reading process to the given speed.
-     * @param newSpeed A new reading speed to set, in WPM (words per minute)
-     */
-    public static void setReadingSpeed(int newSpeed) {
-        _readingSpeed = newSpeed;
-    }
 }

@@ -15,6 +15,8 @@ import javafx.util.Duration;
 import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
 import quinzical.Utilities.HelpUtilities;
+import quinzical.Utilities.Notification;
+import quinzical.Utilities.TTSUtility;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +34,7 @@ import java.util.*;
  * <p></p>
  * It takes care of how events caused by button presses in the "AskPracticeQuestion" view are handled.
  *
- * @author Danil Linkov
+ * @author Danil Linkov, Hyung Park
  */
 public class AskPracticeQuestionController implements Initializable {
 
@@ -82,8 +84,8 @@ public class AskPracticeQuestionController implements Initializable {
         attempts = 3;
 
         // Adding an event handler to the speed slider to save the speed to the question reading speed variable
-        speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
-        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> AskQuestionUtilities.setReadingSpeed(newSpeed.intValue()));
+        speedAdjustSlider.setValue(TTSUtility.getDefaultReadingSpeed());
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtility.setReadingSpeed(newSpeed.intValue()));
 
         selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
 
@@ -191,7 +193,7 @@ public class AskPracticeQuestionController implements Initializable {
      * This method is used to speak the question when the play button is pressed
      */
     public void handlePlayClueButton() {
-        AskQuestionUtilities.speak(question);
+        TTSUtility.speak(question);
     }
 
     /**
@@ -226,7 +228,7 @@ public class AskPracticeQuestionController implements Initializable {
                 // If all the attempts have been used up then transition the player to the practice menu scene
                 if (attempts==0) {
                     // End any currently speaking process before transition.
-                    AskQuestionUtilities.endTTSSpeaking();
+                    TTSUtility.endTTSSpeaking();
                     PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
                 }
                 else {
@@ -242,7 +244,7 @@ public class AskPracticeQuestionController implements Initializable {
     public void handleDontKnowButtonAction() {
         attempts = -1;
         AskQuestionUtilities.answerUnknown(answer[0], qType);
-        AskQuestionUtilities.endTTSSpeaking();
+        TTSUtility.endTTSSpeaking();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
 
@@ -252,24 +254,13 @@ public class AskPracticeQuestionController implements Initializable {
      */
     private void correctAnswerGiven() {
         attempts = -1;
-        // Creating a new alert box object
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-        // Setting the title, header and context
-        alert.setTitle("Correct");
-        alert.setHeaderText("Correct!");
-        String contentText = "You are correct!";
 
         // Resetting the espeak speed
-        AskQuestionUtilities.revertReadingSpeedToDefault();
+        TTSUtility.revertReadingSpeedToDefault();
         // Speaking Correct
-        AskQuestionUtilities.speak("Correct!");
+        TTSUtility.speak("Correct!");
 
-        // Setting the alert box, showing it and waiting for the player to click ok
-        alert.getDialogPane().setContent(new Label(contentText));
-        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
+        Notification.smallPopup("Correct", "Correct!", "You are correct!", Alert.AlertType.INFORMATION);
     }
 
     /**
@@ -277,24 +268,19 @@ public class AskPracticeQuestionController implements Initializable {
      * them an alert box depending on the number of attempts they have left
      */
     private void incorrectAnswerGiven() {
-        // Creating a new alert box object
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         // Decrementing the number of attempts
         attempts--;
 
-        // Setting the title and the header of the alert box
-        alert.setTitle("Incorrect");
-        alert.setHeaderText("Incorrect!");
         // Resetting the reading speed of espeak
-        AskQuestionUtilities.revertReadingSpeedToDefault();
+        TTSUtility.revertReadingSpeedToDefault();
         // Context string which is set depending on the number of attempts
-        String contentText = "";
+        StringBuilder contentText = new StringBuilder();
 
         // If the player has more than 1 attempts left
         if (attempts>1) {
             // Set the context to this and speak it
-            contentText = "You have " + attempts + " attempts left!";
-            AskQuestionUtilities.speak(contentText);
+            contentText.append("You have ").append(attempts).append(" attempts left!");
+            TTSUtility.speak(contentText.toString());
         }
 
         // Get all the answers for this question and show their first letter as a hint
@@ -303,8 +289,8 @@ public class AskPracticeQuestionController implements Initializable {
         // If the player is on their last attempt
         if (attempts==1) {
             // Set the context to this and speak it
-            contentText = "You have " + attempts + " attempt left!";
-            AskQuestionUtilities.speak(contentText);
+            contentText.append("You have ").append(attempts).append(" attempt left!");
+            TTSUtility.speak(contentText.toString());
 
             // If there are multiple answers
             if (answer.length>1) {
@@ -344,21 +330,19 @@ public class AskPracticeQuestionController implements Initializable {
             }
 
             // Display the correct answers and say they have run out of attempts and speak it
-            contentText = "You have run out of attempts!"
-                    + "\n\nThe answer to the question \n\n"
-                    + question
-                    + "\n\nwas: "
-                    + qType.substring(0,1).toUpperCase() + qType.substring(1) + " "
-                    + answers.toString();
-            AskQuestionUtilities.speak(contentText);
+            contentText.append("You have run out of attempts!")
+                    .append("\n\nThe answer to the question \n\n")
+                    .append(question)
+                    .append("\n\nwas: ")
+                    .append(qType.substring(0,1).toUpperCase()).append(qType.substring(1)).append(" ")
+                    .append(answers.toString());
+            TTSUtility.speak(contentText.toString());
         }
 
-        // Show the alert box with these properties
-        alert.getDialogPane().setContent(new Label(contentText.replaceAll("`","")));
-        alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        // Wait for the player to close it to continue with the main application
-        alert.showAndWait();
+        Notification.largePopup("Incorrect",
+                "Incorrect!",
+                contentText.toString().replaceAll("`", ""),
+                Alert.AlertType.INFORMATION);
     }
 
     /**
