@@ -231,7 +231,6 @@ public class AskQuestionController implements Initializable {
     public void correctAnswerGiven() {
         // Increment current score and check-and-update best score.
         _gameManager.incrementCurrentScore(_question.getValue());
-        _gameManager.updateBestScore();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
