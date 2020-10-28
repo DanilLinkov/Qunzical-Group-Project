@@ -93,7 +93,7 @@ public class PracticeMenuController implements Initializable {
 
                 AskPracticeQuestionController askPracticeQuestionController = loader.getController();
                 // Set its category name equal to the selected category name which is then used inside that controller
-                askPracticeQuestionController.setCategoryName(selectedCategory,locationToggle.isSelected() ? "international":"NZ" );
+                askPracticeQuestionController.setCategoryName(selectedCategory,locationToggle.isSelected() ? "international" : "NZ");
 
                 _mainMenuModel.setMainStageScene(new Scene(root));
             }

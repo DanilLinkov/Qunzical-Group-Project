@@ -92,8 +92,11 @@ public class AskQuestionController implements Initializable {
         speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> AskQuestionUtilities.setReadingSpeed(newSpeed.intValue()));
 
-        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
-        submitAnswerButton.disableProperty().bind(isTextFieldEmpty);
+        // Only enable submit button when both question type has been selected and some answer has been entered.
+        submitAnswerButton.disableProperty().bind(Bindings.or(
+                answerField.textProperty().isEmpty(),
+                selectQuestionType.valueProperty().isNull()
+        ));
 
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);

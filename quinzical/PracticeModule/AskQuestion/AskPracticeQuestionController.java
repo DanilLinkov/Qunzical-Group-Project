@@ -93,8 +93,11 @@ public class AskPracticeQuestionController implements Initializable {
         setTimer();
         showTimer();
 
-        BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
-        submitButton.disableProperty().bind(isTextFieldEmpty);
+        // Only enable submit button when both question type has been selected and some answer has been entered.
+        submitButton.disableProperty().bind(Bindings.or(
+                answerField.textProperty().isEmpty(),
+                selectQuestionType.valueProperty().isNull()
+        ));
     }
 
     public void macronSwitchCaps() {
