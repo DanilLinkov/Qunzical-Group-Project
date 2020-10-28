@@ -128,16 +128,30 @@ public class GameManager {
      * @return
      */
     public boolean isEveryQuestionAnswered() {
-        // Going over all the categories
-        for (int i = 0; i < 5; i++) {
-            // If its smallest value question index is not equal to 5 then return false
-            // as that category is not yet done
-            if (_questionBoardInUse.getCategory(i).getLowestValuedQuestionIndex() != 5) {
+        // If question board that is in use is null, obviously just return false.
+        if (_questionBoardInUse == null) {
+            return false;
+        }
+
+        // If there exists a category that is incomplete, immediately return false.
+        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
+            if (!isCategoryComplete(categoryIndex)) {
                 return false;
             }
         }
+
         // Return true if every category is at 5 for their lowest value question index
         return true;
+    }
+
+    public boolean isTwoCategoriesComplete() {
+        int numCategoriesComplete = 0;
+        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
+            if (isCategoryComplete(categoryIndex)) {
+                numCategoriesComplete++;
+            }
+        }
+        return numCategoriesComplete >= 2;
     }
 
     public boolean isCategoryComplete(int categoryIndex) {

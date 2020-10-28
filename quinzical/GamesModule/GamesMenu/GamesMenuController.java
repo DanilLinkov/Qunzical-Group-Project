@@ -74,7 +74,15 @@ public class GamesMenuController implements Initializable {
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
 
         _gameManager.setQuestionBoardInUse(GameType.NZ);
-        checkTwoCategoriesComplete();
+
+        // Checks whether international section should be unlocked
+        if (_gameManager.isTwoCategoriesComplete()) {
+            _gameManager.unlockInternationalGame();
+            setGameType(GameType.NZ);
+        }
+        if (_gameManager.isEveryQuestionAnswered()) {
+            _gameManager.setCurrentGameFinished();
+        }
     }
 
     /**
@@ -214,19 +222,6 @@ public class GamesMenuController implements Initializable {
         setGameType(GameType.NZ);
         switchGameTypeArea.setVisible(false);
         gameTypeLabel.setVisible(false);
-    }
-
-    private void checkTwoCategoriesComplete() {
-        int numCategoriesComplete = 0;
-        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
-            if (_gameManager.isCategoryComplete(categoryIndex)) {
-                numCategoriesComplete++;
-            }
-        }
-        if (numCategoriesComplete >= 2) {
-            _gameManager.unlockInternationalGame();
-            setGameType(GameType.NZ);
-        }
     }
 
 }
