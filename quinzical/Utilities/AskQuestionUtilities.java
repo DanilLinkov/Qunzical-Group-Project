@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A utility class that contains methods that are used in AskQuestion views across different modules.
@@ -29,8 +30,13 @@ public class AskQuestionUtilities {
     private static int _readingSpeed = _defaultReadingSpeed;
     private static Process _espeakProcess;
     private static MediaPlayer _ttsAudioPlayer;
-    private static String[] macronsLowerCase = {"ā", "ē", "ī", "ō", "ū"};
-    private static String[] macronsUpperCase = {"Ā", "Ē", "Ī", "Ō", "Ū"};
+    private static final String[] macronsLowerCase = {"ā", "ē", "ī", "ō", "ū"};
+    private static final String[] macronsUpperCase = {"Ā", "Ē", "Ī", "Ō", "Ū"};
+    private static final ArrayList<String> questionTypes = new ArrayList<>(Arrays.asList("What is", "What are", "Who is", "Who are"));
+
+    public static List<String> getQuestionTypes() {
+        return questionTypes;
+    }
 
     /**
      * Configures the event action of an array of macron buttons and returns a boolean value on
@@ -58,18 +64,19 @@ public class AskQuestionUtilities {
      * Displays a pop up notifying the player what the answer to the unknown question was.
      * @param questionAnswer The answer to the question.
      */
-    public static void answerUnknown(String questionAnswer) {
+    public static void answerUnknown(String questionAnswer, String questionType) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
         // Formats texts inside the pop up.
         alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
         String contentText = "That's alright, we all learn new things everyday.\n\n" +
-                "The correct answer was: " + questionAnswer.replaceAll("`", "");
+                "The correct answer was: " + questionType + " "
+                + questionAnswer.replaceAll("`", "");
 
         // Revert currently reading speed to default, then say "Correct".
         revertReadingSpeedToDefault();
-        speak("The correct answer was " + questionAnswer);
+        speak("The correct answer was " + questionType + " " + questionAnswer);
 
         // Formats the pop-up.
         alert.getDialogPane().setContent(new Label(contentText));
@@ -89,12 +96,11 @@ public class AskQuestionUtilities {
         // Removing a, the, an and changing mt to mount, nz to new zealand
         // Also trimming and lower casing the answer
         String cleanAnswer = answer.toLowerCase()
+                .trim()
                 .replace("`","")
                 .replace("a ","")
                 .replace("the ","")
                 .replace("an ","")
-                .replace("`", "")
-                .trim()
                 .replace("mt","mount")
                 .replace("nz","new zealand");
 
@@ -106,60 +112,60 @@ public class AskQuestionUtilities {
      * @param text A string for espeak to read.
      */
     public static void speak(String text) {
-//        // End any previously running speak processes.
-//        endTTSSpeaking();
-//
-//        // Add "\" in front of quotation marks to make bash read this as normal character.
-//        text = text.replaceAll("\"", "\\\\\"");
-//
-//        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
-//        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
-//        boolean isSubStringMaori = false;
-//        if (text.charAt(0) == '`') {
-//            texts.pop();
-//            isSubStringMaori = true;
-//        }
-//
-//        int subStringIndex = 0;
-//        for (String textToSpeak : texts) {
-//            command.append("; ");
-//
-//            textToSpeak = textToSpeak.trim();
-//
-//            if (isSubStringMaori) {
-//                command.append("espeak -vde \"" + textToSpeak + "\"");
-//                command.append(" -s " + _readingSpeed);
-//                command.append(" -w " + subStringIndex + ".wav");
-//            } else {
-//                command.append("espeak \"" + textToSpeak + "\"");
-//                command.append(" -s " + _readingSpeed);
-//                command.append(" -w " + subStringIndex + ".wav");
-//            }
-//
-//            subStringIndex++;
-//            isSubStringMaori = !isSubStringMaori;
-//        }
-//
-//        try {
-//            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
-//            _espeakProcess = pb.start();
-//            _espeakProcess.waitFor();
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ArrayList<Media> medias = new ArrayList<>();
-//        for (int i = 0; i < texts.size(); i++) {
-//            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
-//            medias.add(new Media(fileDirectory));
-//        }
-//
-//        ObservableList<Media> mediaList = FXCollections.observableArrayList();
-//        for (Media media : medias) {
-//            mediaList.add(media);
-//        }
-//
-//        playMediaTracks(mediaList);
+        // End any previously running speak processes.
+        endTTSSpeaking();
+
+        // Add "\" in front of quotation marks to make bash read this as normal character.
+        text = text.replaceAll("\"", "\\\\\"");
+
+        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
+        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
+        boolean isSubStringMaori = false;
+        if (text.charAt(0) == '`') {
+            texts.pop();
+            isSubStringMaori = true;
+        }
+
+        int subStringIndex = 0;
+        for (String textToSpeak : texts) {
+            command.append("; ");
+
+            textToSpeak = textToSpeak.trim();
+
+            if (isSubStringMaori) {
+                command.append("espeak -vde \"" + textToSpeak + "\"");
+                command.append(" -s " + _readingSpeed);
+                command.append(" -w " + subStringIndex + ".wav");
+            } else {
+                command.append("espeak \"" + textToSpeak + "\"");
+                command.append(" -s " + _readingSpeed);
+                command.append(" -w " + subStringIndex + ".wav");
+            }
+
+            subStringIndex++;
+            isSubStringMaori = !isSubStringMaori;
+        }
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
+            _espeakProcess = pb.start();
+            _espeakProcess.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Media> medias = new ArrayList<>();
+        for (int i = 0; i < texts.size(); i++) {
+            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
+            medias.add(new Media(fileDirectory));
+        }
+
+        ObservableList<Media> mediaList = FXCollections.observableArrayList();
+        for (Media media : medias) {
+            mediaList.add(media);
+        }
+
+        playMediaTracks(mediaList);
     }
 
     /**

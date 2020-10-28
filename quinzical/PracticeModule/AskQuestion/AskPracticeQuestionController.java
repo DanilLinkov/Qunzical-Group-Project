@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -39,8 +40,8 @@ public class AskPracticeQuestionController implements Initializable {
     public Label categoryLabel;
     public Label questionLabel;
     public Label hintLabel;
-    public Label questionTypeLabel;
     public Slider speedAdjustSlider;
+    public ComboBox<String> selectQuestionType;
     public TextField answerField;
     public Button submitButton;
     public Button dontKnowButton;
@@ -59,7 +60,7 @@ public class AskPracticeQuestionController implements Initializable {
     public Button macronOButton;
     public Button macronUButton;
     public Button switchMacronCapsButton;
-    private Button[] macronButtons = new Button[5];
+    private Button[] macronButtons;
 
     // Storing the question, answers and question type
     private String question;
@@ -68,7 +69,7 @@ public class AskPracticeQuestionController implements Initializable {
 
     // Number of attempts they have left
     private int attempts;
-    final int questionTime = 60*1000*1;
+    final int questionTime = 60*1000;
 
     // Used for scene transitioning
     private static AskPracticeQuestionController _instance;
@@ -82,15 +83,11 @@ public class AskPracticeQuestionController implements Initializable {
 
         // Adding an event handler to the speed slider to save the speed to the question reading speed variable
         speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
-        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> {
-            AskQuestionUtilities.setReadingSpeed(newSpeed.intValue());
-        });
+        speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> AskQuestionUtilities.setReadingSpeed(newSpeed.intValue()));
 
-        macronButtons[0] = macronAButton;
-        macronButtons[1] = macronEButton;
-        macronButtons[2] = macronIButton;
-        macronButtons[3] = macronOButton;
-        macronButtons[4] = macronUButton;
+        selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
+
+        macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 
         setTimer();
@@ -108,6 +105,12 @@ public class AskPracticeQuestionController implements Initializable {
     private void setTimer() {
         int oldAttempts = attempts;
         Timer myTimer = new Timer();
+
+//        myTimer.schedule(() -> {
+//            if (oldAttempts == attempts) {
+//                Platform.runLater(() -> onAnswerSubmit());
+//            }
+//        }, questionTime);
         myTimer.schedule(new TimerTask(){
             @Override
             public void run() {
@@ -151,7 +154,7 @@ public class AskPracticeQuestionController implements Initializable {
      * selected and then to load the questions in that category and select a random question
      * @param name
      */
-    public void setCategoryName(String name,String location) {
+    public void setCategoryName(String name, String location) {
         // Setting the label to be category + its name
         categoryLabel.setText("Category: " + name);
 
@@ -175,7 +178,6 @@ public class AskPracticeQuestionController implements Initializable {
 
             // Setting the question label and the question type label
             questionLabel.setText("Question: " + question.replaceAll("`",""));
-            questionTypeLabel.setText(qType.substring(0, 1).toUpperCase() + qType.substring(1));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -204,13 +206,13 @@ public class AskPracticeQuestionController implements Initializable {
                 String clearCorrectAnswer = AskQuestionUtilities.answerCleanUp(correctAnswer);
 
                 // Checking if its equal
-                if (clearPlayerAnswer.equals(clearCorrectAnswer)) {
+                if (clearPlayerAnswer.equals(clearCorrectAnswer) && selectQuestionType.getValue().toLowerCase().equals(qType)) {
                     // Setting the eventFinished to true as the question has been answered correctly
                     eventFinished = true;
                     // Calling the correct answer given method
                     correctAnswerGiven();
                     // Transitioning the scene to the practice menu scene
-                    PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();;
+                    PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
                 }
             }
 
@@ -236,7 +238,7 @@ public class AskPracticeQuestionController implements Initializable {
      */
     public void handleDontKnowButtonAction() {
         attempts = -1;
-        AskQuestionUtilities.answerUnknown(answer[0]);
+        AskQuestionUtilities.answerUnknown(answer[0], qType);
         AskQuestionUtilities.endTTSSpeaking();
         PracticeMenuController.getInstance().setMainStageToPracticeMenuScene();
     }
@@ -292,64 +294,64 @@ public class AskPracticeQuestionController implements Initializable {
             AskQuestionUtilities.speak(contentText);
         }
 
+        // Get all the answers for this question and show their first letter as a hint
+        StringBuilder answers = new StringBuilder();
+
         // If the player is on their last attempt
         if (attempts==1) {
             // Set the context to this and speak it
             contentText = "You have " + attempts + " attempt left!";
             AskQuestionUtilities.speak(contentText);
 
-            // Get all the answers for this question and show their first letter as a hint
-            String answers = "";
             // If there are multiple answers
             if (answer.length>1) {
                 for(int i=0;i<answer.length;i++) {
                     // If its not a number then add it
                     if(!isNumeric(answer[i])){
-                        answers+=AskQuestionUtilities.answerCleanUp(answer[i]).charAt(0);
+                        answers.append(AskQuestionUtilities.answerCleanUp(answer[i]).charAt(0));
 
                         // If its not the last answer then add or to it
                         if(i!=answer.length-1){
-                            answers+=" or ";
+                            answers.append(" or ");
                         }
                     }
                 }
             }
             else {
                 // Otherwise if there is only one answer then just add the single letter
-                answers += answer[0].charAt(0);
+                answers.append(answer[0].replaceAll("`", "").charAt(0));
             }
 
             // Display it
-            hintLabel.setText("Hint: the first letter of the answer is " + answers);
+            hintLabel.setText("Hint: the first letter of the answer is " + answers.toString());
         }
 
         // If the player has used up all their attempts
         if (attempts==0) {
-            // Get all the answers
-            String answers = "";
             if (answer.length>1) {
                 for(int i=0;i<answer.length;i++) {
-                    answers+=answer[i];
+                    answers.append(answer[i]);
                     if(i!=answer.length-1){
-                        answers+=" or ";
+                        answers.append(" or ");
                     }
                 }
             }
             else {
-                answers+=answer[0];
+                answers.append(answer[0]);
             }
 
             // Display the correct answers and say they have run out of attempts and speak it
             contentText = "You have run out of attempts!"
                     + "\n\nThe answer to the question \n\n"
-                    + question.replaceAll("`","")
-                    + "\n\nWas "
-                    + answers.replaceAll("`", "");
+                    + question
+                    + "\n\nwas: "
+                    + qType.substring(0,1).toUpperCase() + qType.substring(1) + " "
+                    + answers.toString();
             AskQuestionUtilities.speak(contentText);
         }
 
         // Show the alert box with these properties
-        alert.getDialogPane().setContent(new Label(contentText));
+        alert.getDialogPane().setContent(new Label(contentText.replaceAll("`","")));
         alert.getDialogPane().setMinWidth(alert.getDialogPane().getWidth());
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         // Wait for the player to close it to continue with the main application
@@ -368,7 +370,7 @@ public class AskPracticeQuestionController implements Initializable {
         }
         // If the string is parsable into an integer then return true
         try {
-            int d = Integer.parseInt(strNum);
+            Integer.parseInt(strNum);
         } catch (NumberFormatException nfe) {
             // Otherwise return false
             return false;

@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -27,9 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * The controller for a view to ask the question to the player,
@@ -43,8 +42,8 @@ public class AskQuestionController implements Initializable {
 
     // Components in the view
     public Label questionInfoLabel;
-    public Label questionTypeLabel;
     public Button submitAnswerButton;
+    public ComboBox<String> selectQuestionType;
     public TextField answerField;
     public Slider speedAdjustSlider;
     public Button playClueButton;
@@ -58,7 +57,7 @@ public class AskQuestionController implements Initializable {
     public Button macronOButton;
     public Button macronUButton;
     public Button switchMacronCapsButton;
-    private final Button[] macronButtons = new Button[5];
+    private Button[] macronButtons;
 
     public Button helpCloseButton;
     public Button helpButton;
@@ -68,7 +67,7 @@ public class AskQuestionController implements Initializable {
     // Frequently used instances of classes.
     private final GameManager _gameManager = GameManager.getInstance();
     private final SelectQuestionController _selectQuestionController = SelectQuestionController.getInstance();
-    final int questionTime = 60*1000*1;
+    final int questionTime = 60*1000;
 
     // Reference to the question currently being asked.
     private Question _question;
@@ -87,9 +86,7 @@ public class AskQuestionController implements Initializable {
 
         // Allocating respective labels for the question.
         questionInfoLabel.setText(_question.getParent() + ": $" + _question.getValue());
-        questionTypeLabel.setText(
-                _question.getQuestionType().substring(0, 1).toUpperCase() + _question.getQuestionType().substring(1)
-        );
+        selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
 
         // Initializing speed adjust slider (setting default view and event handler)
         speedAdjustSlider.setValue(AskQuestionUtilities.getDefaultReadingSpeed());
@@ -98,11 +95,7 @@ public class AskQuestionController implements Initializable {
         BooleanBinding isTextFieldEmpty = Bindings.isEmpty(answerField.textProperty());
         submitAnswerButton.disableProperty().bind(isTextFieldEmpty);
 
-        macronButtons[0] = macronAButton;
-        macronButtons[1] = macronEButton;
-        macronButtons[2] = macronIButton;
-        macronButtons[3] = macronOButton;
-        macronButtons[4] = macronUButton;
+        macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 
         setTimer();
@@ -180,7 +173,8 @@ public class AskQuestionController implements Initializable {
             // Checking whether any of the correct answer matches the player's answer
             boolean isUserAnswerCorrect = false;
             for (String correctAnswer : _question.getAnswer()) {
-                if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))) {
+                if (cleanedPlayerAnswer.equals(AskQuestionUtilities.answerCleanUp(correctAnswer))
+                && selectQuestionType.getValue().toLowerCase().equals(_question.getQuestionType())) {
                     isUserAnswerCorrect = true;
                     correctAnswerGiven();
                 }
@@ -212,7 +206,7 @@ public class AskQuestionController implements Initializable {
      */
     public void handleDontKnowButtonAction() {
         done = true;
-        AskQuestionUtilities.answerUnknown(_question.getAnswer()[0]);
+        AskQuestionUtilities.answerUnknown(_question.getAnswer()[0], _question.getQuestionType());
 
         AskQuestionUtilities.endTTSSpeaking();
         if (!_gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
@@ -272,13 +266,14 @@ public class AskQuestionController implements Initializable {
         // Formats texts inside the pop up.
         alert.setTitle("Incorrect");
         alert.setHeaderText("Incorrect!");
-        String contentText = "The correct answer was: " + _question.getAnswer()[0].replaceAll("`", "")
+        String contentText = "The correct answer was: " + _question.getQuestionType() + " "
+                + _question.getAnswer()[0].replaceAll("`", "")
                 + "\n$" + _question.getValue() + " has been deducted from your current winning.\n\n"
                 + "Your current winning is now $" + _gameManager.getCurrentScore();
 
         // Revert currently reading speed to default, then say "Correct".
         AskQuestionUtilities.revertReadingSpeedToDefault();
-        AskQuestionUtilities.speak("The correct answer was " + _question.getAnswer()[0]);
+        AskQuestionUtilities.speak("The correct answer was " + _question.getQuestionType() + " " + _question.getAnswer()[0]);
 
         // Formats the pop-up.
         alert.getDialogPane().setContent(new Label(contentText));
