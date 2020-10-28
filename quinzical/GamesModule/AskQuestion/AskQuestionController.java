@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GameType;
@@ -243,7 +242,7 @@ public class AskQuestionController implements Initializable {
         String contentText = "Added $" + _question.getValue() + " to the current score.\n\n"
                 + "Your current score is now $" + _gameManager.getCurrentScore();
 
-        Notification.smallPopup("Correct", "Correct!", contentText, Alert.AlertType.INFORMATION);
+        Notification.smallInformationPopup("Correct", "Correct!", contentText);
     }
 
     /**
@@ -268,7 +267,7 @@ public class AskQuestionController implements Initializable {
                 .append("\n$" + _question.getValue()).append(" has been deducted from your current winning.\n\n")
                 .append("Your current winning is now $").append(_gameManager.getCurrentScore());
 
-        Notification.largePopup("Incorrect", "Incorrect!", contentText.toString(), Alert.AlertType.INFORMATION);
+        Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText.toString());
     }
 
     public boolean isTwoCategoriesComplete() {
@@ -313,10 +312,7 @@ public class AskQuestionController implements Initializable {
                 .append("bottom right section of the games menu screen.\n\n")
                 .append("Let's now take a tour outside NZ...");
 
-        Notification.largePopup("International Unlocked",
-                "International Game Mode has been unlocked!",
-                contentText.toString(),
-                Alert.AlertType.INFORMATION);
+        Notification.largeInformationPopup("International Unlocked", "International Game Mode has been unlocked!", contentText.toString());
     }
 
     private void setSceneToEndGameScene() {

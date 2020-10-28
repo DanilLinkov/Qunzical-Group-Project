@@ -16,6 +16,7 @@ import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GameType;
 import quinzical.MainMenu.MainMenu;
 import quinzical.Utilities.HelpUtilities;
+import quinzical.Utilities.Notification;
 
 import java.io.IOException;
 import java.net.URL;
@@ -92,11 +93,9 @@ public class GamesMenuController implements Initializable {
      */
     public void handlePlayGameButtonAction() {
         if (_gameManager.isGameFinished(_gameManager.getCurrentGameType())) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Game Finished!");
-            alert.setHeaderText("Current game mode has been completed!");
-            alert.setContentText("Please play the other game mode or reset to play this game mode again.");
-            alert.showAndWait();
+            Notification.smallInformationPopup("Game Finished",
+                    "Current game mode has been completed",
+                    "Please play the other game mode or reset to play this game mode again.");
             return;
         }
         try {
@@ -120,15 +119,11 @@ public class GamesMenuController implements Initializable {
      * score labels in GamesMenu to the newly reset scores.
      */
     public void handleResetGameButtonAction() {
-        Alert confirmReset = new Alert(Alert.AlertType.CONFIRMATION);
+        boolean resetGame = Notification.confirmationPopup("Reset Game",
+                "Do you really want to reset game?",
+                "This will clear current winning and question board status.");
 
-        // Formats texts inside the pop up.
-        confirmReset.setTitle("Reset Game");
-        confirmReset.setHeaderText("Do you really want to reset game?");
-        confirmReset.getDialogPane().setContent(new Label("This will clear current winning and question board status."));
-
-        Optional<ButtonType> result = confirmReset.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (resetGame) {
             // Reset game and update score labels
             GameManager.getInstance().resetGame();
             // Revert back to NZ Game Type
@@ -138,11 +133,7 @@ public class GamesMenuController implements Initializable {
             userScoreLabel.setText("Current Score: $" + _gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Reset Game");
-            alert.setHeaderText("Your game has been reset!");
-            alert.setContentText("Press OK to continue.");
-            alert.showAndWait();
+            Notification.smallInformationPopup("Reset Game", "Your game has been reset!", "Press OK to continue.");
         }
     }
 
@@ -184,21 +175,19 @@ public class GamesMenuController implements Initializable {
     }
 
     private void configureSwitchGameTypeButton(GameType gameTypeToUseButton) {
-        if (gameTypeToUseButton == GameType.NZ) {
             ImageView buttonImage = new ImageView();
+
+        if (gameTypeToUseButton == GameType.NZ) {
             buttonImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/GamesMenu/Images/globe.png").toExternalForm()));
-            buttonImage.setFitHeight(50);
-            buttonImage.setFitWidth(50);
-            switchGameTypeButton.setGraphic(buttonImage);
             switchGameTypeButton.setOnAction(e -> setGameType(GameType.INTERNATIONAL));
         } else if (gameTypeToUseButton == GameType.INTERNATIONAL) {
-            ImageView buttonImage = new ImageView();
             buttonImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/GamesMenu/Images/nz.png").toExternalForm()));
+            switchGameTypeButton.setOnAction(e -> setGameType(GameType.NZ));
+        }
+
             buttonImage.setFitHeight(50);
             buttonImage.setFitWidth(50);
             switchGameTypeButton.setGraphic(buttonImage);
-            switchGameTypeButton.setOnAction(e -> setGameType(GameType.NZ));
-        }
     }
 
     public void setGameType(GameType gameTypeToSet) {

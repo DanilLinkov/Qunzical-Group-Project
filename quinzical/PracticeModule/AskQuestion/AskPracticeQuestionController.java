@@ -5,12 +5,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.util.Duration;
 import quinzical.PracticeModule.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
@@ -260,7 +258,7 @@ public class AskPracticeQuestionController implements Initializable {
         // Speaking Correct
         TTSUtility.speak("Correct!");
 
-        Notification.smallPopup("Correct", "Correct!", "You are correct!", Alert.AlertType.INFORMATION);
+        Notification.smallInformationPopup("Correct", "Correct!", "You are correct!");
     }
 
     /**
@@ -339,10 +337,7 @@ public class AskPracticeQuestionController implements Initializable {
             TTSUtility.speak(contentText.toString());
         }
 
-        Notification.largePopup("Incorrect",
-                "Incorrect!",
-                contentText.toString().replaceAll("`", ""),
-                Alert.AlertType.INFORMATION);
+        Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText.toString().replaceAll("`", ""));
     }
 
     /**

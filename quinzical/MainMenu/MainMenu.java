@@ -4,14 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import quinzical.GamesModule.GameManager;
-import quinzical.Utilities.AskQuestionUtilities;
+import quinzical.Utilities.Notification;
 import quinzical.Utilities.TTSUtility;
-
-import java.util.Optional;
 
 /**
  * The main class / application of Quinzical, and the model for "MainMenu" MVC.
@@ -107,15 +103,11 @@ public class MainMenu extends Application {
      * Otherwise, aborts closing action.
      */
     public void closeMainStage() {
-        Alert confirmClose = new Alert(Alert.AlertType.CONFIRMATION);
+        boolean closeGame = Notification.confirmationPopup("Close Game",
+                "Do you really want to close game?",
+                "Current game state will be saved.");
 
-        // Formats texts inside the pop up.
-        confirmClose.setTitle("Close Game");
-        confirmClose.setHeaderText("Do you really want to close game?");
-        confirmClose.setContentText("Current game state will be saved.");
-
-        Optional<ButtonType> result = confirmClose.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (closeGame) {
             // Clean up temporary TTS files.
             TTSUtility.ttsCleanUp();
 

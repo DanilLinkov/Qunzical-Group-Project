@@ -63,7 +63,7 @@ public class AskQuestionUtilities {
         TTSUtility.revertReadingSpeedToDefault();
         TTSUtility.speak("The correct answer was " + questionType + " " + questionAnswer);
 
-        Notification.largePopup("Don't Know", "Don't know the question?", contentText.toString(), Alert.AlertType.INFORMATION);
+        Notification.largeInformationPopup("Don't Know", "Don't know the question?", contentText.toString());
     }
 
     /**
