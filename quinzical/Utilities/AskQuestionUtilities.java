@@ -28,7 +28,6 @@ public class AskQuestionUtilities {
 
     private static final int _defaultReadingSpeed = 160;
     private static int _readingSpeed = _defaultReadingSpeed;
-    private static Process _espeakProcess;
     private static MediaPlayer _ttsAudioPlayer;
     private static final String[] macronsLowerCase = {"ā", "ē", "ī", "ō", "ū"};
     private static final String[] macronsUpperCase = {"Ā", "Ē", "Ī", "Ō", "Ū"};
@@ -44,7 +43,7 @@ public class AskQuestionUtilities {
      * Such output was decided to simplify any further implementation changes.
      * @param macronButtons an array of buttons with respective macrons to add to the answer field.
      * @param answerField an answer field for macrons to be added when the buttons are pressed.
-     * @return a boolean value on whether the macrons set for buttons are in upper case; capitalized.
+     * @param isMacronCaps a boolean value on whether the macrons set for buttons are in upper case; capitalized.
      */
     public static void configureMacronButtons(Button[] macronButtons, TextField answerField, boolean isMacronCaps) {
         for (int i = 0; i < macronButtons.length; i++) {
@@ -70,8 +69,9 @@ public class AskQuestionUtilities {
         // Formats texts inside the pop up.
         alert.setTitle("Don't Know");
         alert.setHeaderText("Don't know the question?");
-        String contentText = "That's alright, we all learn new things everyday.\n\n" +
-                "The correct answer was: " + questionType + " "
+        String contentText = "That's alright, we all learn new things everyday.\n\n"
+                + "The correct answer was: "
+                + questionType.substring(0,1).toUpperCase() + questionType.substring(1) + " "
                 + questionAnswer.replaceAll("`", "");
 
         // Revert currently reading speed to default, then say "Correct".
@@ -95,7 +95,7 @@ public class AskQuestionUtilities {
     public static String answerCleanUp(String answer) {
         // Removing a, the, an and changing mt to mount, nz to new zealand
         // Also trimming and lower casing the answer
-        String cleanAnswer = answer.toLowerCase()
+        return answer.toLowerCase()
                 .trim()
                 .replace("`","")
                 .replace("a ","")
@@ -103,8 +103,28 @@ public class AskQuestionUtilities {
                 .replace("an ","")
                 .replace("mt","mount")
                 .replace("nz","new zealand");
+    }
 
-        return cleanAnswer;
+    private static String processEnglishStringForEspeak(String englishTextToProcess) {
+        return englishTextToProcess.toLowerCase()
+                .replaceAll("christchurch", "christ church");
+    }
+
+    private static String processMaoriStringForEspeak(String maoriTextToProcess) {
+        maoriTextToProcess = maoriTextToProcess.toLowerCase();
+        if (maoriTextToProcess.startsWith("ng") || maoriTextToProcess.contains(" ng")) {
+            maoriTextToProcess = maoriTextToProcess.replaceFirst("ng", "n")
+                    .replaceFirst(" ng", " n");
+        }
+
+        maoriTextToProcess = maoriTextToProcess.replaceAll("ae", "a-e")
+                .replaceAll("ei", "e-i")
+                .replaceAll("eu", "e-u")
+                .replaceAll("ie", "i-e")
+                .replaceAll("oe", "o-e")
+                .replaceAll("ou", "o-u");
+
+        return maoriTextToProcess;
     }
 
     /**
@@ -131,16 +151,16 @@ public class AskQuestionUtilities {
             command.append("; ");
 
             textToSpeak = textToSpeak.trim();
-
             if (isSubStringMaori) {
-                command.append("espeak -vde \"" + textToSpeak + "\"");
-                command.append(" -s " + _readingSpeed);
-                command.append(" -w " + subStringIndex + ".wav");
+                textToSpeak = processMaoriStringForEspeak(textToSpeak);
             } else {
-                command.append("espeak \"" + textToSpeak + "\"");
-                command.append(" -s " + _readingSpeed);
-                command.append(" -w " + subStringIndex + ".wav");
+                textToSpeak = processEnglishStringForEspeak(textToSpeak);
             }
+
+            command.append("espeak ").append(isSubStringMaori ? "-vde " : "");
+            command.append("\"").append(textToSpeak).append("\"");
+            command.append(" -s ").append(_readingSpeed);
+            command.append(" -w ").append(subStringIndex).append(".wav");
 
             subStringIndex++;
             isSubStringMaori = !isSubStringMaori;
@@ -148,8 +168,8 @@ public class AskQuestionUtilities {
 
         try {
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
-            _espeakProcess = pb.start();
-            _espeakProcess.waitFor();
+            Process espeakProcess = pb.start();
+            espeakProcess.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -161,9 +181,7 @@ public class AskQuestionUtilities {
         }
 
         ObservableList<Media> mediaList = FXCollections.observableArrayList();
-        for (Media media : medias) {
-            mediaList.add(media);
-        }
+        mediaList.addAll(medias);
 
         playMediaTracks(mediaList);
     }
