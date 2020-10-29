@@ -15,14 +15,14 @@ import quinzical.GamesModule.ScoreBoard.ScoreBoardManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EndGameController implements Initializable {
+public class GameEndController implements Initializable {
     public Label scoreLabel;
     public TextField nameTextField;
     public Button submitButton;
     public Button dontSaveButton;
     public ImageView rewardImage;
 
-    private static EndGameController instance;
+    private static GameEndController instance;
     private final GameManager gameManager = GameManager.getInstance();
     private final ScoreBoardManager scoreBoardManager = ScoreBoardManager.getInstance();
 
@@ -35,7 +35,7 @@ public class EndGameController implements Initializable {
         submitButton.disableProperty().bind(isTextFieldEmpty);
     }
 
-    public static EndGameController getInstance() {
+    public static GameEndController getInstance() {
         return instance;
     }
 

@@ -323,7 +323,7 @@ public class AskQuestionController implements Initializable {
 
     private void setSceneToEndGameScene() {
         try {
-            Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/EndGame/EndGameScene.fxml"));
+            Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/EndGame/GameEnd.fxml"));
             MainMenu.getInstance().setMainStageScene(new Scene(scoreBoard, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();
