@@ -1,10 +1,13 @@
 # Welcome to Quinzical!
 
 ### How to execute game
-- Place play.sh and a folder called "categories" which contains category files with .txt format in the identical directory as Quinzical.jar file.
-- In terminal, enter `./play.sh` (basically run the script in terminal).
+- Place play.sh and a folder called "categories" which contains category files with .txt format in the identical 
+directory as Quinzical.jar file.
+- In terminal, enter `java -jar Quinzical.jar` (basically run the jar file in terminal).
 
-
+### Recommended System Requirements
+- A recommend system requirements for a most fluent experience of Quinzical is dual core with 4 GB of ram, 
+though the program should run fine in systems that are under the recommended system requirements.
 
 ### Main menu
 
