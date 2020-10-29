@@ -294,7 +294,6 @@ public class AskQuestionController implements Initializable {
             gameManager.setCurrentGameFinished();
             if (gameManager.isGameFinished(GameType.NZ) && gameManager.isGameFinished(GameType.INTERNATIONAL)) {
                 setSceneToEndGameScene();
-                gameManager.resetGame();
             } else {
                 Notification.largeInformationPopup("Every Question Answered",
                         "Congratulations!",
