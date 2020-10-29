@@ -35,7 +35,7 @@ public class GameManager {
     private boolean isInternationalGameUnlocked = false;
 
     // Score status.
-    private int currentScore;
+    private int currentScore = 0;
 
     // Singleton instance of this class.
     private static GameManager instance;
@@ -201,7 +201,7 @@ public class GameManager {
         initializeQuestionBoard(currentGameType);
         setQuestionBoardInUse(currentGameType);
         questionBoardInUse.createBoard(selectedCategories);
-        currentScore = 0;
+//        currentScore = 0;
         saveGame();
     }
 

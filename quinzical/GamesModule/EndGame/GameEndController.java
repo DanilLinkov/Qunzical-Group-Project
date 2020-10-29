@@ -25,6 +25,7 @@ public class GameEndController implements Initializable {
     private static GameEndController instance;
     private final GameManager gameManager = GameManager.getInstance();
     private final ScoreBoardManager scoreBoardManager = ScoreBoardManager.getInstance();
+    private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -40,8 +41,8 @@ public class GameEndController implements Initializable {
     }
 
     private void setScoreLabel() {
-        int playerScore = GameManager.getInstance().getCurrentScore();
-        if(playerScore > ScoreBoardManager.getInstance().getBestScore()) {
+        int playerScore = gameManager.getCurrentScore();
+        if(playerScore > scoreBoardManager.getBestScore()) {
             rewardImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/EndGame/RewardGifs/best.gif").toExternalForm()));
             scoreLabel.setText("Congratulations on completing the game!\n\nYou have achieved a new high score of $" + playerScore + "!" +
                     "\nPlease enter your name and hit submit if you would like to save your score." +
@@ -57,12 +58,13 @@ public class GameEndController implements Initializable {
 
     public void handleSubmitButton() {
         int userScore = gameManager.getCurrentScore();
-        scoreBoardManager.addScore(nameTextField.getText(),userScore);
-        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        System.out.println(userScore);
+        scoreBoardManager.addScore(nameTextField.getText(), userScore);
+        gamesMenuController.setMainStageToGamesMenuScene();
     }
 
     public void handleDontSaveButton() {
-        GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+        gamesMenuController.setMainStageToGamesMenuScene();
     }
 
 }
