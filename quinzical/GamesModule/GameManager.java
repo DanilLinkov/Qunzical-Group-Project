@@ -84,7 +84,9 @@ public class GameManager {
         // Unlock international section and allow user to switch between them.
         GamesMenuController.getInstance().setGameType(GameType.NZ);
         // Generates QuestionBoard instance for international game type
-        initializeQuestionBoard(GameType.INTERNATIONAL);
+        if(questionBoards[1] == null) {
+            initializeQuestionBoard(GameType.INTERNATIONAL);
+        }
         isInternationalGameUnlocked = true;
     }
 
