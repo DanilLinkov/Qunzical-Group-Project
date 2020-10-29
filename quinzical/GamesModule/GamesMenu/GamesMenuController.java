@@ -122,11 +122,10 @@ public class GamesMenuController implements Initializable {
 
         if (resetGame) {
             // Reset game and update score labels
-            GameManager.getInstance().resetGame();
+            gameManager.resetGame();
             // Revert back to NZ Game Type
             setGameType(GameType.NZ);
             lockInternationalSection();
-            gameManager.resetGameFinished();
             userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.

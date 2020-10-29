@@ -67,9 +67,10 @@ public class AskQuestionController implements Initializable {
     // Frequently used instances of classes.
     private final GameManager gameManager = GameManager.getInstance();
     private final SelectQuestionController selectQuestionController = SelectQuestionController.getInstance();
-    final int questionTime = 60*1000;
+    private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
 
     // Reference to the question currently being asked.
+    private final int questionTime = 60*1000;
     private Question question;
     long endTime = System.currentTimeMillis()+1000*5;
     boolean done = false;
@@ -194,7 +195,7 @@ public class AskQuestionController implements Initializable {
                 notifyInternationalGameUnlock();
 
                 // Because international section has now been enabled, go back to Games menu.
-                GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+                gamesMenuController.setMainStageToGamesMenuScene();
             } else {
                 checkIsEveryQuestionAnswered();
             }
@@ -217,7 +218,7 @@ public class AskQuestionController implements Initializable {
             notifyInternationalGameUnlock();
 
             // Because international section has now been enabled, go back to Games menu.
-            GamesMenuController.getInstance().setMainStageToGamesMenuScene();
+            gamesMenuController.setMainStageToGamesMenuScene();
         } else {
             checkIsEveryQuestionAnswered();
         }
@@ -291,15 +292,22 @@ public class AskQuestionController implements Initializable {
     public void checkIsEveryQuestionAnswered() {
         if (gameManager.isEveryQuestionAnswered()) {
             gameManager.setCurrentGameFinished();
-            setSceneToEndGameScene();
             if (gameManager.isGameFinished(GameType.NZ) && gameManager.isGameFinished(GameType.INTERNATIONAL)) {
+                setSceneToEndGameScene();
                 gameManager.resetGame();
+            } else {
+                Notification.largeInformationPopup("Every Question Answered",
+                        "Congratulations!",
+                        "You have completed every question in this game mode.\n\n" +
+                                "Please finish the other game mode to complete the game or " +
+                                "reset game to play this game again.");
+                gamesMenuController.setMainStageToGamesMenuScene();
             }
         }
         else {
             // End any currently-running speaking methods and return to the question board.
             TTSUtilities.endTTSSpeaking();
-            SelectQuestionController.getInstance().setMainStageToSelectQuestionScene();
+            selectQuestionController.setMainStageToSelectQuestionScene();
         }
     }
 
