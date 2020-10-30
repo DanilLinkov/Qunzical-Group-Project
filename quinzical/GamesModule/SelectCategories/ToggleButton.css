@@ -3,9 +3,10 @@
     -fx-font-size: 20px;
     -fx-background-color: #b82b35;
     -fx-text-fill: white;
+    -fx-background-radius: 3px;
+    -fx-font-weight: bold;
 }
 
 .toggleButton:selected {
-    -fx-text-fill: white;
-    -fx-background-color:  #fb7b86;
+    -fx-background-color: #E6939B;
 }

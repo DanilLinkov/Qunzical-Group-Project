@@ -1,8 +1,9 @@
-package quinzical.PracticeModule;
+package quinzical.PracticeModule.PracticeMenu;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import quinzical.MainMenu.MainMenu;
 import quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController;
+import quinzical.PracticeModule.PracticeGameManager;
 import quinzical.Utilities.HelpUtilities;
 
 import java.io.IOException;
@@ -32,15 +34,16 @@ import java.util.ResourceBundle;
 public class PracticeMenuController implements Initializable {
 
     // fxml objects used in the scene
-    public Button selectCategoryButton;
-    public Button backToMainMenuButton;
-    public ComboBox<String> dropDownMenu;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
-    public ToggleButton locationToggle;
+    @FXML
+    private Button selectCategoryButton, backToMainMenuButton, helpCloseButton, helpButton;
+    @FXML
+    private Label helpLabel;
+    @FXML
+    private ComboBox<String> dropDownMenu;
+    @FXML
+    private HBox helpArea;
+    @FXML
+    private ToggleButton locationToggle;
 
     // Used to store the selected category from the drop down menu
     private String selectedCategory;
@@ -102,10 +105,10 @@ public class PracticeMenuController implements Initializable {
     }
 
     public void handleToggleClick() {
-        String location = locationToggle.isSelected() ? "international":"NZ";
+        String location = locationToggle.isSelected() ? "international" :"NZ";
         practiceGameManager.loadAllCategories(location);
         dropDownMenu.setItems(FXCollections.observableList(practiceGameManager.getCategories()));
-        dropDownMenu.setPromptText("Select "+location + " category");
+        dropDownMenu.setPromptText("Select " + location + " category");
     }
 
     /**

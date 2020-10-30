@@ -60,6 +60,7 @@ public class MainMenu extends Application {
         });
 
         Parent mainMenu = FXMLLoader.load(getClass().getResource("/quinzical/MainMenu/MainMenu.fxml"));
+        stage.setResizable(false);
         stage.setTitle("Quinzical");
         stage.setScene((mainMenuScene = new Scene(mainMenu, APP_WIDTH, APP_HEIGHT)));
         stage.show();

@@ -1,5 +1,6 @@
 package quinzical.GamesModule.GamesMenu;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -33,21 +34,15 @@ import java.util.ResourceBundle;
  */
 public class GamesMenuController implements Initializable {
 
-    // Components in the view.
-    public Button playGameButton;
-    public Button resetGameButton;
-    public Button returnToMainMenuButton;
-    public Button scoreBoardButton;
-    public Button switchGameTypeButton;
-    public Label userScoreLabel;
-    public Label switchGameTypeLabel;
-    public Label gameTypeLabel;
-    public VBox switchGameTypeArea;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    @FXML
+    private Button playGameButton, resetGameButton, returnToMainMenuButton, scoreBoardButton, switchGameTypeButton,
+            helpCloseButton, helpButton;
+    @FXML
+    private Label userScoreLabel, switchGameTypeLabel, gameTypeLabel, helpLabel;
+    @FXML
+    private VBox switchGameTypeArea;
+    @FXML
+    private HBox helpArea;
 
     // Frequently used instances of classes, including current class.
     private final MainMenu mainMenuModel = MainMenu.getInstance();
@@ -111,7 +106,7 @@ public class GamesMenuController implements Initializable {
         // If the question board is set up then show them the question grid
         try {
             if(!gameManager.isQuestionBoardSetUp()) {
-                Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
+                Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategories.fxml"));
                 mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
                 // Otherwise send them to the question selection screen to pick 5 categories

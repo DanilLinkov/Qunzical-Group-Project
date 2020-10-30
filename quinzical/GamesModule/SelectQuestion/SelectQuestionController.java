@@ -1,5 +1,6 @@
 package quinzical.GamesModule.SelectQuestion;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -27,15 +28,14 @@ import java.util.ResourceBundle;
  */
 public class SelectQuestionController implements Initializable {
 
-    // Components in the view.
-    public Button backToGameMenuButton;
-    public VBox questionBoardArea;
-    public Label userScoreLabel;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    @FXML
+    private Button backToGameMenuButton, helpCloseButton, helpButton;
+    @FXML
+    private Label userScoreLabel, helpLabel;
+    @FXML
+    private HBox helpArea;
+    @FXML
+    private VBox questionBoardArea;
 
     // Frequently used instances of classes, including current class.
     private final MainMenu mainMenuModel = MainMenu.getInstance();

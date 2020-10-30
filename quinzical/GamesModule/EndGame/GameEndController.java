@@ -4,6 +4,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,11 +37,14 @@ import java.util.ResourceBundle;
  */
 public class GameEndController implements Initializable {
 
-    public Label scoreLabel;
-    public TextField nameTextField;
-    public Button submitButton;
-    public Button dontSaveButton;
-    public ImageView rewardImage;
+    @FXML
+    private Button submitButton, dontSaveButton;
+    @FXML
+    private Label scoreLabel;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private ImageView rewardImage;
 
     // Common class instances used throughout this class
     private static GameEndController instance;

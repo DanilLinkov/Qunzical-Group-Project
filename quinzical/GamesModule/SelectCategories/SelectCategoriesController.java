@@ -5,6 +5,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -13,7 +14,10 @@ import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GameType;
 import quinzical.GamesModule.GamesMenu.GamesMenuController;
@@ -30,15 +34,14 @@ import java.util.ResourceBundle;
 
 public class SelectCategoriesController implements Initializable {
 
-    public Button selectButton;
-    public Button randomButton;
-    public Button backButton;
-    public VBox gridArea;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    @FXML
+    private Label userScoreLabel, helpLabel;
+    @FXML
+    private Button selectButton, randomButton, backButton, helpCloseButton, helpButton;
+    @FXML
+    private VBox gridArea;
+    @FXML
+    private HBox helpArea;
 
     private final GameManager gameManager = GameManager.getInstance();
     private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
@@ -52,6 +55,8 @@ public class SelectCategoriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
+        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+
         loadAllCategories();
         selectedCategories = FXCollections.observableArrayList();
         toggleButtons = new ArrayList<>();
@@ -71,7 +76,7 @@ public class SelectCategoriesController implements Initializable {
     public GridPane getQuestionBoard() {
         GridPane categoriesBoard = new GridPane();
         categoriesBoard.setGridLinesVisible(false);
-        categoriesBoard.setStyle("-fx-background-color:#FFFFFF");
+//        categoriesBoard.setStyle("-fx-background-color:#FFFFFF");
 
         int i = 0;
         int j = 0;
@@ -87,18 +92,18 @@ public class SelectCategoriesController implements Initializable {
 
         evenlySpreadOut(categoriesBoard,i);
         categoriesBoard.setVgap(20);
-        gridArea.setPadding(new Insets(30,0,0,0));
+//        gridArea.setPadding(new Insets(30,0,30,0));
         categoriesBoard.setStyle("-fx-background-color:#072365");
 
         return categoriesBoard;
     }
 
-    private void evenlySpreadOut(GridPane categoriesBoard,int rows) {
+    private void evenlySpreadOut(GridPane categoriesBoard, int rows) {
         // Format each rows to be center aligned and have identical height.
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setValignment(VPos.CENTER);
         rowConstraints.setPercentHeight(100d / rows);
-        for (int i = 0; i <= rows; i++) {
+        for (int i = 0; i < rows; i++) {
             categoriesBoard.getRowConstraints().add(rowConstraints);
         }
 
@@ -117,6 +122,18 @@ public class SelectCategoriesController implements Initializable {
         toggleButton.setPadding(new Insets(15,0,15,0));
         toggleButton.setPrefHeight(100);
         toggleButton.setPrefWidth(200);
+
+        // set shadow for button
+        DropShadow shadow = new DropShadow();
+        shadow.setBlurType(BlurType.THREE_PASS_BOX);
+        shadow.setWidth(18.0);
+        shadow.setHeight(18.0);
+        shadow.setRadius(8.5);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setSpread(0.03);
+        shadow.setColor(new Color(0,0,0,0.25));
+        toggleButton.setEffect(shadow);
 
         toggleButton.getStyleClass().clear();
         toggleButton.getStyleClass().add("toggleButton");

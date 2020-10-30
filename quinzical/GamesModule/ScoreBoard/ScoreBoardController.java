@@ -1,5 +1,6 @@
 package quinzical.GamesModule.ScoreBoard;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,14 +15,14 @@ import java.util.*;
 
 public class ScoreBoardController implements Initializable {
 
-    public Button backButton;
-    public VBox nameArea;
-    public VBox scoreArea;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    @FXML
+    private Button backButton, helpCloseButton, helpButton;
+    @FXML
+    private VBox nameArea, scoreArea;
+    @FXML
+    private Label helpLabel;
+    @FXML
+    private HBox helpArea;
 
     private static ScoreBoardController instance;
 

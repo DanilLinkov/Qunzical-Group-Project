@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.SelectQuestion.SelectQuestionController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.SelectQuestion.SelectQuestionController">
    <children>
       <HBox fx:id="helpArea" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: rgba(169,169,169,0.4);">
          <children>
@@ -58,7 +54,7 @@
                   <RowConstraints minHeight="-Infinity" valignment="TOP" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
-                  <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Games Module" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Question Board" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <font>
                         <Font name="SansSerif Bold" size="30.0" />
                      </font>
@@ -88,6 +84,9 @@
                      <GridPane.margin>
                         <Insets left="30.0" />
                      </GridPane.margin>
+                     <effect>
+                        <DropShadow color="#00000040" height="18.0" offsetX="3.0" offsetY="3.0" radius="8.5" spread="0.03" width="18.0" />
+                     </effect>
                   </Button>
                </children>
                <VBox.margin>
