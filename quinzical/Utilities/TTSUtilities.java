@@ -118,6 +118,10 @@ public class TTSUtilities {
             medias.add(new Media(fileDirectory));
         }
 
+        /* The rest of the codes of the method body and the following method:
+         * playMediaTracks() was acquired from an answer to this Stack-Overflow post:
+         * https://stackoverflow.com/questions/46655056/how-to-play-multiple-consecutive-sound-files-with-javafx
+         */
         ObservableList<Media> mediaList = FXCollections.observableArrayList();
         mediaList.addAll(medias);
 
@@ -127,6 +131,8 @@ public class TTSUtilities {
     /**
      * Plays medias inside a provided list of media by recursively playing the very first
      * media in the list.
+     * NOTICE: This method was acquired from a stack overflow post:
+     * https://stackoverflow.com/questions/46655056/how-to-play-multiple-consecutive-sound-files-with-javafx
      * When the list has a size of 0, it stops.
      * @param mediaList List of media to play.
      */
@@ -136,9 +142,9 @@ public class TTSUtilities {
         }
 
         _ttsAudioPlayer = new MediaPlayer(mediaList.remove(0));
-        _ttsAudioPlayer.play();
-
         _ttsAudioPlayer.setOnEndOfMedia(() -> playMediaTracks(mediaList));
+
+        _ttsAudioPlayer.play();
     }
 
     /**
