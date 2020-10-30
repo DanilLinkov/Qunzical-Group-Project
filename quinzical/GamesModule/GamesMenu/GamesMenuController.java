@@ -21,11 +21,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller for "GamesMenu" view.
+ * The controller for a view of the Game menu scene which allows the
+ * user to click play game, check the score board, reset the game,
+ * go back to the main menu, displays their current score and allows
+ * them to toggle to the international section after they have finished
+ * two categories in the NZ question board
  * <p></p>
- * It takes care of how events caused by button presses in the "GamesMenu" view are handled.
+ * It takes core of how events caused by the GameMenu view are handled
  *
- * @author Hyung Park
+ * @author Hyung Park, Danil Linkov
  */
 public class GamesMenuController implements Initializable {
 
@@ -65,12 +69,15 @@ public class GamesMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
 
+        // Setting the user score label
         userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
+        // Setting the prefered width to a constant
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
 
+        // Set the current question board to the NZ question board
         gameManager.setQuestionBoardInUse(GameType.NZ);
 
         // Checks whether international section should be unlocked
@@ -78,28 +85,36 @@ public class GamesMenuController implements Initializable {
             gameManager.unlockInternationalGame();
             setGameType(GameType.NZ);
         }
+
+        // If every question as been answered then send them to the reward screen
         if (gameManager.isEveryQuestionAnswered()) {
             gameManager.setCurrentGameFinished();
         }
     }
 
     /**
-     * Handles the event of "Play Game" button being pressed.
+     * Handles the event of "Play Game" button being pressed. Checks whether the question board is
+     * created or not and if it is then sends them to the question board grid otherwise to the category
+     * selection scene and if its complete then it shows a pop up telling them to do the other question board
      * <p></p>
      * It changes the scene of the main stage to the select question scene.
      */
     public void handlePlayGameButtonAction() {
+        // If this question board is complete then display an alert telling them to do the other question board
         if (gameManager.isGameFinished(gameManager.getCurrentGameType())) {
             Notification.smallInformationPopup("Game Finished",
                     "Current game mode has been completed",
                     "Please play the other game mode or reset to play this game mode again.");
             return;
         }
+
+        // If the question board is set up then show them the question grid
         try {
             if(!gameManager.isQuestionBoardSetUp()) {
                 Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
                 mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
+                // Otherwise send them to the question selection screen to pick 5 categories
                 Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));
                 mainMenuModel.setMainStageScene(new Scene(selectQuestion, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             }
@@ -152,6 +167,9 @@ public class GamesMenuController implements Initializable {
         mainMenuModel.setMainStageScene(playGameButton.getScene());
     }
 
+    /**
+     * Handles the scoreboard button click and take them to the score board scene
+     */
     public void handleScoreBoardButton() {
         try {
             Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/ScoreBoard/ScoreBoardScene.fxml"));

@@ -114,25 +114,41 @@ public class AskQuestionController implements Initializable {
         isMacronCaps = !isMacronCaps;
     }
 
+    /**
+     * This creates a new timer and when its run it automatically clicks the submit answer button
+     * if the question has not already been submitted for the user.
+     */
     private void setTimer() {
+        // Creating a new timer
         Timer myTimer = new Timer();
+        // Scheduling the timer to submit the answer after it runs out
         myTimer.schedule(new TimerTask(){
             @Override
             public void run() {
+                    // If the question is not already answered then call the submit button
                     if (!done) {
                         Platform.runLater(() -> handleSubmitAnswerButtonAction());
                     }
             }
         }, questionTime);
+        // Setting the end time to be the current time of the user plus the set question time
         endTime = System.currentTimeMillis() + questionTime;
     }
 
+    /**
+     * This method shows the time in the label for the user on the scene
+     */
     private void showTimer() {
+        // Setting the correct date format to use for the label
         DateFormat timeFormat = new SimpleDateFormat("ss");
+        // Creating a timeline
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis(200),
                         event -> {
+                            // Decrementing the time by the time difference since the start
+                            // of the question
+                            // and if the difference is less than 0 then just display 0
                             final long diff = endTime - System.currentTimeMillis();
                             if ( diff < 0 ) {
                                 timeLabel.setText(timeFormat.format(0) + " secs left");
@@ -142,6 +158,7 @@ public class AskQuestionController implements Initializable {
                         }
                 )
         );
+        // Play the animation for an indefinite amount of time
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -260,6 +277,7 @@ public class AskQuestionController implements Initializable {
         TTSUtilities.speak("The correct answer was: "
                 + question.getQuestionType() + " " + question.getAnswer()[0]);
 
+        // String which shows the answer and other information if they got the wrong answer
         String contentText = "The correct answer was: "
                 + question.getQuestionType().substring(0,1).toUpperCase()
                 + question.getQuestionType().substring(1) + " "
@@ -320,6 +338,9 @@ public class AskQuestionController implements Initializable {
         Notification.largeInformationPopup("International Unlocked", "International Game Mode has been unlocked!", contentText);
     }
 
+    /**
+     * Setting the scene to the end game scene which is the reward scene
+     */
     private void setSceneToEndGameScene() {
         try {
             Parent scoreBoard = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/EndGame/GameEnd.fxml"));
@@ -329,11 +350,17 @@ public class AskQuestionController implements Initializable {
         }
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help close functionality which brings teh help area to the back so the user can not see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }
