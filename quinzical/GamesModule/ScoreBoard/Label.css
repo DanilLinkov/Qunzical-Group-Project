@@ -2,5 +2,9 @@
     -fx-font-family: "SansSerif";
     -fx-font-size: 20px;
     -fx-text-fill: white;
-    -fx-label-padding: 15px;
+    -fx-label-padding: 20px;
+}
+
+.myGridStyle Line {
+    -fx-stroke: white;
 }

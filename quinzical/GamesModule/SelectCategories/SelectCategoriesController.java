@@ -13,7 +13,10 @@ import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GameType;
 import quinzical.GamesModule.GamesMenu.GamesMenuController;
@@ -117,6 +120,18 @@ public class SelectCategoriesController implements Initializable {
         toggleButton.setPadding(new Insets(15,0,15,0));
         toggleButton.setPrefHeight(100);
         toggleButton.setPrefWidth(200);
+
+        // set shadow for button
+        DropShadow shadow = new DropShadow();
+        shadow.setBlurType(BlurType.THREE_PASS_BOX);
+        shadow.setWidth(18.0);
+        shadow.setHeight(18.0);
+        shadow.setRadius(8.5);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setSpread(0.03);
+        shadow.setColor(new Color(0,0,0,0.25));
+        toggleButton.setEffect(shadow);
 
         toggleButton.getStyleClass().clear();
         toggleButton.getStyleClass().add("toggleButton");
