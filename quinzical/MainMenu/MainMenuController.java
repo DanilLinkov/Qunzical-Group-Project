@@ -1,5 +1,6 @@
 package quinzical.MainMenu;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,10 +17,8 @@ import java.io.IOException;
  */
 public class MainMenuController {
 
-    // Button components in MainMenu view.
-    public Button gamesModuleButton;
-    public Button practiceModuleButton;
-    public Button exitButton;
+    @FXML
+    public Button gamesModuleButton, practiceModuleButton, exitButton;
 
     // Instance of the model of this controller.
     private final MainMenu mainMenuModel = MainMenu.getInstance();

@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -37,29 +38,22 @@ import java.util.*;
 public class AskPracticeQuestionController implements Initializable {
 
     // Fxml objects used in the scene
-    public Label categoryLabel;
-    public Label questionLabel;
-    public Label hintLabel;
-    public Slider speedAdjustSlider;
-    public ComboBox<String> selectQuestionType;
-    public TextField answerField;
-    public Button submitButton;
-    public Button dontKnowButton;
-    public Button playClueButton;
-    public Label timeLabel;
+    @FXML
+    private Button submitButton, dontKnowButton, playClueButton, helpCloseButton, helpButton,
+            macronAButton, macronEButton, macronIButton, macronOButton, macronUButton, switchMacronCapsButton;
+    @FXML
+    private Label categoryLabel, questionLabel, hintLabel, timeLabel, helpLabel;
+    @FXML
+    private TextField answerField;
+    @FXML
+    private Slider speedAdjustSlider;
+    @FXML
+    private ComboBox<String> selectQuestionType;
+    @FXML
+    private HBox helpArea;
 
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
-
+    // Macron functionality related.
     private boolean isMacronCaps;
-    public Button macronAButton;
-    public Button macronEButton;
-    public Button macronIButton;
-    public Button macronOButton;
-    public Button macronUButton;
-    public Button switchMacronCapsButton;
     private Button[] macronButtons;
 
     // Storing the question, answers and question type

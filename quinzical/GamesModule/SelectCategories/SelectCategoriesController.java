@@ -34,17 +34,14 @@ import java.util.ResourceBundle;
 
 public class SelectCategoriesController implements Initializable {
 
-    public Button selectButton;
-    public Button randomButton;
-    public Button backButton;
-    public VBox gridArea;
     @FXML
-    private Label userScoreLabel;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    private Label userScoreLabel, helpLabel;
+    @FXML
+    private Button selectButton, randomButton, backButton, helpCloseButton, helpButton;
+    @FXML
+    private VBox gridArea;
+    @FXML
+    private HBox helpArea;
 
     private final GameManager gameManager = GameManager.getInstance();
     private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();

@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -40,29 +41,19 @@ import java.util.*;
  */
 public class AskQuestionController implements Initializable {
 
-    // Components in the view
-    public Label questionInfoLabel;
-    public Button submitAnswerButton;
-    public ComboBox<String> selectQuestionType;
-    public TextField answerField;
-    public Slider speedAdjustSlider;
-    public Button playClueButton;
-    public Button dontKnowButton;
-    public Label timeLabel;
-
-    private boolean isMacronCaps = false;
-    public Button macronAButton;
-    public Button macronEButton;
-    public Button macronIButton;
-    public Button macronOButton;
-    public Button macronUButton;
-    public Button switchMacronCapsButton;
-    private Button[] macronButtons;
-
-    public Button helpCloseButton;
-    public Button helpButton;
-    public Label helpLabel;
-    public HBox helpArea;
+    @FXML
+    private Button submitAnswerButton, playClueButton, dontKnowButton, helpButton, helpCloseButton,
+            macronAButton, macronEButton, macronIButton, macronOButton, macronUButton, switchMacronCapsButton;
+    @FXML
+    private Label questionInfoLabel, timeLabel, helpLabel;
+    @FXML
+    private ComboBox<String> selectQuestionType;
+    @FXML
+    private TextField answerField;
+    @FXML
+    private Slider speedAdjustSlider;
+    @FXML
+    private HBox helpArea;
 
     // Frequently used instances of classes.
     private final GameManager gameManager = GameManager.getInstance();
@@ -70,10 +61,16 @@ public class AskQuestionController implements Initializable {
     private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
 
     // Reference to the question currently being asked.
-    private final int questionTime = 60*1000;
     private Question question;
-    long endTime = System.currentTimeMillis()+1000*5;
-    boolean done = false;
+
+    // Timer related.
+    private final int questionTime = 60*1000;
+    private long endTime = System.currentTimeMillis()+1000*5;
+    private boolean done = false;
+
+    // Macron functionality related.
+    private boolean isMacronCaps = false;
+    private Button[] macronButtons;
 
     /**
      * The initial method that fxml view calls from this controller as it loads.
