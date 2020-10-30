@@ -97,7 +97,7 @@ public class GamesMenuController implements Initializable {
         }
         try {
             if(!gameManager.isQuestionBoardSetUp()) {
-                Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategoriesScene.fxml"));
+                Parent selectCategories = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectCategories/SelectCategories.fxml"));
                 mainMenuModel.setMainStageScene(new Scene(selectCategories, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
             } else {
                 Parent selectQuestion = FXMLLoader.load(getClass().getResource("/quinzical/GamesModule/SelectQuestion/SelectQuestion.fxml"));

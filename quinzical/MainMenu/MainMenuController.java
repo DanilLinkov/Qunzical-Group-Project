@@ -45,7 +45,7 @@ public class MainMenuController {
      */
     public void handlePracticeModuleButtonClick() {
         try {
-            Parent practiceMenu = FXMLLoader.load(getClass().getResource("/quinzical/PracticeModule/PracticeMenu.fxml"));
+            Parent practiceMenu = FXMLLoader.load(getClass().getResource("/quinzical/PracticeModule/PracticeMenu/PracticeMenu.fxml"));
             mainMenuModel.setMainStageScene(new Scene(practiceMenu, MainMenu.getAppWidth(), MainMenu.getAppHeight()));
         } catch (IOException e) {
             e.printStackTrace();

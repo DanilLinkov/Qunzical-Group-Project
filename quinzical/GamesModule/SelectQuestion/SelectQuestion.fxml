@@ -54,7 +54,7 @@
                   <RowConstraints minHeight="-Infinity" valignment="TOP" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
-                  <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Games Module" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Label alignment="TOP_CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Question Board" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <font>
                         <Font name="SansSerif Bold" size="30.0" />
                      </font>

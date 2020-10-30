@@ -1,4 +1,4 @@
-package quinzical.PracticeModule;
+package quinzical.PracticeModule.PracticeMenu;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import quinzical.MainMenu.MainMenu;
 import quinzical.PracticeModule.AskQuestion.AskPracticeQuestionController;
+import quinzical.PracticeModule.PracticeGameManager;
 import quinzical.Utilities.HelpUtilities;
 
 import java.io.IOException;
@@ -102,10 +103,10 @@ public class PracticeMenuController implements Initializable {
     }
 
     public void handleToggleClick() {
-        String location = locationToggle.isSelected() ? "international":"NZ";
+        String location = locationToggle.isSelected() ? "international" :"NZ";
         practiceGameManager.loadAllCategories(location);
         dropDownMenu.setItems(FXCollections.observableList(practiceGameManager.getCategories()));
-        dropDownMenu.setPromptText("Select "+location + " category");
+        dropDownMenu.setPromptText("Select " + location + " category");
     }
 
     /**

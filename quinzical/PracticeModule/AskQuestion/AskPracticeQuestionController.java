@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import quinzical.PracticeModule.PracticeMenuController;
+import quinzical.PracticeModule.PracticeMenu.PracticeMenuController;
 import quinzical.Utilities.AskQuestionUtilities;
 import quinzical.Utilities.HelpUtilities;
 import quinzical.Utilities.Notification;

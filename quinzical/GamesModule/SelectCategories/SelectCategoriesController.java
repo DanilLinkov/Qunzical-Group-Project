@@ -5,6 +5,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -37,6 +38,8 @@ public class SelectCategoriesController implements Initializable {
     public Button randomButton;
     public Button backButton;
     public VBox gridArea;
+    @FXML
+    private Label userScoreLabel;
 
     public Button helpCloseButton;
     public Button helpButton;
@@ -55,6 +58,8 @@ public class SelectCategoriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
+        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+
         loadAllCategories();
         selectedCategories = FXCollections.observableArrayList();
         toggleButtons = new ArrayList<>();
@@ -74,7 +79,7 @@ public class SelectCategoriesController implements Initializable {
     public GridPane getQuestionBoard() {
         GridPane categoriesBoard = new GridPane();
         categoriesBoard.setGridLinesVisible(false);
-        categoriesBoard.setStyle("-fx-background-color:#FFFFFF");
+//        categoriesBoard.setStyle("-fx-background-color:#FFFFFF");
 
         int i = 0;
         int j = 0;
@@ -90,18 +95,18 @@ public class SelectCategoriesController implements Initializable {
 
         evenlySpreadOut(categoriesBoard,i);
         categoriesBoard.setVgap(20);
-        gridArea.setPadding(new Insets(30,0,0,0));
+//        gridArea.setPadding(new Insets(30,0,30,0));
         categoriesBoard.setStyle("-fx-background-color:#072365");
 
         return categoriesBoard;
     }
 
-    private void evenlySpreadOut(GridPane categoriesBoard,int rows) {
+    private void evenlySpreadOut(GridPane categoriesBoard, int rows) {
         // Format each rows to be center aligned and have identical height.
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setValignment(VPos.CENTER);
         rowConstraints.setPercentHeight(100d / rows);
-        for (int i = 0; i <= rows; i++) {
+        for (int i = 0; i < rows; i++) {
             categoriesBoard.getRowConstraints().add(rowConstraints);
         }
 
