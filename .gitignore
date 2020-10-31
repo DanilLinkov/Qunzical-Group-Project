@@ -28,6 +28,6 @@ out/
 META-INF/
 
 # Resource files
-save/
+save/save.txt
 tts/
-scoreBoard/
+scoreBoard/score.txt
