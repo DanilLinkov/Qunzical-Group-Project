@@ -129,7 +129,8 @@ public class ScoreBoardController implements Initializable {
      * Help button functionality which brings the help area to the front so the user can see it
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"This scoreboard displays all the scores of the previous players" +
+                "\n\nTo get your name and score on here finish both the NZ and the International questions");
         HelpUtilities.bringToFront(helpArea);
     }
 

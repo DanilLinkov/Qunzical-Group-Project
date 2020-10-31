@@ -352,7 +352,11 @@ public class AskQuestionController implements Initializable {
      * Help button functionality which brings the help area to the front so the user can see it
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"Click the play button to hear the question again" +
+                "\n\nChanging the slider will change the speed the question is read out at" +
+                "\n\nSelect the correct question type and type the correct answer and hit submit before the timer runs out to score points" +
+                "\n\nClicking don't know will not affect your points" +
+                "\n\nYou can make use of the macron buttons for answer that may require them");
         HelpUtilities.bringToFront(helpArea);
     }
 

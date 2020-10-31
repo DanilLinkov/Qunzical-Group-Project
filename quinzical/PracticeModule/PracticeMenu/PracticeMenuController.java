@@ -140,7 +140,9 @@ public class PracticeMenuController implements Initializable {
      * Handles the scoreboard button click and take them to the score board scene
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"\n\nSelect a category from the drop down to practice a random question from" +
+                "\n\nClick the toggle button next to the drop down to change from NZ/International categories list" +
+                "\n\nClick back to menu to go back");
         HelpUtilities.bringToFront(helpArea);
     }
 

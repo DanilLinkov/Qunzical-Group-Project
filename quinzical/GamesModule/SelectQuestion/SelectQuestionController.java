@@ -125,7 +125,10 @@ public class SelectQuestionController implements Initializable {
      * Handles the scoreboard button click and take them to the score board scene
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"Select the lowest valued question from any category to answer" +
+                "\n\nFinishing two full categories/columns will unlock the international section" +
+                "\n\nFinishing all the questions in the NZ and International section will finish the game" +
+                "\n\nReset the game to be able to choose new categories and get new random questions");
         HelpUtilities.bringToFront(helpArea);
     }
 

@@ -293,7 +293,9 @@ public class SelectCategoriesController implements Initializable {
      * Handles the scoreboard button click and take them to the score board scene
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"Select 5 categories from the list and click select" +
+                "\n\nClicking random will randomly pick the 5 categories" +
+                "\n\nClicking back will take you back to the games menu");
         HelpUtilities.bringToFront(helpArea);
     }
 
