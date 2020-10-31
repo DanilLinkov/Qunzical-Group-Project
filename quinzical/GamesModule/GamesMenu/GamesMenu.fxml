@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -15,13 +22,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenu.GamesMenuController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quinzical.GamesModule.GamesMenu.GamesMenuController">
    <children>
       <HBox fx:id="helpArea" alignment="TOP_CENTER" layoutX="-2.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: rgba(169,169,169,0.4);">
          <children>
             <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="222.0" prefWidth="676.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 3; -fx-border-radius: 10; -fx-background-radius: 15;">
                <children>
-                  <Label fx:id="helpLabel" alignment="TOP_CENTER" prefHeight="197.0" prefWidth="581.0" text="Label" wrapText="true">
+                  <Label fx:id="helpLabel" alignment="TOP_CENTER" prefHeight="197.0" prefWidth="581.0" text="Label" textAlignment="JUSTIFY" wrapText="true">
                      <font>
                         <Font name="SansSerif Italic" size="15.0" />
                      </font>

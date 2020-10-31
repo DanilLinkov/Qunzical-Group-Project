@@ -178,7 +178,10 @@ public class GamesMenuController implements Initializable {
      * Help button functionality which brings the help area to the front so the user can see it
      */
     public void handleHelpButton() {
-        HelpUtilities.setHelpText(helpLabel,"text");
+        HelpUtilities.setHelpText(helpLabel,"Click Play Game to either start a new game or load a previous save." +
+                "\n\nYou are able to reset the game which resets all the question boards NZ and International" +
+                "\n\nClick Score Board to view all the previous scores by the previous players" +
+                "\n\nClick Return to Main Menu to go back");
         HelpUtilities.bringToFront(helpArea);
     }
 
