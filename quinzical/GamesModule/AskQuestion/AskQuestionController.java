@@ -99,6 +99,7 @@ public class AskQuestionController implements Initializable {
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 
+        // Setting and showing the timer
         setTimer();
         showTimer();
 

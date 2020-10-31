@@ -13,6 +13,15 @@ import quinzical.Utilities.HelpUtilities;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * The controller for a view of the Score board scene which displays
+ * all the recorded scores with the name of the player that achieved it
+ * in a grid.
+ * <p></p>
+ * It takes core of how events caused by the ScoreBoard view are managed.
+ *
+ * @author Hyung Park, Danil Linkov
+ */
 public class ScoreBoardController implements Initializable {
 
     @FXML
@@ -26,27 +35,49 @@ public class ScoreBoardController implements Initializable {
 
     private static ScoreBoardController instance;
 
+    // Hashmap used to store the score of the player
     private Map<String,Integer> scoreBoardMap;
 
+    /**
+     * Initialize method called when the scene is created
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
+        // Loading the score.txt and converting it to a hashmap
         scoreBoardMap = ScoreBoardManager.getInstance().getScoreBoardMap();
+        // Loading the score board
         loadScoreBoard();
     }
 
+    /**
+     * Returns an instance of the ScoreBoard controller
+     * @return
+     */
     public static ScoreBoardController getInstance() {
         return instance;
     }
 
+    /**
+     * Handles the back to the games menu button
+     */
     public void handleBackButton() {
         GamesMenuController.getInstance().setMainStageToGamesMenuScene();
     }
 
-    public void loadScoreBoard() {
+    /**
+     * Goes over the hashmap for the scoreBoard and creates
+     * a grid from it, one for the names and one for the scores.
+     * These grids are then displayed in different areas of the view.
+     */
+    private void loadScoreBoard() {
         GridPane playerBoardGrid = new GridPane();
         playerBoardGrid.setGridLinesVisible(false);
 
+        // Going over the names of the players and creating a label
+        // and putting it into the grid
         int i = 0;
         for (String name : scoreBoardMap.keySet()) {
             Label playerName = createLabel(name);
@@ -57,12 +88,16 @@ public class ScoreBoardController implements Initializable {
         GridPane scoreBoardGrid = new GridPane();
         scoreBoardGrid.setGridLinesVisible(false);
 
+        // Going over the scores of the players and creating a label
+        // and putting it into the grid
         int j = 0;
         for (Integer score : scoreBoardMap.values()) {
             Label playerScore = createLabel(Integer.toString(score));
             scoreBoardGrid.add(playerScore,0,j);
             j++;
         }
+
+        // Setting alignments, padding and adding the grid to the views
 
         playerBoardGrid.setAlignment(Pos.CENTER_RIGHT);
         nameArea.getChildren().clear();
@@ -75,6 +110,11 @@ public class ScoreBoardController implements Initializable {
         scoreArea.setPadding(new Insets(5,0,0,60));
     }
 
+    /**
+     * Creates a label with the Label.css properties to put into the grid
+     * @param labelName
+     * @return
+     */
     private Label createLabel(String labelName) {
         Label label = new Label(labelName);
 
@@ -85,11 +125,17 @@ public class ScoreBoardController implements Initializable {
         return label;
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help close functionality which brings teh help area to the back so the user can not see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

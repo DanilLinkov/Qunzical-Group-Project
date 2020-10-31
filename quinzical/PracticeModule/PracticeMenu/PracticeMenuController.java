@@ -104,11 +104,22 @@ public class PracticeMenuController implements Initializable {
         }
     }
 
+    /**
+     *
+     */
     public void handleToggleClick() {
         String location = locationToggle.isSelected() ? "international" :"NZ";
+
         practiceGameManager.loadAllCategories(location);
         dropDownMenu.setItems(FXCollections.observableList(practiceGameManager.getCategories()));
         dropDownMenu.setPromptText("Select " + location + " category");
+
+        if (location.equals("NZ")) {
+            locationToggle.setText("NZ");
+        }
+        else {
+            locationToggle.setText("INT");
+        }
     }
 
     /**
@@ -125,11 +136,17 @@ public class PracticeMenuController implements Initializable {
         mainMenuModel.setMainStageScene(selectCategoryButton.getScene());
     }
 
+    /**
+     * Handles the scoreboard button click and take them to the score board scene
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

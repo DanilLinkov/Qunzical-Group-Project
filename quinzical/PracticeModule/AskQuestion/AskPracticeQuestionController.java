@@ -69,6 +69,11 @@ public class AskPracticeQuestionController implements Initializable {
     private static AskPracticeQuestionController _instance;
     long endTime = System.currentTimeMillis()+1000*5;
 
+    /**
+     * Initialize method which is run on the creation of this controller
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         _instance = this;
@@ -84,6 +89,7 @@ public class AskPracticeQuestionController implements Initializable {
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 
+        // Sets the timer and shows the timer
         setTimer();
         showTimer();
 
@@ -99,15 +105,18 @@ public class AskPracticeQuestionController implements Initializable {
         isMacronCaps = !isMacronCaps;
     }
 
+    /**
+     * This creates a new timer and when its run it automatically clicks the submit answer button
+     * if the question has not already been submitted for the user.
+     */
     private void setTimer() {
+        // Getting the number of attempts before the timer was submitted
         int oldAttempts = attempts;
         Timer myTimer = new Timer();
 
-//        myTimer.schedule(() -> {
-//            if (oldAttempts == attempts) {
-//                Platform.runLater(() -> onAnswerSubmit());
-//            }
-//        }, questionTime);
+        // Creating a new TimeTask which runs when the timer is done and
+        // Checks whether the number of attempts are the same therefore the player
+        // did not submit the question so it does it for them
         myTimer.schedule(new TimerTask(){
             @Override
             public void run() {
@@ -119,14 +128,22 @@ public class AskPracticeQuestionController implements Initializable {
         endTime = System.currentTimeMillis()+questionTime;
     }
 
+    /**
+     * This method shows the time in the label for the user on the scene
+     */
     private void showTimer() {
+        // Setting the time format for the label
         DateFormat timeFormat = new SimpleDateFormat( "ss" );
+        // Creating a new timeline
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.millis( 200 ),
                         event -> {
+                            // Finds the difference from the start time and the decrements the visual
+                            // timer by that amount
                             final long diff = endTime - System.currentTimeMillis();
                             if ( diff < 0 ) {
+                                // If the difference is negative then the timer has already reached 0
                                 timeLabel.setText(timeFormat.format(0) + " secs left");
                             } else {
                                 timeLabel.setText(timeFormat.format(diff) + " secs left");
@@ -134,6 +151,7 @@ public class AskPracticeQuestionController implements Initializable {
                         }
                 )
         );
+        // Play this indefinitely
         timeline.setCycleCount( Animation.INDEFINITE );
         timeline.play();
     }
@@ -354,11 +372,17 @@ public class AskPracticeQuestionController implements Initializable {
         return true;
     }
 
+    /**
+     * Handles the scoreboard button click and take them to the score board scene
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

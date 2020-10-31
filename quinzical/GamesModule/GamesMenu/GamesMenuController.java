@@ -174,11 +174,17 @@ public class GamesMenuController implements Initializable {
         }
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help close functionality which brings teh help area to the back so the user can not see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

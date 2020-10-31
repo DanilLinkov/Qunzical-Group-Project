@@ -32,6 +32,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for a view of the SelectCategoriesScene which allows the player
+ * to select 5 buttons at a time, allows for a random button which selects it for them,
+ * submit button which takes those categories and loads them into the SelectQuestionController
+ * and a back button to the games menu.
+ * <p></p>
+ * It takes core of how events caused by the SelectCategories are managed.
+ *
+ * @author Hyung Park, Danil Linkov
+ */
 public class SelectCategoriesController implements Initializable {
 
     @FXML
@@ -43,13 +53,17 @@ public class SelectCategoriesController implements Initializable {
     @FXML
     private HBox helpArea;
 
+    // Instances of commonly used classes
     private final GameManager gameManager = GameManager.getInstance();
     private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
     private final MainMenu mainMenuModel = MainMenu.getInstance();
     private static SelectCategoriesController instance;
 
+    // This list is used to store the strings of all the categories in the categories folder
     private ArrayList<String> categories;
+    // All the selected buttons
     private ObservableList<String> selectedCategories;
+    // All the created buttons
     private ArrayList<ToggleButton> toggleButtons;
 
     @Override
@@ -57,30 +71,42 @@ public class SelectCategoriesController implements Initializable {
         instance = this;
         userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
+        // Loads the categories from the folder depending on whether they are in NZ or international mode
         loadAllCategories();
         selectedCategories = FXCollections.observableArrayList();
         toggleButtons = new ArrayList<>();
 
+        // Adding the buttons grid to the view
         gridArea.getChildren().clear();
         gridArea.getChildren().add(getQuestionBoard());
 
+        // The player can only submit if they select 5 buttons
         IntegerBinding lengthSize = Bindings.size(selectedCategories);
         BooleanBinding listPopulated = lengthSize.greaterThan(4);
         selectButton.disableProperty().bind(listPopulated.not());
     }
 
+    /**
+     * Returns an instance of this controller
+     * @return
+     */
     public static SelectCategoriesController getInstance() {
         return instance;
     }
 
+    /**
+     * Creates the grid pane of toggle buttons which is added to the view
+     * @return
+     */
     public GridPane getQuestionBoard() {
         GridPane categoriesBoard = new GridPane();
         categoriesBoard.setGridLinesVisible(false);
-//        categoriesBoard.setStyle("-fx-background-color:#FFFFFF");
 
         int i = 0;
         int j = 0;
 
+        // Going over every category and creating a toggle button of it
+        // and adding it to the grid
         for (String category : categories) {
             categoriesBoard.add(createToggleButton(category),j,i);
             j++;
@@ -90,14 +116,19 @@ public class SelectCategoriesController implements Initializable {
             }
         }
 
+        // Spreading out the buttons
         evenlySpreadOut(categoriesBoard,i);
         categoriesBoard.setVgap(20);
-//        gridArea.setPadding(new Insets(30,0,30,0));
         categoriesBoard.setStyle("-fx-background-color:#072365");
 
         return categoriesBoard;
     }
 
+    /**
+     * Spreads out the grid evenly given the number of rows
+     * @param categoriesBoard
+     * @param rows
+     */
     private void evenlySpreadOut(GridPane categoriesBoard, int rows) {
         // Format each rows to be center aligned and have identical height.
         RowConstraints rowConstraints = new RowConstraints();
@@ -116,6 +147,12 @@ public class SelectCategoriesController implements Initializable {
         }
     }
 
+    /**
+     * Creates a toggle button with the ToggleButton.css style and
+     * the category name.
+     * @param category
+     * @return
+     */
     private ToggleButton createToggleButton(String category) {
         ToggleButton toggleButton = new ToggleButton(category);
         toggleButton.setStyle("-fx-font-size:18px");
@@ -135,14 +172,19 @@ public class SelectCategoriesController implements Initializable {
         shadow.setColor(new Color(0,0,0,0.25));
         toggleButton.setEffect(shadow);
 
+        // Loading the css style
         toggleButton.getStyleClass().clear();
         toggleButton.getStyleClass().add("toggleButton");
         toggleButton.getStylesheets().add(getClass().getClassLoader().getResource(
                 "quinzical/GamesModule/SelectCategories/ToggleButton.css").toExternalForm()
         );
 
+        // Adding a listener to the toggle button
         toggleButton.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
             boolean isSelected = newValue;
+
+            // If the button was just selected then add it to the list if there are less than
+            // 5 buttons already selected
             if (isSelected) {
                 if (selectedCategories.size() < 5) {
                     selectedCategories.add(category);
@@ -151,16 +193,21 @@ public class SelectCategoriesController implements Initializable {
                     toggleButton.setSelected(false);
                 }
             }
+            // Else remove it from the list
             else {
                 selectedCategories.remove(category);
             }
         });
 
+        // Add it to the toggle buttons list
         toggleButtons.add(toggleButton);
 
         return toggleButton;
     }
 
+    /**
+     * Load all the categories from the categories folder depending on which game mode the player is on
+     */
     private void loadAllCategories() {
         // Used to store all the file paths in the folder
         ArrayList<String> filePaths;
@@ -182,10 +229,16 @@ public class SelectCategoriesController implements Initializable {
         }
     }
 
+    /**
+     * Handles the return to game menu button
+     */
     public void handleReturnToGamesMenuButtonAction() {
         gamesMenuController.setMainStageToGamesMenuScene();
     }
 
+    /**
+     * Handles the select button and sends them to the select question scene
+     */
     public void handleSelectButton() {
         gameManager.newGame(new ArrayList<>(selectedCategories));
 
@@ -197,6 +250,9 @@ public class SelectCategoriesController implements Initializable {
         }
     }
 
+    /**
+     * Randomly selects 5 categories for the player by choosing 5 random indices
+     */
     public void handleRandomSelect() {
         clearSelectedCategories();
         ArrayList<Integer> randomIndexArray = randomIndexArray(categories.size());
@@ -206,12 +262,20 @@ public class SelectCategoriesController implements Initializable {
         }
     }
 
+    /**
+     * Deselect all the toggle buttons
+     */
     private void clearSelectedCategories() {
         for (ToggleButton tg : toggleButtons) {
             tg.setSelected(false);
         }
     }
 
+    /**
+     * Returns an array list of indices randomly shuffled from 0 to the size of the array list
+     * @param length
+     * @return
+     */
     private ArrayList<Integer> randomIndexArray (int length) {
         ArrayList<Integer> shuffledArray = new ArrayList<>();
 
@@ -225,11 +289,17 @@ public class SelectCategoriesController implements Initializable {
         return shuffledArray;
     }
 
+    /**
+     * Handles the scoreboard button click and take them to the score board scene
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

@@ -2,8 +2,6 @@ package quinzical.GamesModule.EndGame;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,18 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import quinzical.GamesModule.GameManager;
 import quinzical.GamesModule.GameType;
 import quinzical.GamesModule.GamesMenu.GamesMenuController;
 import quinzical.GamesModule.ScoreBoard.ScoreBoardManager;
-import quinzical.Utilities.TTSUtilities;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**

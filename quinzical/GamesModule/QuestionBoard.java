@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A question board used in games module.
+ * A question board used in games module. It holds all the categories and questions
+ * which are loaded from the save.txt if there is one and otherwise are newly created by
+ * the player
  * <p></p>
  * A class which stores question board information and
  * returns a component with the information in it.
@@ -115,6 +117,10 @@ public class QuestionBoard {
         }
     }
 
+    /**
+     * Checks whether the question board is created by checking its size
+     * @return
+     */
     public boolean isQuestionBoardCreated() {
         return categoriesList.size() == 5;
     }

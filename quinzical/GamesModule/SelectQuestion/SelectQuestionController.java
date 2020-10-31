@@ -20,7 +20,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller for a view to select question.
+ * The controller for a view to select question. It displays a grid of the question board
+ * and allows the user to select the lowest un answered question from each category column.
+ * Also allows them to go back to the main menu and displays their current score
  * <p></p>
  * It takes care of how events caused by button presses in the "select question" view are handled.
  *
@@ -119,11 +121,17 @@ public class SelectQuestionController implements Initializable {
         mainMenuModel.setMainStageScene(backToGameMenuButton.getScene());
     }
 
+    /**
+     * Handles the scoreboard button click and take them to the score board scene
+     */
     public void handleHelpButton() {
         HelpUtilities.setHelpText(helpLabel,"text");
         HelpUtilities.bringToFront(helpArea);
     }
 
+    /**
+     * Help button functionality which brings the help area to the front so the user can see it
+     */
     public void handleHelpCloseButton() {
         HelpUtilities.bringToBack(helpArea);
     }

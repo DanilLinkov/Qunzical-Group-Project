@@ -9,7 +9,8 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 /**
- * The controller for "MainMenu" view.
+ * The controller for "MainMenu" view. This view allows
+ * the player to go to the games menu, practice menu or exit the game
  * <p></p>
  * It takes care of how events caused by button presses in the "MainMenu" view are handled.
  *

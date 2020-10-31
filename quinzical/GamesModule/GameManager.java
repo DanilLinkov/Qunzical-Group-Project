@@ -60,6 +60,11 @@ public class GameManager {
         return instance == null ? new GameManager() : instance;
     }
 
+    /**
+     * This method checks whether the question board has been set up by checking if its null
+     * and if it has also been created
+     * @return
+     */
     public boolean isQuestionBoardSetUp() {
         if (questionBoardInUse == null) {
             return false;
@@ -68,10 +73,18 @@ public class GameManager {
         }
     }
 
+    /**
+     * Checking if both question boards have been answered
+     * @param gameType
+     * @return
+     */
     public boolean isGameFinished(GameType gameType) {
         return gameFinished[gameType == GameType.NZ ? 0 : 1];
     }
 
+    /**
+     * Set the current question board to answered
+     */
     public void setCurrentGameFinished() {
         gameFinished[currentGameType == GameType.NZ ? 0 : 1] = true;
     }
@@ -334,6 +347,16 @@ public class GameManager {
         }
     }
 
+    /**
+     * Given all the lines of the Save file it goes to the categories folder and finds the category and loads
+     * the lines written in the save file and then loads it into the given question board given the location
+     * @param allLines All lines of the question board in the save.txt
+     * @param lineSplit The split line of the first category
+     * @param savePath Save path of the save.txt
+     * @param questionBoard Question board to be loaded
+     * @param location Location of the categories
+     * @throws IOException
+     */
     private void loadQuestionBoard(List<String> allLines,List<String> lineSplit,String savePath,QuestionBoard questionBoard,String location) throws IOException {
         // Go over every line in the save.txt file
         for (int i = 0; i < allLines.size(); i++) {
