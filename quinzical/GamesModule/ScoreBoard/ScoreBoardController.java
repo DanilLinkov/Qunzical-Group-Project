@@ -111,7 +111,7 @@ public class ScoreBoardController implements Initializable {
     }
 
     /**
-     * Creates a label with the Label.css properties to put into the grid
+     * Creates a label with the ScoreBoard.css properties to put into the grid
      * @param labelName
      * @return
      */
@@ -120,7 +120,7 @@ public class ScoreBoardController implements Initializable {
 
         label.getStyleClass().clear();
         label.getStyleClass().add("label");
-        label.getStylesheets().add(getClass().getClassLoader().getResource("quinzical/GamesModule/ScoreBoard/Label.css").toExternalForm());
+        label.getStylesheets().add(getClass().getClassLoader().getResource("quinzical/GamesModule/ScoreBoard/ScoreBoard.css").toExternalForm());
 
         return label;
     }

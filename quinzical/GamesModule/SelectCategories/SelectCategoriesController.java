@@ -148,7 +148,7 @@ public class SelectCategoriesController implements Initializable {
     }
 
     /**
-     * Creates a toggle button with the ToggleButton.css style and
+     * Creates a toggle button with the SelectCategories.css style and
      * the category name.
      * @param category
      * @return
@@ -176,7 +176,7 @@ public class SelectCategoriesController implements Initializable {
         toggleButton.getStyleClass().clear();
         toggleButton.getStyleClass().add("toggleButton");
         toggleButton.getStylesheets().add(getClass().getClassLoader().getResource(
-                "quinzical/GamesModule/SelectCategories/ToggleButton.css").toExternalForm()
+                "quinzical/GamesModule/SelectCategories/SelectCategories.css").toExternalForm()
         );
 
         // Adding a listener to the toggle button
