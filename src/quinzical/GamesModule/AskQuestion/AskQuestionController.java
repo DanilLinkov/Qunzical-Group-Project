@@ -42,7 +42,7 @@ import java.util.*;
 public class AskQuestionController implements Initializable {
 
     @FXML
-    private Button submitAnswerButton, playClueButton, dontKnowButton, helpButton, helpCloseButton,
+    private Button submitButton, playClueButton, dontKnowButton, helpButton, helpCloseButton,
             macronAButton, macronEButton, macronIButton, macronOButton, macronUButton, switchMacronCapsButton;
     @FXML
     private Label questionInfoLabel, timeLabel, helpLabel;
@@ -91,11 +91,15 @@ public class AskQuestionController implements Initializable {
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtilities.setReadingSpeed(newSpeed.intValue()));
 
         // Only enable submit button when both question type has been selected and some answer has been entered.
-        submitAnswerButton.disableProperty().bind(Bindings.or(
+        submitButton.disableProperty().bind(Bindings.or(
                 answerField.textProperty().isEmpty(),
                 selectQuestionType.valueProperty().isNull()
         ));
 
+        // Makes the width of submit button and don't know button identical
+        submitButton.prefWidthProperty().bind(dontKnowButton.widthProperty());
+
+        // Create a list of macron buttons then configure them to add macrons on answer field.
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
         AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
 

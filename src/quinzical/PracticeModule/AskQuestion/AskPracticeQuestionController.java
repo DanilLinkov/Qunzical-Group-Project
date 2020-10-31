@@ -84,20 +84,25 @@ public class AskPracticeQuestionController implements Initializable {
         speedAdjustSlider.setValue(TTSUtilities.getDefaultReadingSpeed());
         speedAdjustSlider.valueProperty().addListener((e, oldSpeed, newSpeed) -> TTSUtilities.setReadingSpeed(newSpeed.intValue()));
 
+        // Add a list of categories to the category selector.
         selectQuestionType.setItems(FXCollections.observableList(AskQuestionUtilities.getQuestionTypes()));
-
-        macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
-        AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
-
-        // Sets the timer and shows the timer
-        setTimer();
-        showTimer();
 
         // Only enable submit button when both question type has been selected and some answer has been entered.
         submitButton.disableProperty().bind(Bindings.or(
                 answerField.textProperty().isEmpty(),
                 selectQuestionType.valueProperty().isNull()
         ));
+
+        // Makes the width of submit button and don't know button identical
+        submitButton.prefWidthProperty().bind(dontKnowButton.widthProperty());
+
+        // Create a list of macron buttons then configure them to add macrons on answer field.
+        macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
+        AskQuestionUtilities.configureMacronButtons(macronButtons, answerField, isMacronCaps);
+
+        // Sets the timer and shows the timer
+        setTimer();
+        showTimer();
     }
 
     public void macronSwitchCaps() {

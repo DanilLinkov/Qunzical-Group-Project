@@ -181,8 +181,8 @@ public class GamesMenuController implements Initializable {
         HelpUtilities.setHelpText(helpLabel,"Click Play Game to either start a new game or load a previous save." +
                 "\n\nYou are able to reset the game which resets all the question boards NZ and International" +
                 "\n\nClick Score Board to view all the previous scores by the previous players" +
-                "\n\nClick Return to Main Menu to go back" +
-                "\n\nCompleting two categories in the NZ game mode will unlock the International question board");
+                "\nClick Return to Main Menu to go back" +
+                "\nCompleting two categories in the NZ game mode will unlock the International question board");
         HelpUtilities.bringToFront(helpArea);
     }
 
