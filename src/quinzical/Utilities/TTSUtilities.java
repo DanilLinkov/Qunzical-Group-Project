@@ -70,62 +70,62 @@ public class TTSUtilities {
      * @param text A string for espeak to read.
      */
     public static void speak(String text) {
-//        // End any previously running speak processes.
-//        endTTSSpeaking();
-//
-//        // Add "\" in front of quotation marks to make bash read this as normal character.
-//        text = text.replaceAll("\"", "\\\\\"");
-//
-//        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
-//        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
-//        boolean isSubStringMaori = false;
-//        if (text.charAt(0) == '`') {
-//            texts.pop();
-//            isSubStringMaori = true;
-//        }
-//
-//        int subStringIndex = 0;
-//        for (String textToSpeak : texts) {
-//            command.append("; ");
-//
-//            textToSpeak = textToSpeak.trim();
-//            if (isSubStringMaori) {
-//                textToSpeak = processMaoriStringForEspeak(textToSpeak);
-//            } else {
-//                textToSpeak = processEnglishStringForEspeak(textToSpeak);
-//            }
-//
-//            command.append("espeak ").append(isSubStringMaori ? "-vde " : "");
-//            command.append("\"").append(textToSpeak).append("\"");
-//            command.append(" -s ").append(_readingSpeed);
-//            command.append(" -w ").append(subStringIndex).append(".wav");
-//
-//            subStringIndex++;
-//            isSubStringMaori = !isSubStringMaori;
-//        }
-//
-//        try {
-//            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
-//            Process espeakProcess = pb.start();
-//            espeakProcess.waitFor();
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ArrayList<Media> medias = new ArrayList<>();
-//        for (int i = 0; i < texts.size(); i++) {
-//            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
-//            medias.add(new Media(fileDirectory));
-//        }
-//
-//        /* The rest of the codes of the method body and the following method:
-//         * playMediaTracks() was acquired from an answer to this Stack-Overflow post:
-//         * https://stackoverflow.com/questions/46655056/how-to-play-multiple-consecutive-sound-files-with-javafx
-//         */
-//        ObservableList<Media> mediaList = FXCollections.observableArrayList();
-//        mediaList.addAll(medias);
-//
-//        playMediaTracks(mediaList);
+        // End any previously running speak processes.
+        endTTSSpeaking();
+
+        // Add "\" in front of quotation marks to make bash read this as normal character.
+        text = text.replaceAll("\"", "\\\\\"");
+
+        LinkedList<String> texts = new LinkedList<>(Arrays.asList(text.split("`")));
+        StringBuilder command = new StringBuilder("mkdir tts; cd tts");
+        boolean isSubStringMaori = false;
+        if (text.charAt(0) == '`') {
+            texts.pop();
+            isSubStringMaori = true;
+        }
+
+        int subStringIndex = 0;
+        for (String textToSpeak : texts) {
+            command.append("; ");
+
+            textToSpeak = textToSpeak.trim();
+            if (isSubStringMaori) {
+                textToSpeak = processMaoriStringForEspeak(textToSpeak);
+            } else {
+                textToSpeak = processEnglishStringForEspeak(textToSpeak);
+            }
+
+            command.append("espeak ").append(isSubStringMaori ? "-vde " : "");
+            command.append("\"").append(textToSpeak).append("\"");
+            command.append(" -s ").append(_readingSpeed);
+            command.append(" -w ").append(subStringIndex).append(".wav");
+
+            subStringIndex++;
+            isSubStringMaori = !isSubStringMaori;
+        }
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command.toString());
+            Process espeakProcess = pb.start();
+            espeakProcess.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Media> medias = new ArrayList<>();
+        for (int i = 0; i < texts.size(); i++) {
+            String fileDirectory = "file:" + System.getProperty("user.dir").replaceAll(" ", "%20") + "/tts/" + i + ".wav";
+            medias.add(new Media(fileDirectory));
+        }
+
+        /* The rest of the codes of the method body and the following method:
+         * playMediaTracks() was acquired from an answer to this Stack-Overflow post:
+         * https://stackoverflow.com/questions/46655056/how-to-play-multiple-consecutive-sound-files-with-javafx
+         */
+        ObservableList<Media> mediaList = FXCollections.observableArrayList();
+        mediaList.addAll(medias);
+
+        playMediaTracks(mediaList);
     }
 
     /**
