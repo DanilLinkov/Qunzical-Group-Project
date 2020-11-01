@@ -68,7 +68,7 @@ public class SelectQuestionController implements Initializable {
      * Initializes the view by filling in the current score, the best score, and the question board.
      */
     private void initialization() {
-        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+        userScoreLabel.setText("Score: $" + gameManager.getCurrentScore());
 
         // Clear any child nodes in the VBox used to store question board, then add the question board.
         questionBoardArea.getChildren().clear();

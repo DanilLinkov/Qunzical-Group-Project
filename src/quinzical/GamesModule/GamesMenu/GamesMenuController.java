@@ -64,7 +64,7 @@ public class GamesMenuController implements Initializable {
         instance = this;
 
         // Setting the user score label
-        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+        userScoreLabel.setText("Score: $" + gameManager.getCurrentScore());
 
         // Setting the preferred width to a constant
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
@@ -135,7 +135,7 @@ public class GamesMenuController implements Initializable {
             // Revert back to NZ Game Type
             setGameType(GameType.NZ);
             lockInternationalSection();
-            userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+            userScoreLabel.setText("Score: $" + gameManager.getCurrentScore());
 
             // Another alert pop up notifying the player that the game has successfully reset.
             Notification.smallInformationPopup("Reset Game", "Your game has been reset!", "Press OK to continue.");
@@ -156,7 +156,7 @@ public class GamesMenuController implements Initializable {
      */
     public void setMainStageToGamesMenuScene() {
         // Refresh score labels for possible change.
-        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+        userScoreLabel.setText("Score: $" + gameManager.getCurrentScore());
 
         mainMenuModel.setMainStageScene(playGameButton.getScene());
     }

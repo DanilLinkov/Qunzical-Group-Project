@@ -67,7 +67,7 @@
                   </Label>
                   <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER">
                      <children>
-                        <Label fx:id="userScoreLabel" text="User Score: $" textFill="WHITE">
+                        <Label fx:id="userScoreLabel" text="Score: $" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
                            </font>

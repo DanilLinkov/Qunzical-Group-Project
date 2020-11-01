@@ -72,7 +72,7 @@ public class SelectCategoriesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
-        userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
+        userScoreLabel.setText("Score: $" + gameManager.getCurrentScore());
 
         // Loads the categories from the folder depending on whether they are in NZ or international mode
         loadAllCategories();
