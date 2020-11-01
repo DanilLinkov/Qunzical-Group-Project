@@ -40,10 +40,19 @@ public class AskQuestionUtilities {
         }
     }
 
+    /**
+     * Changes the capitalization of macron button labels based on a given boolean value,
+     * then reconfigures buttons so that a respective capitalization of macrons are added to the answer field.
+     * @param macronButtons Array of macron buttons
+     * @param isMacronCaps A boolean value on whether to change macron buttons to upper case (capitals)
+     * @param answerField An answer field to add macrons to.
+     */
     public static void macronSwitchCaps(Button[] macronButtons, boolean isMacronCaps, TextField answerField) {
+        // Switch label of buttons.
         for (int i = 0; i < macronButtons.length; i++) {
             macronButtons[i].setText(isMacronCaps ? macronsLowerCase[i] : macronsUpperCase[i]);
         }
+        // Reconfigure buttons
         configureMacronButtons(macronButtons, answerField, !isMacronCaps);
     }
 

@@ -35,8 +35,7 @@ import java.util.ResourceBundle;
 public class GamesMenuController implements Initializable {
 
     @FXML
-    private Button playGameButton, resetGameButton, returnToMainMenuButton, scoreBoardButton, switchGameTypeButton,
-            helpCloseButton, helpButton;
+    private Button playGameButton, resetGameButton, returnToMainMenuButton, scoreBoardButton, switchGameTypeButton;
     @FXML
     private Label userScoreLabel, switchGameTypeLabel, gameTypeLabel, helpLabel;
     @FXML
@@ -67,7 +66,7 @@ public class GamesMenuController implements Initializable {
         // Setting the user score label
         userScoreLabel.setText("Current Score: $" + gameManager.getCurrentScore());
 
-        // Setting the prefered width to a constant
+        // Setting the preferred width to a constant
         playGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         scoreBoardButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
         resetGameButton.prefWidthProperty().bind(returnToMainMenuButton.widthProperty());
@@ -194,7 +193,7 @@ public class GamesMenuController implements Initializable {
     }
 
     private void configureSwitchGameTypeButton(GameType gameTypeToUseButton) {
-            ImageView buttonImage = new ImageView();
+        ImageView buttonImage = new ImageView();
 
         if (gameTypeToUseButton == GameType.NZ) {
             buttonImage.setImage(new Image(this.getClass().getResource("/quinzical/GamesModule/GamesMenu/Images/globe.png").toExternalForm()));
@@ -204,9 +203,9 @@ public class GamesMenuController implements Initializable {
             switchGameTypeButton.setOnAction(e -> setGameType(GameType.NZ));
         }
 
-            buttonImage.setFitHeight(50);
-            buttonImage.setFitWidth(50);
-            switchGameTypeButton.setGraphic(buttonImage);
+        buttonImage.setFitHeight(50);
+        buttonImage.setFitWidth(50);
+        switchGameTypeButton.setGraphic(buttonImage);
     }
 
     public void setGameType(GameType gameTypeToSet) {
@@ -223,7 +222,6 @@ public class GamesMenuController implements Initializable {
         }
 
         switchGameTypeArea.setVisible(true);
-
     }
 
     public void lockInternationalSection() {

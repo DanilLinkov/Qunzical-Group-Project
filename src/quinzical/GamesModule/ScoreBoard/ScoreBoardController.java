@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import quinzical.GamesModule.GamesMenu.GamesMenuController;
@@ -25,8 +24,6 @@ import java.util.*;
 public class ScoreBoardController implements Initializable {
 
     @FXML
-    private Button backButton, helpCloseButton, helpButton;
-    @FXML
     private VBox nameArea, scoreArea;
     @FXML
     private Label helpLabel;
@@ -40,8 +37,6 @@ public class ScoreBoardController implements Initializable {
 
     /**
      * Initialize method called when the scene is created
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,7 +49,7 @@ public class ScoreBoardController implements Initializable {
 
     /**
      * Returns an instance of the ScoreBoard controller
-     * @return
+     * @return the currently used instance of ScoreBoardController
      */
     public static ScoreBoardController getInstance() {
         return instance;
@@ -112,8 +107,8 @@ public class ScoreBoardController implements Initializable {
 
     /**
      * Creates a label with the ScoreBoard.css properties to put into the grid
-     * @param labelName
-     * @return
+     * @param labelName The name of the label to add.
+     * @return A label created with the given name as a text.
      */
     private Label createLabel(String labelName) {
         Label label = new Label(labelName);

@@ -47,7 +47,7 @@ public class SelectCategoriesController implements Initializable {
     @FXML
     private Label userScoreLabel, helpLabel;
     @FXML
-    private Button selectButton, randomButton, backButton, helpCloseButton, helpButton;
+    private Button selectButton;
     @FXML
     private VBox gridArea;
     @FXML
@@ -66,6 +66,9 @@ public class SelectCategoriesController implements Initializable {
     // All the created buttons
     private ArrayList<ToggleButton> toggleButtons;
 
+    /**
+     * The initial method that fxml view calls from this controller as it loads.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         instance = this;
@@ -88,7 +91,7 @@ public class SelectCategoriesController implements Initializable {
 
     /**
      * Returns an instance of this controller
-     * @return
+     * @return the currently used instance of SelectCategoriesController
      */
     public static SelectCategoriesController getInstance() {
         return instance;
@@ -96,7 +99,7 @@ public class SelectCategoriesController implements Initializable {
 
     /**
      * Creates the grid pane of toggle buttons which is added to the view
-     * @return
+     * @return A GridPane element containing buttons of categories.
      */
     public GridPane getQuestionBoard() {
         GridPane categoriesBoard = new GridPane();
@@ -117,7 +120,7 @@ public class SelectCategoriesController implements Initializable {
         }
 
         // Spreading out the buttons
-        evenlySpreadOut(categoriesBoard,i);
+        evenlySpreadOut(categoriesBoard, i);
         categoriesBoard.setVgap(20);
         categoriesBoard.setStyle("-fx-background-color:#072365");
 
@@ -126,8 +129,8 @@ public class SelectCategoriesController implements Initializable {
 
     /**
      * Spreads out the grid evenly given the number of rows
-     * @param categoriesBoard
-     * @param rows
+     * @param categoriesBoard A gridpane element to evenly spread out rows and columns
+     * @param rows the number of rows in the grid.
      */
     private void evenlySpreadOut(GridPane categoriesBoard, int rows) {
         // Format each rows to be center aligned and have identical height.
@@ -150,8 +153,8 @@ public class SelectCategoriesController implements Initializable {
     /**
      * Creates a toggle button with the SelectCategories.css style and
      * the category name.
-     * @param category
-     * @return
+     * @param category The category which the button represents.
+     * @return A toggle button which represents the given category.
      */
     private ToggleButton createToggleButton(String category) {
         ToggleButton toggleButton = new ToggleButton(category);
@@ -272,9 +275,10 @@ public class SelectCategoriesController implements Initializable {
     }
 
     /**
-     * Returns an array list of indices randomly shuffled from 0 to the size of the array list
-     * @param length
-     * @return
+     * This is a private utility method for this class which returns an array of size 5
+     * containing random index values from 0 to the length-1 specific
+     * @param length of the range of the index values
+     * @return An arraylist with random index values.
      */
     private ArrayList<Integer> randomIndexArray (int length) {
         ArrayList<Integer> shuffledArray = new ArrayList<>();

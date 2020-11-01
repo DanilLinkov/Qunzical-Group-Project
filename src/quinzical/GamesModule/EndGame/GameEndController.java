@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 public class GameEndController implements Initializable {
 
     @FXML
-    private Button submitButton, dontSaveButton;
+    private Button submitButton;
     @FXML
     private Label scoreLabel;
     @FXML
@@ -45,10 +45,11 @@ public class GameEndController implements Initializable {
     private final ScoreBoardManager scoreBoardManager = ScoreBoardManager.getInstance();
     private final GamesMenuController gamesMenuController = GamesMenuController.getInstance();
 
+    // Get the current user score
+    private final int userScore = gameManager.getCurrentScore();
+
     /**
      * This method initializes this controller when a scene transitions to the view of this controller
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,11 +60,14 @@ public class GameEndController implements Initializable {
         // Disabling the submit button if the user has not entered their name
         BooleanBinding isTextFieldEmpty = Bindings.isEmpty(nameTextField.textProperty());
         submitButton.disableProperty().bind(isTextFieldEmpty);
+
+        // Reset the use score in the game manager and the question board
+        finishGameEnd();
     }
 
     /**
      * Returns an instance of this class to be able to allow for scene transitioning
-     * @return
+     * @return the current instance of GameEndController.
      */
     public static GameEndController getInstance() {
         return instance;
@@ -94,22 +98,20 @@ public class GameEndController implements Initializable {
     }
 
     /**
-     * Handles the submit button for saving the user score after they have entered their name
+     * Handles the submit button for saving the user score after they have entered their name.
      */
     public void handleSubmitButton() {
-        // Get the current user score
-        int userScore = gameManager.getCurrentScore();
         // Add it to the score board
         scoreBoardManager.addScore(nameTextField.getText(), userScore);
-        // Delete the save file
-        finishGameEnd();
+        // Return to main menu
+        gamesMenuController.setMainStageToGamesMenuScene();
     }
 
     /**
-     * Don;t save the user score and just delete the save file to reset the game
+     * Don't save the user score and return to games menu
      */
     public void handleDontSaveButton() {
-        finishGameEnd();
+        gamesMenuController.setMainStageToGamesMenuScene();
     }
 
     /**
@@ -130,7 +132,6 @@ public class GameEndController implements Initializable {
         // Revert everything in games menu back to initial state
         gamesMenuController.setGameType(GameType.NZ);
         gamesMenuController.lockInternationalSection();
-        gamesMenuController.setMainStageToGamesMenuScene();
     }
 
 }

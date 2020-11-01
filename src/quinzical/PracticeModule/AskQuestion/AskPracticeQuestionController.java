@@ -39,8 +39,7 @@ public class AskPracticeQuestionController implements Initializable {
 
     // Fxml objects used in the scene
     @FXML
-    private Button submitButton, dontKnowButton, playClueButton, helpCloseButton, helpButton,
-            macronAButton, macronEButton, macronIButton, macronOButton, macronUButton, switchMacronCapsButton;
+    private Button submitButton, dontKnowButton, macronAButton, macronEButton, macronIButton, macronOButton, macronUButton;
     @FXML
     private Label categoryLabel, questionLabel, hintLabel, timeLabel, helpLabel;
     @FXML
@@ -66,17 +65,15 @@ public class AskPracticeQuestionController implements Initializable {
     final int questionTime = 60*1000;
 
     // Used for scene transitioning
-    private static AskPracticeQuestionController _instance;
+    private static AskPracticeQuestionController instance;
     long endTime = System.currentTimeMillis()+1000*5;
 
     /**
      * Initialize method which is run on the creation of this controller
-     * @param url
-     * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        _instance = this;
+        instance = this;
         // Setting the number of attempts to 3
         attempts = 3;
 
@@ -95,6 +92,7 @@ public class AskPracticeQuestionController implements Initializable {
 
         // Makes the width of submit button and don't know button identical
         submitButton.prefWidthProperty().bind(dontKnowButton.widthProperty());
+        answerField.prefWidthProperty().bind(selectQuestionType.widthProperty());
 
         // Create a list of macron buttons then configure them to add macrons on answer field.
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
@@ -105,6 +103,9 @@ public class AskPracticeQuestionController implements Initializable {
         showTimer();
     }
 
+    /**
+     * Switches the capitalization of the macron being added and respective buttons.
+     */
     public void macronSwitchCaps() {
         AskQuestionUtilities.macronSwitchCaps(macronButtons, isMacronCaps, answerField);
         isMacronCaps = !isMacronCaps;
@@ -162,17 +163,18 @@ public class AskPracticeQuestionController implements Initializable {
     }
 
     /**
-     * This method is used to return this instance for scene transitioning
-     * @return
+     * This method is used to return this instance
+     * @return The currently used instance of AskPracticeQuestionController.
      */
     public static AskPracticeQuestionController getInstance() {
-        return _instance;
+        return instance;
     }
 
     /**
      * This method is called in the practice menu to pass down the category name which the player
      * selected and then to load the questions in that category and select a random question
-     * @param name
+     * @param name The name of the category to set.
+     * @param location The location of the categories; essentially either game types.
      */
     public void setCategoryName(String name, String location) {
         // Setting the label to be category + its name
@@ -359,8 +361,8 @@ public class AskPracticeQuestionController implements Initializable {
 
     /**
      * Method used to check whether a string is numeric or not
-     * @param strNum
-     * @return
+     * @param strNum A string to check whether it is numeric.
+     * @return A boolean value that is true if the given string is numeric.
      */
     private boolean isNumeric(String strNum) {
         // If the string is null then return false

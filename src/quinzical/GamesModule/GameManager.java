@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class GameManager {
 
-    private QuestionBoard[] questionBoards = new QuestionBoard[2];
-    private boolean[] gameFinished = new boolean[2];
+    private final QuestionBoard[] questionBoards = new QuestionBoard[2];
+    private final boolean[] gameFinished = new boolean[2];
 
     // Question board currently used in this game type.
     private QuestionBoard questionBoardInUse;
@@ -63,7 +63,7 @@ public class GameManager {
     /**
      * This method checks whether the question board has been set up by checking if its null
      * and if it has also been created
-     * @return
+     * @return a boolean value on whether the question board has been setup.
      */
     public boolean isQuestionBoardSetUp() {
         if (questionBoardInUse == null) {
@@ -74,9 +74,9 @@ public class GameManager {
     }
 
     /**
-     * Checking if both question boards have been answered
-     * @param gameType
-     * @return
+     * Checking if a question board of the given game type has been answered
+     * @param gameType A game type of the question board to check.
+     * @return A boolean value that is true if game is finished on a given question board.
      */
     public boolean isGameFinished(GameType gameType) {
         return gameFinished[gameType == GameType.NZ ? 0 : 1];
@@ -89,10 +89,6 @@ public class GameManager {
         gameFinished[currentGameType == GameType.NZ ? 0 : 1] = true;
     }
 
-    public void setCurrentGameType(GameType gameTypeToSet) {
-        currentGameType = gameTypeToSet;
-    }
-
     public void unlockInternationalGame() {
         // Unlock international section and allow user to switch between them.
         GamesMenuController.getInstance().setGameType(GameType.NZ);
@@ -103,14 +99,18 @@ public class GameManager {
         isInternationalGameUnlocked = true;
     }
 
-    public void lockInternationalGame() {
-        isInternationalGameUnlocked = false;
-    }
-
+    /**
+     * Returns a status on whether the international section has been unlocked.
+     * @return A boolean value that is true if the international section has been unlocked.
+     */
     public boolean isInternationalGameUnlocked() {
         return isInternationalGameUnlocked;
     }
 
+    /**
+     * Returns the current game type this instance of Game manager is dealing with.
+     * @return The current game type.
+     */
     public GameType getCurrentGameType() {
         return currentGameType;
     }
@@ -125,17 +125,18 @@ public class GameManager {
 
     /**
      * Get the question object for the given category index and given question index
-     * @param categoryIndex
-     * @param questionIndex
-     * @return
+     * @param categoryIndex The index of the category from a list of categories in this game manager instance.
+     * @param questionIndex The index of the question from a list of questions in the given category.
+     * @return A specified Question instance.
      */
     public Question getQuestionInCategory(int categoryIndex, int questionIndex) {
         return questionBoardInUse.getCategory(categoryIndex).getQuestion(questionIndex);
     }
 
     /**
-     * This method checks whether every question in each category has been answered
-     * @return
+     * This method checks whether in the currently used question board, every question
+     * in each category has been answered.
+     * @return A boolean value that is true if every question has been answered.
      */
     public boolean isEveryQuestionAnswered() {
         // If question board that is in use is null, obviously just return false.
@@ -154,6 +155,10 @@ public class GameManager {
         return true;
     }
 
+    /**
+     * Returns whether two or more categories have been completed in the currently used question board.
+     * @return A boolean value that is true if two or more categories have been completed.
+     */
     public boolean isTwoCategoriesComplete() {
         int numCategoriesComplete = 0;
         for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
@@ -164,6 +169,12 @@ public class GameManager {
         return numCategoriesComplete >= 2;
     }
 
+    /**
+     * Checks whether the category of given index from the list of categories has been completed;
+     * aka every question answered.
+     * @param categoryIndex The index of the category to check.
+     * @return A boolean value that is true if a given category is complete.
+     */
     public boolean isCategoryComplete(int categoryIndex) {
         if (questionBoardInUse == null) {
             return false;
@@ -174,7 +185,7 @@ public class GameManager {
 
     /**
      * Return the player's current score
-     * @return
+     * @return the current score of the player.
      */
     public int getCurrentScore() {
         return currentScore;
@@ -182,7 +193,7 @@ public class GameManager {
 
     /**
      * Increments the player's current score
-     * @param value
+     * @param value The value to increment the current score by.
      */
     public void incrementCurrentScore(int value) {
         currentScore += value;
@@ -190,12 +201,16 @@ public class GameManager {
 
     /**
      * Decrements the player's current score
-     * @param value
+     * @param value The value to decrement the current score by.
      */
     public void decrementCurrentScore(int value) {
         currentScore -= value;
     }
 
+    /**
+     * Initializes question board of the given type; aka creates an instance of it.
+     * @param questionBoardTypeToInitialize A game type to initialize a question board.
+     */
     public void initializeQuestionBoard(GameType questionBoardTypeToInitialize) {
         if (questionBoardTypeToInitialize == GameType.NZ) {
             questionBoards[0] = new QuestionBoard(questionBoardTypeToInitialize);
@@ -204,6 +219,10 @@ public class GameManager {
         }
     }
 
+    /**
+     * Sets the question board of the given game type as the currently using question board.
+     * @param gameTypeToSet the game type of the question board to set.
+     */
     public void setQuestionBoardInUse(GameType gameTypeToSet) {
         questionBoardInUse = gameTypeToSet == GameType.NZ ? questionBoards[0] : questionBoards[1];
         currentGameType = gameTypeToSet;
@@ -220,6 +239,9 @@ public class GameManager {
         saveGame();
     }
 
+    /**
+     * Reset the current game by restoring game finished status, question boards, and current score to initial state.
+     */
     public void resetGame() {
         gameFinished[0] = false;
         gameFinished[1] = false;
@@ -355,7 +377,7 @@ public class GameManager {
      * @param savePath Save path of the save.txt
      * @param questionBoard Question board to be loaded
      * @param location Location of the categories
-     * @throws IOException
+     * @throws IOException IOException thrown when file input/output error occurs.
      */
     private void loadQuestionBoard(List<String> allLines,List<String> lineSplit,String savePath,QuestionBoard questionBoard,String location) throws IOException {
         // Go over every line in the save.txt file

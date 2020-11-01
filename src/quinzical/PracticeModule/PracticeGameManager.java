@@ -22,8 +22,8 @@ public class PracticeGameManager {
     }
 
     /**
-     * Get this classes instance
-     * @return
+     * Returns the currently used instance of this class.
+     * @return The currently used instance of PracticeGameManager
      */
     public static PracticeGameManager getInstance() {
         return instance;
@@ -31,7 +31,7 @@ public class PracticeGameManager {
 
     /**
      * Get all the categories
-     * @return
+     * @return A string list of categories.
      */
     public ArrayList<String> getCategories() {
         return categories;
@@ -39,6 +39,7 @@ public class PracticeGameManager {
 
     /**
      * Load a list of all the categories in the categories folder
+     * @param location the location of the category files; essentially game type.
      */
     public void loadAllCategories(String location) {
         // Used to store all the file paths in the folder

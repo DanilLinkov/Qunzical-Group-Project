@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 public class SelectQuestionController implements Initializable {
 
     @FXML
-    private Button backToGameMenuButton, helpCloseButton, helpButton;
+    private Button backToGameMenuButton;
     @FXML
     private Label userScoreLabel, helpLabel;
     @FXML

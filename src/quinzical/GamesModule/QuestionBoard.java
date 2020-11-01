@@ -40,8 +40,13 @@ public class QuestionBoard {
     // List of categories in the question board.
     private final ArrayList<Category> categoriesList = new ArrayList<>();
 
+    // Type of the game this question board associates with.
     private final GameType gameType;
 
+    /**
+     * The constructor of QuestionBoard instance.
+     * @param gameType A game type the question board to create associates with.
+     */
     public QuestionBoard(GameType gameType) {
         this.gameType = gameType;
     }
@@ -49,6 +54,7 @@ public class QuestionBoard {
     /**
      * This method is used to generate a brand new question board with 5 random categories
      * each having 5 random questions
+     * @param selectedCategories A list of categories to make a question board off of. Size must equal 5.
      */
     public void createBoard(ArrayList<String> selectedCategories) {
         // Getting the string path to the categories folder outside the application
@@ -119,7 +125,7 @@ public class QuestionBoard {
 
     /**
      * Checks whether the question board is created by checking its size
-     * @return
+     * @return A boolean value that is true if the question board is created.
      */
     public boolean isQuestionBoardCreated() {
         return categoriesList.size() == 5;
@@ -129,7 +135,7 @@ public class QuestionBoard {
      * This is a private utility method for this class which returns an array of size 5
      * containing random index values from 0 to the length-1 specific
      * @param length of the range of the index values
-     * @return
+     * @return An arraylist with random index values.
      */
     private ArrayList<Integer> randomIndexArray (int length) {
         ArrayList<Integer> shuffledArray = new ArrayList<>();

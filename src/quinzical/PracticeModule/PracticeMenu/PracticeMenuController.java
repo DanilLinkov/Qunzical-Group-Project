@@ -35,7 +35,7 @@ public class PracticeMenuController implements Initializable {
 
     // fxml objects used in the scene
     @FXML
-    private Button selectCategoryButton, backToMainMenuButton, helpCloseButton, helpButton;
+    private Button selectCategoryButton;
     @FXML
     private Label helpLabel;
     @FXML
@@ -105,7 +105,7 @@ public class PracticeMenuController implements Initializable {
     }
 
     /**
-     *
+     * Handles the location toggle button which changes the location of the categories list.
      */
     public void handleToggleClick() {
         String location = locationToggle.isSelected() ? "international" :"NZ";

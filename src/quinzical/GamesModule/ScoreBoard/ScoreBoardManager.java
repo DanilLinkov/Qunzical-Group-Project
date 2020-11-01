@@ -27,7 +27,7 @@ public class ScoreBoardManager {
 
     /**
      * Returns an instance of the ScoreBoardManager otherwise creates a new one
-     * @return
+     * @return the instance of the ScoreBoardManager currently being used.
      */
     public static ScoreBoardManager getInstance() {
         return instance == null ? new ScoreBoardManager() : instance;
@@ -35,7 +35,7 @@ public class ScoreBoardManager {
 
     /**
      * Returns the loaded score map
-     * @return
+     * @return A map of score board with score records in it.
      */
     public Map<String,Integer> getScoreBoardMap() {
         loadQuestionBoard();
@@ -44,17 +44,17 @@ public class ScoreBoardManager {
 
     /**
      * Returns the best score from the score.txt
-     * @return
+     * @return the best score from the score.txt
      */
-    public Integer getBestScore() {
+    public int getBestScore() {
         loadQuestionBoard();
         return !scoreBoardMap.values().isEmpty() ? (Integer) scoreBoardMap.values().toArray()[0] : 0;
     }
 
     /**
      * Adds the score for the player name into the score.txt
-     * @param playerName
-     * @param score
+     * @param playerName The name of the player to add
+     * @param score The score of the player to add
      */
     public void addScore(String playerName,Integer score) {
         try {
@@ -111,7 +111,7 @@ public class ScoreBoardManager {
                     List<String> lineSplit = Arrays.asList(line.split("\\s*,\\s*"));
                     scoreBoardMap.put(lineSplit.get(0).trim(),Integer.parseInt(lineSplit.get(1).trim()));
                 }
-                scoreBoardMap = sortByComparator(scoreBoardMap,false);
+                scoreBoardMap = sortByComparator(scoreBoardMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -119,23 +119,16 @@ public class ScoreBoardManager {
     }
 
     /**
-     * Sorts the map depending on the order that was passed in
-     * @param unsortedMap
-     * @param order
-     * @return
+     * Sorts the map with the highest value on the first index to the lowest value on the bottom index.
+     * @param unsortedMap An unsorted map that is to be sorted using this comparator.
+     * @return A sorted Map
      */
-    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortedMap, final boolean order) {
+    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortedMap) {
 
         List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortedMap.entrySet());
 
         // Sorting the list based on values
-        list.sort((o1, o2) -> {
-            if (order) {
-                return o1.getValue().compareTo(o2.getValue());
-            } else {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
         // Maintaining insertion order with the help of LinkedList
         Map<String, Integer> sortedMap = new LinkedHashMap<>();

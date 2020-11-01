@@ -42,8 +42,7 @@ import java.util.*;
 public class AskQuestionController implements Initializable {
 
     @FXML
-    private Button submitButton, playClueButton, dontKnowButton, helpButton, helpCloseButton,
-            macronAButton, macronEButton, macronIButton, macronOButton, macronUButton, switchMacronCapsButton;
+    private Button submitButton, dontKnowButton, macronAButton, macronEButton, macronIButton, macronOButton, macronUButton;
     @FXML
     private Label questionInfoLabel, timeLabel, helpLabel;
     @FXML
@@ -64,7 +63,6 @@ public class AskQuestionController implements Initializable {
     private Question question;
 
     // Timer related.
-    private final int questionTime = 60*1000;
     private long endTime = System.currentTimeMillis()+1000*5;
     private boolean done = false;
 
@@ -98,6 +96,7 @@ public class AskQuestionController implements Initializable {
 
         // Makes the width of submit button and don't know button identical
         submitButton.prefWidthProperty().bind(dontKnowButton.widthProperty());
+        answerField.prefWidthProperty().bind(selectQuestionType.widthProperty());
 
         // Create a list of macron buttons then configure them to add macrons on answer field.
         macronButtons = new Button[]{macronAButton, macronEButton, macronIButton, macronOButton, macronUButton};
@@ -111,8 +110,12 @@ public class AskQuestionController implements Initializable {
         handlePlayClueButton();
     }
 
+    /**
+     * Switches the capitalization of the macron being added and respective buttons.
+     */
     public void macronSwitchCaps() {
         AskQuestionUtilities.macronSwitchCaps(macronButtons, isMacronCaps, answerField);
+        // Inverse the boolean value on whether the macron is upper case. (capitalized)
         isMacronCaps = !isMacronCaps;
     }
 
@@ -123,6 +126,8 @@ public class AskQuestionController implements Initializable {
     private void setTimer() {
         // Creating a new timer
         Timer myTimer = new Timer();
+        // The time allocated for each question.
+        int questionTime = 60*1000;
         // Scheduling the timer to submit the answer after it runs out
         myTimer.schedule(new TimerTask(){
             @Override
@@ -209,7 +214,7 @@ public class AskQuestionController implements Initializable {
             }
 
             TTSUtilities.endTTSSpeaking();
-            if (!gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+            if (!gameManager.isInternationalGameUnlocked() && gameManager.isTwoCategoriesComplete()) {
                 gameManager.unlockInternationalGame();
                 notifyInternationalGameUnlock();
 
@@ -232,7 +237,7 @@ public class AskQuestionController implements Initializable {
         AskQuestionUtilities.answerUnknown(question.getAnswer()[0], question.getQuestionType());
 
         TTSUtilities.endTTSSpeaking();
-        if (!gameManager.isInternationalGameUnlocked() && isTwoCategoriesComplete()) {
+        if (!gameManager.isInternationalGameUnlocked() && gameManager.isTwoCategoriesComplete()) {
             gameManager.unlockInternationalGame();
             notifyInternationalGameUnlock();
 
@@ -290,16 +295,6 @@ public class AskQuestionController implements Initializable {
         Notification.largeInformationPopup("Incorrect", "Incorrect!", contentText);
     }
 
-    public boolean isTwoCategoriesComplete() {
-        int numCategoriesComplete = 0;
-        for (int categoryIndex = 0; categoryIndex < 5; categoryIndex++) {
-            if (gameManager.isCategoryComplete(categoryIndex)) {
-                numCategoriesComplete++;
-            }
-        }
-        return numCategoriesComplete == 2;
-    }
-
     /**
      * Checks whether every question in the question has been answered by
      * checking whether the lowest valued question index in every category
@@ -330,6 +325,9 @@ public class AskQuestionController implements Initializable {
         }
     }
 
+    /**
+     * Notify user that the international question has been unlocked by sending them a pop up window.
+     */
     private void notifyInternationalGameUnlock() {
         String contentText = "Congratulations on completing two categories!\n\n"
                 + "You have unlocked international game module.\n"
